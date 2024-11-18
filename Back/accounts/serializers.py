@@ -4,6 +4,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
 from .models import User
+import re
 
 User = get_user_model()
 
@@ -65,24 +66,70 @@ REGION_CHOICES = [
 ]
 
 
+# 회원가입을 위한 시리얼라이즈
 class CustomRegisterSerializer(RegisterSerializer):
-    """
-    커스텀 회원가입 시리얼라이저
-    기본 회원가입 필드 외에 추가 정보를 포함
-    """
+    # 생년 필드: 1900년 이상 9999년 이하의 정수만 허용
     birthyear = serializers.IntegerField(
-        validators=[MinValueValidator(1900), MaxValueValidator(9999)]
+        validators=[MinValueValidator(1900), MaxValueValidator(9999)],
     )
+    
+    # 프로필 이미지 필드: 선택 사항으로 null 허용
     profile_img = serializers.ImageField(required=False, allow_null=True)
+    
+    # 소득, 경력, 지역 필드: 선택 가능한 값들 정의
     income = serializers.ChoiceField(choices=INCOME_CHOICES)
     career = serializers.ChoiceField(choices=CAREER_CHOICES)
     region = serializers.ChoiceField(choices=REGION_CHOICES)
+    
+    # 약관 동의 필드: 기본값은 False
     condition1 = serializers.BooleanField(default=False)
     condition2 = serializers.BooleanField(default=False)
 
+    def validate_username(self, value):
+        """
+        아이디 유효성 검사: 영어 대소문자와 숫자만 허용, 최소 4자에서 최대 20자까지.
+        """
+        if not re.match(r'^[a-zA-Z0-9]{4,20}$', value):
+            raise serializers.ValidationError('아이디는 영어 대소문자와 숫자로만 이루어져야 하며, 최소 4자에서 최대 20자여야 합니다.')
+        return value
+
+    def validate_email(self, value):
+        """
+        이메일 유효성 검사: 올바른 이메일 형식인지 확인.
+        """
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', value):
+            raise serializers.ValidationError('유효한 이메일 주소가 아닙니다.')
+        return value
+
+    def validate_password1(self, value):
+        """
+        비밀번호 유효성 검사: 최소 8자 이상, 최대 20자 이하,
+        영문 대소문자, 숫자, 특수문자 중 2가지 이상 포함해야 함.
+        """
+        if len(value) < 8:
+            raise serializers.ValidationError('비밀번호는 최소 8자 이상이어야 합니다.')
+        if len(value) > 20:
+            raise serializers.ValidationError('비밀번호는 최대 20자 이하여야 합니다.')
+        
+        # 비밀번호의 복잡성을 체크하기 위한 조건 수 계산
+        criteria_count = sum(bool(re.search(pattern, value)) for pattern in [r'[A-Za-z]', r'[0-9]', r'[@$!%*?&]'])
+        
+        if criteria_count < 2:
+            raise serializers.ValidationError('비밀번호는 영문 대소문자, 숫자, 특수문자 중 2가지 이상 포함해야 합니다.')
+
+        return value
+
+    def validate_password2(self, value):
+        """
+        비밀번호 확인 유효성 검사: password1과 일치하는지 확인.
+        """
+        if self.initial_data.get('password1') != value:
+            raise serializers.ValidationError('비밀번호가 일치하지 않습니다.')
+        return value
+
     def get_cleaned_data(self):
         """
-        기본 cleaned_data에 추가 필드 정보를 포함하여 반환
+        기본 cleaned_data에 추가 필드 정보를 포함하여 반환.
         """
         data = super().get_cleaned_data()
         data.update({
@@ -95,8 +142,10 @@ class CustomRegisterSerializer(RegisterSerializer):
             'condition2': self.validated_data.get('condition2', False),
         })
         return data
+    
 
 
+# 회원 정보 수정을 위한 시리얼라이즈
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     """
     커스텀 사용자 상세 정보 시리얼라이저
@@ -114,9 +163,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 
-                  'birthyear', 'profile_img', 'income', 'career', 'region', 
-                  'condition1', 'condition2')
+        fields = ('pk', 'username', 'email', 'profile_img', 'income', 'career', 'region',)
         read_only_fields = ('email',)
 
     def update(self, instance, validated_data):
@@ -128,3 +175,26 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             instance.profile_img.delete()
 
         return super().update(instance, validated_data)
+    
+
+# 사용자 프로필 정보를 위한 시리얼라이저
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'birthyear', 'profile_img', 'income', 'career', 'region')
+
+    def update(self, instance, validated_data):
+        """
+        사용자 프로필 정보를 업데이트하는 메서드.
+        """
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.birthyear = validated_data.get('birthyear', instance.birthyear)
+        instance.profile_img = validated_data.get('profile_img', instance.profile_img)
+        instance.income = validated_data.get('income', instance.income)
+        instance.career = validated_data.get('career', instance.career)
+        instance.region = validated_data.get('region', instance.region)
+        
+        instance.save()
+        return instance
