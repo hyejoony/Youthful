@@ -42,7 +42,7 @@ class User(AbstractUser):
     REGION_CHOICES = [
         ('seoul', '서울특별시'),
         ('busan', '부산광역시'),
-        ('daegu', '대구광역시'),
+        ('daegu', '대구광역시'), 
         ('incheon', '인천광역시'),
         ('gwangju', '광주광역시'),
         ('daejeon', '대전광역시'),
@@ -58,15 +58,13 @@ class User(AbstractUser):
         ('gyeongnam', '경상남도'),
         ('jeju', '제주특별자치도'),
     ]
-
-    username = models.CharField(max_length=10, unique=True)
-    email = models.EmailField(unique=True)
+    
     birthyear = models.IntegerField(
         validators=[MinValueValidator(1900), MaxValueValidator(9999)]
     )
     profile_img = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     income = models.CharField(max_length=20, choices=INCOME_CHOICES)
-    career = models.CharField(max_length=20, choices=CAREER_CHOICES, blank=True)
+    career = models.CharField(max_length=20, choices=CAREER_CHOICES)
     region = models.CharField(max_length=10, choices=REGION_CHOICES)
     condition1 = models.BooleanField(default=False)
     condition2 = models.BooleanField(default=False)

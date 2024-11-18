@@ -25,10 +25,10 @@ class DepositOption(models.Model):
     intr_rate_type_nm = models.TextField()  # 저축 금리 유형명 
     save_trm = models.IntegerField()        # 저축 기간(단위: 개월)
     intr_rate = models.DecimalField(        # 저축 금리(소수점 2자리)
-        max_digits=None, max_length=2
+        max_digits=10, decimal_places=2
     )      
     intr_rate2 = models.DecimalField(       # 저축 우대금리(소수점 2자리)
-        max_digits=None, max_length=2
+        max_digits=10, decimal_places=2
     )     
 
 
