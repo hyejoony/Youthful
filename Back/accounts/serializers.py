@@ -6,6 +6,10 @@ from django.contrib.auth import get_user_model
 from .models import User
 import re
 
+from deposits.models import DepositProduct
+from savings.models import SavingProduct
+from subsidies.models import Subsidy
+
 User = get_user_model()
 
 # 소득 수준 선택 옵션
@@ -144,8 +148,28 @@ class CustomRegisterSerializer(RegisterSerializer):
         return data
     
 
+# 찜한 예금 가져오기 위한 시리얼라이즈
+class LikeDepositProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DepositProduct
+        fields = ('id', 'fin_prdt_nm')  # 금융 상품 ID와 이름만 포함
+
+# 찜한 적금 가져오기 위한 시리얼라이즈
+class LikeSavingProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavingProduct
+        fields = ('id', 'fin_prdt_nm')  # 금융 상품 ID와 이름만 포함
+
+# 찜한 지원금 가져오기 위한 시리얼라이즈
+class LikeSubsidySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subsidy
+        fields = ('id', 'name_category')  # 금융 상품 ID와 키워드만 포함
+
+
 
 # 회원 정보 수정을 위한 시리얼라이즈
+# 회원 프로필 정보를 위한 시리얼라이저
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     """
     커스텀 사용자 상세 정보 시리얼라이저
@@ -158,12 +182,14 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     income = serializers.ChoiceField(choices=INCOME_CHOICES)
     career = serializers.ChoiceField(choices=CAREER_CHOICES)
     region = serializers.ChoiceField(choices=REGION_CHOICES)
-    condition1 = serializers.BooleanField()
-    condition2 = serializers.BooleanField()
+    like_deposits = LikeDepositProductSerializer(many=True, read_only=True)
+    like_savings = LikeSavingProductSerializer(many=True, read_only=True)
+    like_subsidies = LikeSubsidySerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('username', 'email', 'birthyear', 'profile_img', 'income', 
+                  'career', 'region', 'like_deposits', 'like_savings', 'like_subsidies')
 
     def update(self, instance, validated_data):
         """

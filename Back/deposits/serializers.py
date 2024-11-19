@@ -4,11 +4,14 @@ from .models import DepositProduct, DepositOption
 
 User = get_user_model()
 
+# 예금 상품 저장 시리얼라이즈
 class DepositProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepositProduct
         fields = '__all__'
 
+
+# 예금 상품 옵션 저장 시리얼라이즈
 class DepositOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepositOption
@@ -26,7 +29,7 @@ class DepositProductListSerializers(serializers.ModelSerializer):
             fields = ('id', 'save_trm', 'intr_rate2')
     
     deposit_options = DepositOptionListSerializers(many=True, read_only=True)
-    likes_count = serializers.IntegerField(source='like_deposits.count', read_only=True)
+    likes_count = serializers.IntegerField(source='like_users.count', read_only=True)
 
     class Meta:
         model = DepositProduct
