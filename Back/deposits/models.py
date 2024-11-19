@@ -4,7 +4,7 @@ from django.conf import settings
 # Create your models here.
 class DepositProduct(models.Model):
     like_users = models.ManyToManyField(    # 찜
-        settings.AUTH_USER_MODEL, related_name='like_deposits'
+        settings.AUTH_USER_MODEL, related_name='like_deposits', default=0
     )
     dcls_month = models.TextField()         # 공시 제출월
     kor_co_nm = models.TextField()          # 금융 회사명
@@ -20,8 +20,9 @@ class DepositProduct(models.Model):
 
 class DepositOption(models.Model):
     deposit_product = models.ForeignKey(
-        DepositProduct, on_delete=models.CASCADE
+        DepositProduct, on_delete=models.CASCADE, related_name='deposit_options'
     )
+    fin_prdt_cd = models.TextField()        # 금융상품 코드
     intr_rate_type_nm = models.TextField()  # 저축 금리 유형명 
     save_trm = models.IntegerField()        # 저축 기간(단위: 개월)
     intr_rate = models.DecimalField(        # 저축 금리(소수점 2자리)

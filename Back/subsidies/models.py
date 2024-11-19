@@ -23,10 +23,10 @@ class SubsidyComment(models.Model):
         (5, '5'),
     ]
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subsidy_comments'
     )
     subsidy = models.ForeignKey(
-        Subsidy, on_delete=models.CASCADE
+        Subsidy, on_delete=models.CASCADE, related_name='comments'
     )
     content = models.TextField()
     rating = models.CharField(max_length=10, choices=RATING_CHOICES)   # 별점

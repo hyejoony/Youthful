@@ -20,7 +20,7 @@ class SavingProduct(models.Model):
 
 class SavingOption(models.Model):
     saving_product = models.ForeignKey(
-        SavingProduct, on_delete=models.CASCADE
+        SavingProduct, on_delete=models.CASCADE, related_name='saving_options'
     )
     intr_rate_type_nm = models.TextField()  # 저축 금리 유형명 
     rsrv_type_nm = models.TextField()       # 적립 유형명

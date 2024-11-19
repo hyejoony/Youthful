@@ -1,4 +1,9 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
+from .models import Map
 
-User = get_user_model()
+# 주변 은행 검색 시리얼라이즈
+class MapSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Map
+        fields = '__all__'

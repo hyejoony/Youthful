@@ -10,7 +10,7 @@ class Community(models.Model):
         ('etc', '기타'),
     ]
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='communities'
     )
     title = models.CharField(max_length=50)
     keyword = models.CharField(max_length=10, choices=KEYWORD_CHOICES)
@@ -20,10 +20,10 @@ class Community(models.Model):
 
 class CommunityComment(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='community_comments'
     )
     community = models.ForeignKey(
-        Community, on_delete=models.CASCADE
+        Community, on_delete=models.CASCADE, related_name='comments'
     )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

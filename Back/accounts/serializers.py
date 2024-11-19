@@ -163,8 +163,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'username', 'email', 'profile_img', 'income', 'career', 'region',)
-        read_only_fields = ('email',)
+        fields = '__all__'
 
     def update(self, instance, validated_data):
         """
@@ -177,24 +176,24 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         return super().update(instance, validated_data)
     
 
-# 사용자 프로필 정보를 위한 시리얼라이저
-class UserProfileSerializer(serializers.ModelSerializer):
+# # 사용자 프로필 정보를 위한 시리얼라이저
+# class UserProfileSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'birthyear', 'profile_img', 'income', 'career', 'region')
+#     class Meta:
+#         model = User
+#         fields = ('id' ,'username', 'email', 'birthyear', 'profile_img', 'income', 'career', 'region')
 
-    def update(self, instance, validated_data):
-        """
-        사용자 프로필 정보를 업데이트하는 메서드.
-        """
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
-        instance.birthyear = validated_data.get('birthyear', instance.birthyear)
-        instance.profile_img = validated_data.get('profile_img', instance.profile_img)
-        instance.income = validated_data.get('income', instance.income)
-        instance.career = validated_data.get('career', instance.career)
-        instance.region = validated_data.get('region', instance.region)
+#     def update(self, instance, validated_data):
+#         """
+#         사용자 프로필 정보를 업데이트하는 메서드.
+#         """
+#         instance.username = validated_data.get('username', instance.username)
+#         instance.email = validated_data.get('email', instance.email)
+#         instance.birthyear = validated_data.get('birthyear', instance.birthyear)
+#         instance.profile_img = validated_data.get('profile_img', instance.profile_img)
+#         instance.income = validated_data.get('income', instance.income)
+#         instance.career = validated_data.get('career', instance.career)
+#         instance.region = validated_data.get('region', instance.region)
         
-        instance.save()
-        return instance
+#         instance.save()
+#         return instance

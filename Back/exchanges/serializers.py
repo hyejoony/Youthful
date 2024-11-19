@@ -1,4 +1,10 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
+from .models import Exchange
 
-User = get_user_model()
+class ExchangeSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Exchange
+        fields = '__all__'
+
+        
