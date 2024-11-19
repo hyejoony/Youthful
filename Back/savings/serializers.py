@@ -4,6 +4,22 @@ from .models import SavingProduct, SavingOption
 
 User = get_user_model()
 
+
+# 적금 상품 저장 시리얼라이즈
+class SavingProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavingProduct
+        fields = '__all__'
+
+
+# 적금 상품 옵션 저장 시리얼라이즈
+class SavingOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavingOption
+        fields = '__all__'
+        read_only_fields = ('saving_product',)
+
+
 # 적금 상품 목록 페이지
 class SavingProductListSerializers(serializers.ModelSerializer):
 
@@ -14,7 +30,7 @@ class SavingProductListSerializers(serializers.ModelSerializer):
             fields = ('id', 'save_trm', 'intr_rate2')
     
     saving_options = SavingOptionListSerializers(many=True, read_only=True)
-    likes_count = serializers.IntegerField(source='like_savings.count', read_only=True)
+    likes_count = serializers.IntegerField(source='like_users.count', read_only=True)
 
     class Meta:
         model = SavingProduct

@@ -1,10 +1,16 @@
 from .models import DepositProduct, DepositOption
 from .serializers import DepositProductSerializer, DepositOptionSerializer, DepositProductListSerializers, DepositProductDetailSerializers
 
+# permission Decorators
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 import requests
+from django.shortcuts import get_object_or_404, get_list_or_404
+from django.core.paginator import Paginator
 
 from django.conf import settings
 from django.http import JsonResponse
@@ -98,3 +104,82 @@ def save_deposit(request):
             serializer2.save(deposit_product=deposit_product)
 
     return JsonResponse({'message' : '저장 성공!'})
+
+
+# 예금 상품 목록 조회
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def deposit_product_list(request):
+
+    # 모든 예금 상품을 가져옵니다.
+    deposit_products = get_list_or_404(DepositProduct)
+
+    # 페이지네이션 설정 (선택사항)
+    page = request.GET.get('page', 1)
+    page_size = 10  # 페이지당 아이템 수
+    paginator = Paginator(deposit_products, page_size)
+    current_page = paginator.page(page)
+
+    # 시리얼라이저를 사용하여 데이터 직렬화
+    serializer = DepositProductListSerializers(current_page, many=True)
+
+    # 페이지네이션 정보 추가
+    response_data = {
+        'count': paginator.count,
+        'num_pages': paginator.num_pages,
+        'current_page': int(page),
+        'results': serializer.data
+    }
+
+    return Response(response_data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def deposit_product_detail(request, product_id):
+    """
+    예금 상품 상세 정보를 조회하는 view 함수
+    """
+    # 주어진 ID로 예금 상품을 조회합니다. 존재하지 않으면 404 에러를 반환합니다.
+    deposit_product = get_object_or_404(DepositProduct, id=product_id)
+
+    # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
+    is_liked = request.user in deposit_product.like_users.all()
+
+    # 시리얼라이저를 사용하여 데이터 직렬화
+    serializer = DepositProductDetailSerializers(deposit_product)
+
+    # 좋아요 정보를 추가합니다.
+    response_data = serializer.data
+    response_data['is_liked'] = is_liked
+    response_data['likes_count'] = deposit_product.like_users.count()
+
+    return Response(response_data, status=status.HTTP_200_OK)
+
+
+# 좋아요 기능
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_deposit_like(request, product_id):
+
+    deposit_product = get_object_or_404(DepositProduct, id=product_id)
+    user = request.user
+
+    if user in deposit_product.like_users.all():
+        # 이미 좋아요를 눌렀다면 좋아요 취소
+        deposit_product.like_users.remove(user)
+        liked = False
+    else:
+        # 좋아요를 누르지 않았다면 좋아요 추가
+        deposit_product.like_users.add(user)
+        liked = True
+
+    # 좋아요 처리 후 상품 정보 직렬화
+    serializer = DepositProductDetailSerializers(deposit_product)
+    
+    response_data = serializer.data
+    response_data['is_liked'] = liked
+    response_data['likes_count'] = deposit_product.like_users.count()
+
+    return Response(response_data, status=status.HTTP_200_OK)

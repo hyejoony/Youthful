@@ -5,13 +5,13 @@ from django.conf import settings
 # Create your models here.
 class Subsidy(models.Model):
     like_users = models.ManyToManyField(            # 찜
-        settings.AUTH_USER_MODEL, related_name='like_subsidies'
+        settings.AUTH_USER_MODEL, related_name='like_subsidies', default=0
     )
-    name = models.CharField(max_length=20)          # 서비스 명
+    name = models.TextField()          # 서비스 명
     name_category = models.CharField(max_length=5)  # 서비스 명 카테고리화
     target = models.TextField()                     # 지원 대상
     content = models.TextField()                    # 지원 내용
-    contact = models.CharField(max_length=20)       # 문의처
+    contact = models.TextField()                    # 문의처
 
 
 class SubsidyComment(models.Model):
