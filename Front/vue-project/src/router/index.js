@@ -61,8 +61,8 @@ const router = createRouter({
           component: CommunityMainPageView
         },
         {
-          // path: '/community/detail/:id',
-          path: '/community/detail',
+          path: '/community/detail/:id',
+          // path: '/community/detail',
           name: 'communitydetail',
           component: CommunityDetailPageView
         },
