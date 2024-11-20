@@ -32,10 +32,30 @@ def save_subsidy(request):
 
     for li in response.get('data'):
         name = li.get('서비스명')
-        name_category = '기타'
+        # name_category = '기타'
         target = li.get('지원대상')
         content = li.get('지원내용')
         contact = li.get('문의처')
+        # 카테고리 결정
+        if any(keyword in name for keyword in ["학비", "교육", "유아", "학생", "보육", "교사"]):
+            name_category = "교육"
+        elif any(keyword in name for keyword in ["장려금", "지원금", "보조금", "융자", "대출", "세금 감면"]):
+            name_category = "재정"
+        elif any(keyword in name for keyword in ["주택", "월세", "보증금", "주거", "생활비"]):
+            name_category = "주택 및 생활"
+        elif any(keyword in name for keyword in ["친환경", "에너지 절감", "환경 보호", "신재생 에너지"]):
+            name_category = "환경 및 에너지"
+        elif any(keyword in name for keyword in ["어업", "수산물", "양식", "해양"]):
+            name_category = "어업 및 수산업"
+        elif any(keyword in name for keyword in ["법률", "복지", "상담", "피해자"]):
+            name_category = "법률 및 복지"
+        elif any(keyword in name for keyword in ["청년", "취약계층", "노인", '여성']):
+            name_category = '청년 및 취약계층'
+        elif any(keyword in name for keyword in ["농업","농촌","농민"]):
+            name_category = '농업'
+        else:
+            name_category = '기타'
+        
 
         if Subsidy.objects.filter(name=name, name_category=name_category,
                                     target=target, content=content, contact=contact).exists():
