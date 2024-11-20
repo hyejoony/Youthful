@@ -1,5 +1,5 @@
 from .models import Subsidy, SubsidyComment
-from .serializers import SavingSubsidySerializers, SubsidyListSerializers, SubsidyDetailSerializers, SubsidyCommentListSerializers
+from .serializers import SavingSubsidySerializers, SubsidyListSerializers, SubsidyDetailSerializers, SubsidyCommentListSerializers, UserSerializer
 
 # permission Decorators
 from rest_framework.decorators import permission_classes
@@ -25,7 +25,7 @@ def save_subsidy(request):
     params = {
         'serviceKey' : serviceKey,
         'page' : '1',
-        'perPage' : '1000'
+        'perPage' : '100'
     }
     response = requests.get(URL, params=params).json()
 
@@ -98,11 +98,14 @@ def subsidy_detail(request, subsidy_id):
 
     # 시리얼라이저를 사용하여 데이터 직렬화
     serializer = SubsidyDetailSerializers(subsidy)
+    # 사용자 정보 직렬화
+    like_users_data = UserSerializer(subsidy.like_users.all(), many=True).data
 
     # 좋아요 정보를 추가합니다.
     response_data = serializer.data
     response_data['is_liked'] = is_liked
     response_data['likes_count'] = subsidy.like_users.count()
+    response_data['like_users'] = like_users_data  # 좋아요한 사용자 정보 추가
 
     return Response(response_data, status=status.HTTP_200_OK)
 
@@ -117,7 +120,9 @@ def comment_create(request, subsidy_id):
         serializer = SubsidyCommentListSerializers(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user, subsidy=subsidy)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response_data = serializer.data
+            response_data['user_display_name'] = serializer.get_user_display_name(serializer.instance)
+            return Response(response_data, status=status.HTTP_201_CREATED)
         
 
 # DELETE - 리뷰 삭제
@@ -157,9 +162,12 @@ def toggle_subsidy_like(request, subsidy_id):
 
     # 좋아요 처리 후 상품 정보 직렬화
     serializer = SubsidyDetailSerializers(subsidy)
+    # 사용자 정보 직렬화
+    like_users_data = UserSerializer(subsidy.like_users.all(), many=True).data
     
     response_data = serializer.data
     response_data['is_liked'] = liked
     response_data['likes_count'] = subsidy.like_users.count()
+    response_data['like_users'] = like_users_data  # 좋아요한 사용자 정보 추가
 
     return Response(response_data, status=status.HTTP_200_OK)
