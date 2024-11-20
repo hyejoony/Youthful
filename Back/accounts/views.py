@@ -1,43 +1,100 @@
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from .serializers import CustomRegisterSerializer, CustomUserDetailsSerializer
-from dj_rest_auth.registration.views import RegisterView
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.db import transaction
+from django.core.exceptions import ValidationError
+from rest_framework.authtoken.models import Token
+from django.shortcuts import get_object_or_404
+
 
 User = get_user_model()
 
 # Create your views here.
-
-class CustomRegisterView(RegisterView):
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def register(request):
     """
-    커스텀 회원가입 뷰
+    회원가입 API 엔드포인트
 
-    dj-rest-auth의 RegisterView를 상속받아 커스터마이즈한 회원가입 뷰입니다.
-    CustomRegisterSerializer를 사용하여 추가 필드를 포함한 회원가입 프로세스를 처리합니다.
+    처리 과정:
+    1. 요청 데이터 유효성 검사
+    2. 사용자 생성 및 추가 정보 저장
+    3. 프로필 이미지 처리
+    4. 응답 반환
+
+    요청 데이터:
+    - email: 이메일 (필수)
+    - password1: 비밀번호 (필수)
+    - password2: 비밀번호 확인 (필수)
+    - nickname: 닉네임 (선택)
+    - profile_image: 프로필 이미지 파일 (선택)
     """
-    serializer_class = CustomRegisterSerializer
-    # CustomRegisterSerializer를 이 뷰의 시리얼라이저로 지정합니다.
-    # 이를 통해 기본 회원가입 필드 외에 추가적인 사용자 정보를 처리할 수 있습니다.
+    try:
+        with transaction.atomic():
+            # 데이터 유효성 검사
+            serializer = CustomRegisterSerializer(data=request.data)
+            
+            if not serializer.is_valid():
+                return Response(
+                    {'detail': serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # 사용자 생성
+            user = serializer.save(request)
+            # 응답 데이터 생성
+            user_data = CustomUserDetailsSerializer(user).data
+
+            # 절대 URL 생성 (이미지)
+            if user_data.get('profile_image'):
+                user_data['profile_image'] = request.build_absolute_uri(
+                    user.profile_image.url
+                )
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'detail': '회원가입이 완료되었습니다.',
+                'user': user_data,
+                'token': token.key
+            }, status=status.HTTP_201_CREATED)
+
+    except ValidationError as e:
+        return Response({
+            'detail': str(e),
+            'code': 'validation_error'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response({
+            'detail': '회원가입 처리 중 오류가 발생했습니다.',
+            'code': 'server_error'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # GET - 현재 사용자의 프로필 정보
 # PUT - 현재 사용자의 회원정보 수정
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
-def update_user_profile(request):
+def update_user_profile(request, user_id):
 
-    user = request.user
+    cur_user = request.user
+    user = get_object_or_404(User, id=user_id)
 
     if request.method == 'GET':
+        is_self = user == cur_user
         serializer = CustomUserDetailsSerializer(user)
-        return Response(serializer.data)
+        data = serializer.data
+        data['is_self'] = is_self
+
+        return Response(data)
 
     elif request.method == 'PUT':
-        serializer = CustomUserDetailsSerializer(user, data=request.data, partial=True)
+        serializer = CustomUserDetailsSerializer(cur_user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    

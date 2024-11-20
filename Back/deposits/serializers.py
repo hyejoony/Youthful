@@ -4,6 +4,22 @@ from .models import DepositProduct, DepositOption
 
 User = get_user_model()
 
+
+# 유저의 이름을 나타내기 위한 시리얼라이즈
+class UserSerializer(serializers.ModelSerializer):
+    user_display_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User  # 사용자 모델을 지정
+        fields = ('id', 'user_display_name',)
+
+    def get_user_display_name(self, obj):
+        """닉네임이 있으면 닉네임을 반환하고, 없으면 이메일의 '@' 전까지의 부분을 반환합니다."""
+        if obj.nickname:
+            return obj.nickname
+        return obj.email.split('@')[0] if obj.email else None
+
+
 # 예금 상품 저장 시리얼라이즈
 class DepositProductSerializer(serializers.ModelSerializer):
     class Meta:

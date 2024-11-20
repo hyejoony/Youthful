@@ -91,33 +91,17 @@ REST_FRAMEWORK = {
 # 여기까지 추가 된 부분--------------------------------------------------------------------
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',    # CORS(Cross-Origin Resource Sharing) 관련 설정을 처리하는 미들웨어
-                                                # 프론트엔드와 백엔드가 다른 도메인에 있을 때 필요한 HTTP 헤더를 추가
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',     # django-allauth의 계정 관련 기능을 처리하는 미들웨어
-                                                        # 사용자 인증, 로그인 상태 확인 등의 기능을 제공
 ]
 
-# 추가 된 부분------------------------------------------------------
-
-# CORS(Cross-Origin Resource Sharing) 설정
-# 이 설정은 특정 출처(도메인)에서의 API 요청만을 허용합니다.
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5173',  # 로컬 개발 서버 주소 (IP 주소 사용)
-    'http://localhost:5173',  # 로컬 개발 서버 주소 (localhost 사용)
-]
-# 이 설정은 위에 나열된 출처에서 오는 크로스 오리진 요청만을 허용합니다.
-# 주로 프론트엔드 개발 서버의 주소를 지정합니다.
-# 5173은 Vite 등의 최신 프론트엔드 개발 서버에서 흔히 사용되는 기본 포트입니다.
-
-
-# 여기까지 추가 된 부분--------------------------------------------
 
 ROOT_URLCONF = 'youthful.urls'
 
@@ -194,14 +178,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # 추가 한 부분----------------------------------------------------------------
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
-# Django의 기본 사용자 모델을 커스텀 사용자 모델로 대체하는 설정
 AUTH_USER_MODEL = 'accounts.User'
 
-# 이 설정은 Django에게 프로젝트에서 사용할 사용자 모델을 지정합니다.
-# 'accounts.User'는 'accounts' 앱 내의 'User' 모델을 사용하겠다는 의미입니다.
-# 이를 통해 Django의 기본 User 모델 대신 우리가 정의한 커스텀 User 모델을 사용할 수 있습니다.
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',  # 프론트엔드 서버 주소
+    'http://127.0.0.1:5173',  # 로컬 개발 서버 주소 (IP 주소 사용)
+    'http://localhost:5173',  # 로컬 개발 서버 주소 (localhost 사용)
+]
 
 # dj-rest-auth 설정
 # dj-rest-auth 라이브러리의 회원가입 기능을 커스터마이즈하기 위한 설정
@@ -211,18 +204,20 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
 }
 
-# 사용자 상세 정보를 위한 커스텀 시리얼라이저 지정
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
 }
 
-# allauth의 계정 어댑터를 커스텀 어댑터로 지정
-# 이를 통해 회원가입 시 추가 필드를 처리할 수 있음
-ACCOUNT_ADAPTER = 'accounts.adapters.CustomAccountAdapter'
 
-# 미디어 파일 설정 (프로필 이미지를 위해 필요)
-# 사용자가 업로드한 파일(예: 프로필 이미지)을 저장하고 제공하기 위한 설정
-MEDIA_URL = '/media/'  # 미디어 파일에 접근할 때 사용할 URL 접두사
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 미디어 파일이 저장될 서버의 실제 경로
+# allauth 설정
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+# 회원가입 후 자동 로그인 설정
+REST_AUTH = {
+    'LOGIN_ON_REGISTER': True,
+}
 
 # 여기까지 추가 한 부분---------------------------------------------------------------
