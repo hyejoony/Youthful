@@ -1,5 +1,5 @@
 from .models import SavingProduct, SavingOption
-from .serializers import SavingProductSerializer, SavingOptionSerializer, SavingProductListSerializers, SavingProductDetailSerializers
+from .serializers import SavingProductSerializer, SavingOptionSerializer, SavingProductListSerializers, SavingProductDetailSerializers, UserSerializer
 
 # permission Decorators
 from rest_framework.decorators import permission_classes
@@ -178,9 +178,12 @@ def toggle_saving_like(request, product_id):
 
     # 좋아요 처리 후 상품 정보 직렬화
     serializer = SavingProductDetailSerializers(saving_product)
+    # 사용자 정보 직렬화
+    like_users_data = UserSerializer(saving_product.like_users.all(), many=True).data
     
     response_data = serializer.data
     response_data['is_liked'] = liked
     response_data['likes_count'] = saving_product.like_users.count()
+    response_data['like_users'] = like_users_data  # 좋아요한 사용자 정보 추가
 
     return Response(response_data, status=status.HTTP_200_OK)

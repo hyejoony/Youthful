@@ -4,10 +4,10 @@ from django.conf import settings
 # Create your models here.
 class Community(models.Model):
     KEYWORD_CHOICES = [
-        ('saving', '적금'),
-        ('deposit', '예금'),
-        ('subsidy', '지원금'),
-        ('etc', '기타'),
+        ('적금', 'saving'),
+        ('예금', 'deposit'),
+        ('지원금', 'subsidy'),
+        ('기타', 'etc'),
     ]
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='communities'
