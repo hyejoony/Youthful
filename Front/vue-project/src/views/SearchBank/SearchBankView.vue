@@ -3,25 +3,48 @@
     <div class="flex">
         <v-form>
             <div class="select-container" style="width: 1000px;">
-                <v-select label="광역시/도" :items="location1" variant="solo"></v-select>
-                <v-select label="시/군/구" :items="location2" variant="solo"></v-select>
-                <v-select label="은행명" :items="bankname" variant="solo"></v-select>
-                <v-btn style="height: 56px; color: #658EA7;  font-size: 18px;"
+                <v-select  v-model="selectedCity" label="광역시/도" :items="location1" variant="solo"></v-select>
+                <v-select  v-model="selectedDistrict" label="시/군/구" :items="location2" variant="solo"></v-select>
+                <v-select  v-model="selectedBank" label="은행명" :items="bankname" variant="solo"></v-select>
+                <v-btn @click="searchBanks" style="height: 56px; color: #658EA7;  font-size: 18px;"
                     rounded="small"><v-icon>mdi-map</v-icon>찾기</v-btn>
             </div>
         </v-form>
 
         <v-card height="600px" width="1000px" hover>
-            <KakaoMap />
+            <KakaoMap :searchParams="searchParams" />
         </v-card>
     </div>
 </template>
 
 <script setup>
+import KakaoMap from '@/components/Bank/KakaoMap.vue';
+
 const location1 = ['서울특별시', '부산광역시', '대구광역시']; // 예시 데이터
 const location2 = ['강남구', '해운대구', '중구']; // 예시 데이터
 const bankname = ['국민은행', '신한은행', '우리은행']; // 예시 데이터
-import KakaoMap from '@/components/Bank/KakaoMap.vue';
+import { ref } from 'vue'
+
+// 사용자 선택값
+const selectedCity = ref('');
+const selectedDistrict = ref('');
+const selectedBank = ref('');
+
+
+// 사용자 선택값 저장할 파라미터 
+const searchParams = ref({
+    city: '',
+    district: '',
+    bank: ''
+});
+
+const searchBanks = () => {
+    searchParams.value.city = selectedCity.value;
+    searchParams.value.district = selectedDistrict.value;
+    searchParams.value.bank = selectedBank.value;
+    console.log(searchParams)
+};
+
 </script>
 
 <style scoped>

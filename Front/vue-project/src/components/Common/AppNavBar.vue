@@ -6,6 +6,7 @@
         <RouterLink :to="{ name: 'profile'}">Profile</RouterLink> |
         <RouterLink :to="{ name: 'exchange'}">Exchange</RouterLink> |
         <RouterLink :to="{ name: 'searchbank'}">Search Bank</RouterLink> |
+        <RouterLink :to="{ name: 'community'}">Community</RouterLink> |
     </nav>
 </template>
 
