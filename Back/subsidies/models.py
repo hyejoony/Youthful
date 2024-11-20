@@ -8,7 +8,7 @@ class Subsidy(models.Model):
         settings.AUTH_USER_MODEL, related_name='like_subsidies', default=0
     )
     name = models.TextField()                       # 서비스 명
-    name_category = models.CharField(max_length=5)  # 서비스 명 카테고리화
+    name_category = models.CharField(max_length=10)  # 서비스 명 카테고리화
     target = models.TextField()                     # 지원 대상
     content = models.TextField()                    # 지원 내용
     contact = models.TextField()                    # 문의처
