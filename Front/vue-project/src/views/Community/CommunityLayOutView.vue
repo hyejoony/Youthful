@@ -1,8 +1,6 @@
 <template>
     <h1 class="mt-4" style="color:#658EA7;">커뮤니티</h1>
-
     <div>
-        
         <RouterView />
     </div>
 </template>
