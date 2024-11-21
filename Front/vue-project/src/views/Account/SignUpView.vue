@@ -28,9 +28,13 @@
             <v-text-field v-model="email" clearable label="이메일" placeholder="올바른 이메일 형식 입력" variant="solo"></v-text-field>
             <v-text-field v-model="nickname" clearable label="별칭" variant="solo"></v-text-field>
             <p class='errmsg'>{{ store.password1Err }}</p>
-            <v-text-field v-model="password1" clearable label="비밀번호" placeholder="영문 대문자, 영문 소문자, 숫자, 특수문자 2가지 포함" variant="solo"></v-text-field>
+            <v-text-field v-model="password1" clearable label="비밀번호" placeholder="영문 대문자, 영문 소문자, 숫자, 특수문자 2가지 포함" variant="solo"
+            :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"@click:append="showPassword = !showPassword">
+            </v-text-field>
             <p class='errmsg'>{{ store.password2Err }}</p>
-            <v-text-field v-model="password2" clearable label="비밀번호 확인" placeholder="한번 더 작성" variant="solo"></v-text-field>
+            <v-text-field v-model="password2" clearable label="비밀번호 확인" placeholder="한번 더 작성" variant="solo"
+            :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"@click:append="showPassword = !showPassword">
+            </v-text-field>
             <p class='errmsg'>{{ store.birthyearErr }}</p>
             <v-text-field v-model="birthyear" clearable label="출생연도" placeholder="ex) 1997" variant="solo"></v-text-field>
             
@@ -148,7 +152,7 @@ const careers = [
     '연구원', 
     '기타'
 ]
-
+const showPassword = ref(false)
 const email = ref(null)
 const nickname = ref(null)
 const password1 = ref(null)
