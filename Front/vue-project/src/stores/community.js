@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 export const UseCommunityStore = defineStore('community', () => {
 
@@ -51,44 +52,9 @@ export const UseCommunityStore = defineStore('community', () => {
   // ----- 수정페이지 -----
   const dialog = ref(false) // 모달창 기본설정
 
-  // 임시 수정 데이터
-  const editTitle = ref('')
-  const editContent = ref('')
-
-  // 임시 수정 변수 
-  const editedButton = ref(null)
-  // 데이터 저장
-  const saveUpdateChanges = (id) => {
-    index = ArticleList.value.findIndex((article) => (article.id) === id)
-
-    //해당 index의 article 객체의 속성 
-
-    if (index !== -1) {
-      // 해당 index의 article 객체의 속성 직접 수정
-      ArticleList.value[index].title = editTitle.value;
-      ArticleList.value[index].content = editContent.value;
-      ArticleList.value[index].keyword = selectedButton.value;
-    }
-
-    dialog.value = false
-
-  }
-
-
-  // ---- 삭제 페이지 -----
-  const deleteArticle = (id) => {
-    const index = ArticleList.value.findIndex((article) => (article.id) === id)
-    ArticleList.value.splice(index, 1)
-
-  }
-  // ----- 데이터 test- reset 함수 -----
-  const resetArticle = () => {
-    ArticleList.value = []
-  }
-
-  return {
-    buttons, dialog, editContent, editTitle,
-    selectedButton, selectButton, editedButton, saveUpdateChanges,
-     SaveArticle, ArticleList, deleteArticle, getDetail, resetArticle
-  }
+}
+  return {buttons, dialog, editContent, editTitle,
+    selectedButton,selectButton, editedButton, saveUpdateChanges,
+    inputContent, inputTitle, SaveArticle,ArticleList, deleteArticle, getDetail, resetArticleList,
+      }
 }, { persist: true })
