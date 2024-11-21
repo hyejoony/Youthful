@@ -156,7 +156,7 @@ const careers = [
     '연구원',
     '기타'
 ]
-
+const showPassword = ref(false)
 const email = ref(null)
 const nickname = ref(null)
 const password1 = ref(null)

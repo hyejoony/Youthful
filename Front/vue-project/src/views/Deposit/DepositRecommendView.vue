@@ -1,11 +1,17 @@
 <template>
     <v-btn-toggle class="toggle-color" v-model="toggle_exclusive">
-        <v-btn>
-            예금
-        </v-btn>
-        <v-btn>
-            적금
-        </v-btn>
+        <v-btn 
+      :class="{ 'selected-btn': toggle_exclusive === '예금' }"
+      value="예금"
+    >
+      예금
+    </v-btn>
+    <v-btn 
+      :class="{ 'selected-btn': toggle_exclusive === '적금' }"
+      value="적금"
+    >
+      적금
+    </v-btn>
     </v-btn-toggle>
 
     <div style="margin-left: 55px; margin-top: 20px;">
@@ -86,5 +92,10 @@ const goback = () => {
     border-radius: 5px;
     padding: 5px;
     color: white;
+}
+
+.selected-btn {
+  background-color: #658EA7 !important;
+  color: white !important;
 }
 </style>
