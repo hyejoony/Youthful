@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 export const UseCommunityStore = defineStore('community', () => {
 
@@ -86,6 +87,6 @@ const deleteArticle = (id) => {
 }
   return {buttons, dialog, editContent, editTitle,
     selectedButton,selectButton, editedButton, saveUpdateChanges,
-    inputContent, inputTitle, SaveArticle,ArticleList, deleteArticle, getDetail,  resetArticleList
+    inputContent, inputTitle, SaveArticle,ArticleList, deleteArticle, getDetail, resetArticleList,
      }
 }, { persist: true })

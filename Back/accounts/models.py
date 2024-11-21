@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     INCOME_CHOICES = [
-        ('0-50%', '약 100만원'),
+        ('0~50%', '약 100만원'),
         ('51~75%', '약 150만원'),
         ('76~100%', '약 200만원'),
         ('101~200%', '약 450만원'),
