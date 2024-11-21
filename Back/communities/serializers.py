@@ -42,4 +42,4 @@ class CommunityDetailSerializer(UserDisplayNameSerializer):
     class Meta(UserDisplayNameSerializer.Meta):
         model = Community
         fields = '__all__'
-        read_only_fields = ('user_display_name',)
+        read_only_fields = ('user_display_name','user')
