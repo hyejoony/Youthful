@@ -52,7 +52,7 @@ export const UseCommunityStore = defineStore('community', () => {
   // ----- 수정페이지 -----
   const dialog = ref(false) // 모달창 기본설정
 
-}
+
   return {buttons, dialog, editContent, editTitle,
     selectedButton,selectButton, editedButton, saveUpdateChanges,
     inputContent, inputTitle, SaveArticle,ArticleList, deleteArticle, getDetail, resetArticleList,
