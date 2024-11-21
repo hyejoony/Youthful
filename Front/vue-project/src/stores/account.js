@@ -95,26 +95,41 @@ export const useAccountStore = defineStore('account', () => {
 
   const loginErr = ref('')
   const token = ref(null)
+  const userId = ref(null)
   const logIn = (payload) => {
-    const formData = new FormData()
-    formData.append('email', payload.email)
-    formData.append('password', payload.password)
+    const formData = new FormData();
+    formData.append('email', payload.email);
+    formData.append('password', payload.password);
+
     axios({
-      method: 'post',
-      url: `${API_URL}/accounts/dj-rest-auth/login/`,
-      data: formData
+        method: 'post',
+        url: `${API_URL}/accounts/dj-rest-auth/login/`,
+        data: formData
     })
-      .then(res => {
-        loginErr.value = ''
-        console.log('로그인이 완료되었습니다.')
-        token.value = res.data.key
-        router.push({name: 'home'})
-      })
-      .catch(err => {
-        loginErr.value = '잘못 입력하셨습니다.'
-        console.log(err.response.data.non_field_errors[0])
-      })
-  }
+    .then(res => {
+        loginErr.value = '';
+        console.log('로그인이 완료되었습니다.');
+        token.value = res.data.key;
+        console.log(token.value)
+
+        // 로그인 후 사용자 정보 가져오기
+        return axios.get(`${API_URL}/accounts/user/`, {
+            headers: {
+                Authorization: `Token ${token.value}`
+            }
+        });
+    })
+    .then(userRes => {
+        // 사용자 정보 저장
+        userId.value = userRes.data.id;  // userId는 반응형 변수라고 가정
+        console.log(userId.value)
+        router.push({ name: 'home' });
+    })
+    .catch(err => {
+        loginErr.value = '잘못 입력하셨습니다.';
+        console.log(err.response.data.non_field_errors ? err.response.data.non_field_errors[0] : err.message);
+    });
+};
 
   const isLogin = computed(() => {
     if (token.value === null) {
@@ -126,6 +141,6 @@ export const useAccountStore = defineStore('account', () => {
 
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
     incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
-    token, isLogin
+    token, isLogin, userId
    }
 }, { persist: true })
