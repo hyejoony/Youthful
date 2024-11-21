@@ -1,9 +1,12 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { useRouter } from 'vue-router';
+
 
 export const useAccountStore = defineStore('account', () => {
   const API_URL = 'http://127.0.0.1:8000'
+  const router = useRouter()
 
   const emailErr = ref('')
   const password1Err = ref('')
@@ -39,8 +42,9 @@ export const useAccountStore = defineStore('account', () => {
       data: formData
     })
       .then(res => {
-        sameErr.value = ''
+        clearErrors()
         console.log('회원가입이 완료되었습니다.')
+        router.push({name: 'home'})
       })
       .catch(err => {
         console.log('회원가입 실패')
@@ -87,9 +91,28 @@ export const useAccountStore = defineStore('account', () => {
     sameErr.value = ''
   }
 
-
+  const loginErr = ref('')
+  const logIn = (payload) => {
+    const formData = new FormData()
+    formData.append('email', payload.email)
+    formData.append('password', payload.password)
+    axios({
+      method: 'post',
+      url: `${API_URL}/accounts/dj-rest-auth/login/`,
+      data: formData
+    })
+      .then(res => {
+        loginErr.value = ''
+        console.log('로그인이 완료되었습니다.')
+        router.push({name: 'home'})
+      })
+      .catch(err => {
+        loginErr.value = '잘못 입력하셨습니다.'
+        console.log(err.response.data.non_field_errors[0])
+      })
+  }
 
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
-    incomeErr, regionErr, careerErr, sameErr, clearErrors
+    incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr
    }
 }, { persist: true })
