@@ -269,7 +269,7 @@ class LikeSavingProductSerializer(serializers.ModelSerializer):
 class LikeSubsidySerializer(serializers.ModelSerializer):
     class Meta:
         model = Subsidy
-        fields = ('id', 'name_category')  # 금융 상품 ID와 키워드만 포함
+        fields = ('id', 'name')  # 금융 상품 ID와 키워드만 포함
 
 
 
@@ -348,3 +348,8 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         except Exception as e:
             raise serializers.ValidationError(f'프로필 업데이트 중 오류가 발생했습니다: {str(e)}')
     
+# 유저의 id값 가져오는 시리얼라이즈
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id',)# 필요한 필드 추가
