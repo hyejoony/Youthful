@@ -1,6 +1,6 @@
 <template>
     <br>
-    <v-card class="mt-4" width="900" height="500" elevation="2">
+    <v-card class="mt-4" width="900" height="800" elevation="2">
         <card-head>
             <p class="mt-2 pl-4"> {{ article?.title }}</p>
         </card-head>
@@ -52,14 +52,16 @@
 
             </div>
         </v-form>
-        <div v-for="comment in commentList" :key="comment.createdAt">
+
+        <div v-if="commentList.length > 0" v-for="comment in commentList" :key="comment.createdAt">
             <p>{{ comment.content }}
                 <span>
-                    <v-btn density="compact" icon="mdi-pencil"></v-btn>
+                    <v-btn @click="UpdateComment(comment.commentId)" density="compact" icon="mdi-pencil"></v-btn>
                     <v-btn density="compact" icon="mdi-trash-can-outline"></v-btn>
                 </span>
             </p>
         </div>
+        <div v-else  class="ml-4" style="color: #767676;">아직 달린 댓글이 없어요.</div>
     </v-card>
     <a href="/community" style="color: #767676;">이전 페이지로 돌아가기<v-icon>mdi-chevron-left</v-icon></a>
 </template>
@@ -85,6 +87,8 @@ onMounted(() => {
     // console.log('id',id)
     article.value = store.getDetail(id); // onmount
     // console.log('articlevalue',article.value)
+    commentList.value = store.getComments(id) // 댓글
+    // console.log(commentList.value)
 })
 
 const dialog = ref(false) // 모달창 기본설정
@@ -130,14 +134,13 @@ const commentList = ref([])
 const saveComment = () => {
     store.saveComment(id, inputComment)
     inputComment.value = '' // 입력 필드 초기화
-    const comments = store.getComments(id)
-    console.log('getcomments', comments)
-    commentList.value = comments.value
-    
+
 
 }
 
-console.log('list', commentList)
+const UpdateComment = (commentId) => {
+    store.UpdateComment(id,commentId)
+}
 
 // 테스트용 // 데이터 초기화
 // store.resetArticle()

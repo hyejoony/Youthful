@@ -20,18 +20,24 @@ export const UseCommunityStore = defineStore('community', () => {
 
 
   // ----- 생성 페이지 -----
-  const comments = ref([])
+
   // - 인자로 받기
   const SaveArticle = (inputTitle, inputContent, selectedButton) => {
     console.log(ArticleList.value)
 
+    //Axios로 요청
+
+    //응답이 성공
+    //서버로부터 응답받은 결과값 받기
+    //저장
+    
     ArticleList.value.push({
       // email: email, 
       id: i++,
       title: inputTitle.value,
       content: inputContent.value,
       keyword: selectedButton.value,
-      comments: comments
+      comments: []
 
     }) //유저 이메일 어떻게 넣더랑~~ 
     console.log(ArticleList.value)
@@ -76,23 +82,18 @@ export const UseCommunityStore = defineStore('community', () => {
     ArticleList.value.splice(index, 1)
 
   }
-  // ----- 데이터 test- reset 함수 -----
-  const resetArticle = () => {
-    ArticleList.value = []
-  }
 
 
   // ---- 댓글 저장 -----
   let idx = 0
   const saveComment = (id, comment) => {
-    console.log(ArticleList.value[3].id)
     const article = ArticleList.value.find(element => element.id == id)
     console.log('article', article)
     console.log('id',id)
     console.log('comment', comment.value)
     if (article) {
       article.comments.push({
-        id: idx++,  // 유니크한 ID 생성
+        commentId: idx++,  // 유니크한 ID 생성
         content: comment.value,
         // userEmail: userEmail,
         createdAt: new Date().toISOString()
@@ -109,8 +110,33 @@ export const UseCommunityStore = defineStore('community', () => {
     return article ? article.comments : []
   }
 
+   // -----  댓글 수정-----
+
+  // 데이터 저장
+  const UpdateComment = (id, commentId) => {
+    const index = ArticleList.value.findIndex((article) => (article.id) == Number(id))
+    console.log(commentId)
+    console.log((ArticleList.value)[index].comments)
+    if (index !== -1) {
+      // 해당 index의 article 객체의 속성 직접 수정
+      const comment_index = (ArticleList.value)[index].comments.findIndex((comment) => (comment.commentId) == Number(commentId)) 
+      console.log(comment_index)
+      if (comment_index !== -1) {
+        return true
+      }
+    }
+  }
+
+
+    // ----- 데이터 test- reset 함수 -----
+    const resetArticle = () => {
+      ArticleList.value = []
+    }
+
+    
+
   return {
-    buttons, saveUpdateChanges, saveComment, getComments,
+    buttons, saveUpdateChanges, saveComment, getComments, UpdateComment,
     SaveArticle, ArticleList, deleteArticle, getDetail, resetArticle
   }
 }, { persist: true })
