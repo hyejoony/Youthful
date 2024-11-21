@@ -13,10 +13,12 @@
                                 <v-img v-if="profile_image" :src="profile_image" alt="User Avatar"></v-img>
                                 <v-icon v-else size="65" icon="mdi-account-circle"></v-icon>
                             </v-avatar>
-                            <v-btn icon width="38" height="38" color="grey" class="upload-btn" @click="triggerFileInput">
-                                <v-icon  size="20">mdi-camera</v-icon>
+                            <v-btn icon width="38" height="38" color="grey" class="upload-btn"
+                                @click="triggerFileInput">
+                                <v-icon size="20">mdi-camera</v-icon>
                             </v-btn>
-                            <input ref="fileInput" type="file" style="display: none" @change="onFileSelected" accept="image/*">
+                            <input ref="fileInput" type="file" style="display: none" @change="onFileSelected"
+                                accept="image/*">
                         </div>
                     </v-col>
                 </v-row>
@@ -25,15 +27,19 @@
 
             <p class='errmsg'>{{ store.emailErr }}</p>
             <p class='errmsg'>{{ store.sameErr }}</p>
-            <v-text-field v-model="email" clearable label="이메일" placeholder="올바른 이메일 형식 입력" variant="solo"></v-text-field>
+            <v-text-field v-model="email" clearable label="이메일" placeholder="올바른 이메일 형식 입력"
+                variant="solo"></v-text-field>
             <v-text-field v-model="nickname" clearable label="별칭" variant="solo"></v-text-field>
             <p class='errmsg'>{{ store.password1Err }}</p>
-            <v-text-field v-model="password1" clearable label="비밀번호" placeholder="영문 대문자, 영문 소문자, 숫자, 특수문자 2가지 포함" variant="solo"></v-text-field>
+            <v-text-field v-model="password1" clearable label="비밀번호" placeholder="영문 대문자, 영문 소문자, 숫자, 특수문자 2가지 포함"
+                variant="solo"></v-text-field>
             <p class='errmsg'>{{ store.password2Err }}</p>
-            <v-text-field v-model="password2" clearable label="비밀번호 확인" placeholder="한번 더 작성" variant="solo"></v-text-field>
+            <v-text-field v-model="password2" clearable label="비밀번호 확인" placeholder="한번 더 작성"
+                variant="solo"></v-text-field>
             <p class='errmsg'>{{ store.birthyearErr }}</p>
-            <v-text-field v-model="birthyear" clearable label="출생연도" placeholder="ex) 1997" variant="solo"></v-text-field>
-            
+            <v-text-field v-model="birthyear" clearable label="출생연도" placeholder="ex) 1997"
+                variant="solo"></v-text-field>
+
             <div>
                 <p class='errmsg'>{{ store.incomeErr }}</p>
                 <v-label><b>월 소득구간 금액</b></v-label>
@@ -53,7 +59,7 @@
                     <span>4,456,890원 초과</span>
                 </div>
             </div><br>
-            
+
             <p class='errmsg'>{{ store.regionErr }}</p>
             <v-select v-model="region" label="지역" :items="regions" variant="solo"></v-select>
             <p class='errmsg'>{{ store.careerErr }}</p>
@@ -86,7 +92,9 @@
                     </div><br>
                 </div>
             </div><br>
-            <v-btn type="submit" class='signup-bttn' rounded="xl">가입하기</v-btn>
+            <div class="button-container">
+                <v-btn type="submit" class='signup-bttn' rounded="xl">가입하기</v-btn>
+            </div>
         </v-form>
     </v-sheet>
 </template>
@@ -94,58 +102,58 @@
 <script setup>
 
 // 프로필 이미지 반영
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAccountStore } from '@/stores/account';
 
 const store = useAccountStore()
 
 onMounted(() => {
-  store.clearErrors()
+    store.clearErrors()
 })
 
 const regions = [
-    '서울특별시', 
-    '부산광역시', 
-    '대구광역시', 
-    '인천광역시', 
-    '광주광역시', 
-    '대전광역시', 
-    '울산광역시', 
-    '세종특별자치시', 
-    '경기도', 
-    '강원특별자치도', 
-    '충청북도', 
-    '충청남도', 
-    '전라북도', 
-    '전라남도', 
-    '경상북도', 
-    '경상남도', 
+    '서울특별시',
+    '부산광역시',
+    '대구광역시',
+    '인천광역시',
+    '광주광역시',
+    '대전광역시',
+    '울산광역시',
+    '세종특별자치시',
+    '경기도',
+    '강원특별자치도',
+    '충청북도',
+    '충청남도',
+    '전라북도',
+    '전라남도',
+    '경상북도',
+    '경상남도',
     '제주특별자치도'
 ]
 
 const careers = [
-    '학생', 
-    '회사원', 
-    '공무원', 
-    '전문직', 
-    '자영업자', 
-    '프리랜서', 
-    '사업자', 
-    '아르바이트/비정규직', 
-    '전업주부', 
-    '무직/구직중', 
-    '은퇴자', 
-    '농업/어업/임업', 
-    '군인', 
-    '교사/교육자', 
-    '의료종사자', 
-    '금융업 종사자', 
-    'IT업계 종사자', 
-    '서비스업 종사자', 
-    '제조업 종사자', 
-    '스타트업 창업자', 
-    '사회복지사', 
-    '연구원', 
+    '학생',
+    '회사원',
+    '공무원',
+    '전문직',
+    '자영업자',
+    '프리랜서',
+    '사업자',
+    '아르바이트/비정규직',
+    '전업주부',
+    '무직/구직중',
+    '은퇴자',
+    '농업/어업/임업',
+    '군인',
+    '교사/교육자',
+    '의료종사자',
+    '금융업 종사자',
+    'IT업계 종사자',
+    '서비스업 종사자',
+    '제조업 종사자',
+    '스타트업 창업자',
+    '사회복지사',
+    '연구원',
     '기타'
 ]
 
@@ -165,22 +173,22 @@ const fileInput = ref(null);
 const profileImageFile = ref(null);
 
 // - 파일선택상자 열기
- const triggerFileInput = () => {
+const triggerFileInput = () => {
     // fileInput의 현재 값을 가져와 click() 메서드를 호출하여 파일 선택 대화상자를 엽니다.
-  fileInput.value.click();
+    fileInput.value.click();
 };
 
- // - 사용자가 선택한 파일 반영
+// - 사용자가 선택한 파일 반영
 const onFileSelected = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    profileImageFile.value = file; // 파일 객체 저장
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        profile_image.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
+    const file = event.target.files[0];
+    if (file) {
+        profileImageFile.value = file; // 파일 객체 저장
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            profile_image.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
 };
 
 const signUp = () => {
@@ -279,4 +287,11 @@ h1 {
     color: red
 }
 
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+}
 </style>
