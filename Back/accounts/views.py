@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
-from .serializers import CustomRegisterSerializer, CustomUserDetailsSerializer
+from .serializers import CustomRegisterSerializer, CustomUserDetailsSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -98,3 +98,10 @@ def update_user_profile(request, user_id):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+# 로그인 시 해당 유저의 id값 참조하는 함수
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_detail(request):
+        user = request.user  # 현재 로그인된 사용자 정보 가져오기
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
