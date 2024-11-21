@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import SignUpView from '@/views/Account/SignUpView.vue'
 import AccountLayOutView from '@/views/Account/AccountLayOutView.vue'
 import LoginView from '@/views/Account/LoginView.vue'
+import LogoutView from '@/views/Account/LogoutView.vue'
 import ProfileView from '@/views/Account/ProfileView.vue'
 import ExchangeView from '@/views/Exchange/ExchangeView.vue'
 import SearchBankView from '@/views/SearchBank/SearchBankView.vue'
@@ -39,6 +40,11 @@ const router = createRouter({
           // path: '/profile',
           name: 'profile',
           component: ProfileView
+        },
+        {
+          path: '/logout',
+          name: 'logout',
+          component: LogoutView
         },
       ]
     },

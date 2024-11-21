@@ -129,7 +129,7 @@ export const useAccountStore = defineStore('account', () => {
         loginErr.value = '잘못 입력하셨습니다.';
         console.log(err.response.data.non_field_errors ? err.response.data.non_field_errors[0] : err.message);
     });
-};
+  };
 
   const isLogin = computed(() => {
     if (token.value === null) {
@@ -139,8 +139,29 @@ export const useAccountStore = defineStore('account', () => {
     }
   })
 
+  const logout = () => {
+    axios({
+      method: 'post',
+      url: `${API_URL}/accounts/dj-rest-auth/logout/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+    }
+    })
+    .then(res => {
+      console.log('로그아웃 되었습니다')
+      token.value = null
+      router.push({ name: 'home' })
+    })
+    .catch(err => {
+      console.log(token.value)
+      console.log(err.response.data)
+    })
+  }
+
+
+
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
     incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
-    token, isLogin, userId
+    token, isLogin, userId, logout
    }
 }, { persist: true })
