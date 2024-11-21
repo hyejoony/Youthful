@@ -62,7 +62,6 @@ const router = createRouter({
         },
         {
           path: '/community/detail/:id',
-          // path: '/community/detail',
           name: 'communitydetail',
           component: CommunityDetailPageView
         },

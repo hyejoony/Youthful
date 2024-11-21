@@ -29,7 +29,7 @@
             </card-head>
             <hr style="color: #767676;" class="mt-3">
             <card-content v-for="article in store.ArticleList">
-                <h5 class="hashtag"> {{ store.buttons[article.keyword].caption }}</h5>
+                <!-- <h5 class="hashtag"> {{ store.buttons[article.keyword]?.caption }}</h5> -->
                 
                 <h4 @click="getDetail(article.id)" class="ml-3">{{ article.title }}</h4>
                 <h5 style="color: #767676;" class="ml-3"> {{ article.content }}</h5>
@@ -43,10 +43,13 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
+
+
 import { UseCommunityStore } from '@/stores/community';
 
 const store = UseCommunityStore()
 const router = useRouter()
+
 
 
 const writeArticle = () => {

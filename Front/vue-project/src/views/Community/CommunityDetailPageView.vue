@@ -1,6 +1,6 @@
 <template>
     <br>
-    <v-card class="mt-4" width="900" height="500" elevation="2">
+    <v-card v-if="article" class="mt-4" width="900" height="500" elevation="2">
         <card-head>
             <p class="mt-2 pl-4"> {{ article?.title }}</p>
         </card-head>
@@ -30,7 +30,7 @@
                         <template v-slot:actions>
                             <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
                             <v-btn variant="text" class="ms-auto" text="취소" @click="store.dialog = false"></v-btn>
-                            <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc(article.id)"></v-btn>
+                            <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc"></v-btn>
                         </template>
                     </v-card>
                 </v-dialog>
@@ -62,9 +62,19 @@
 
 <script setup>
 import { UseCommunityStore } from '@/stores/community';
+import { onMounted } from 'vue';
+import { ref } from 'vue'
 const store = UseCommunityStore()
-const article = store.getDetail(id);
+import { useRoute } from 'vue-router';
+const route = useRoute()
+const id = route.params.id // route 파라미터 불러오기
 
+const article = ref(null)
+// 반응형으로 해야 안정적 
+onMounted(()=> {
+    article.value = store.getDetail(id); // onmount
+
+})
 
 // 모달 열 때 기존 내용을 수정용 변수에 복사 
 const openDialog = () => {
@@ -75,7 +85,8 @@ const openDialog = () => {
 }
 
 // 데이터 저장
-const saveChangesFunc = (id) => {
+// - 파라미터로 불러왔으니 매개변수 필요없음x
+const saveChangesFunc = () => {
     store.saveUpdateChanges(id)
 }
 
@@ -89,6 +100,9 @@ const selectButton = (index) => {
 const deleteArticleFunc = (id) => {
     store.deleteArticle(id)
 }
+// 테스트용 // 데이터 초기화
+// store.resetArticle()
+
 </script>
 
 <style scoped>
