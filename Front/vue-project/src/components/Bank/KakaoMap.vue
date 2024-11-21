@@ -28,6 +28,9 @@ const searchPlaces = (searchKeyword) => {
 
 const placesSearchCB = (data, status) => {
     if (status === kakao.maps.services.Status.OK) {
+        // 기존 마커들을 모두 제거
+        removeAllMarkers()
+
         const bounds = new kakao.maps.LatLngBounds()
 
         for (let i = 0; i < data.length; i++) {
@@ -59,6 +62,14 @@ const displayMarker = (place) => {
     markers.value.push(marker) // 생성된 마커를 배열에 추가
 }
 
+// 모든 마커를 제거하는 함수
+const removeAllMarkers = () => {
+    for (let i = 0; i < markers.value.length; i++) {
+        markers.value[i].setMap(null);
+    }
+    markers.value = [];
+}
+
 onMounted(() => {
     const mapContainer = document.getElementById('map')
     const mapOption = {
@@ -68,20 +79,17 @@ onMounted(() => {
     map = new kakao.maps.Map(mapContainer, mapOption)
     infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
 
-    // 키워드로 장소 검색
     keyword.value = '삼성화재 유성 연수원'
     console.log(keyword.value)
 
     searchPlaces(keyword.value)
 })
 
-// watch가 관건 !! 
 watch(() => props.searchParams, (newParams) => {
-
-    keyword.value = `${newParams.city} ${newParams.district} ${newParams.bank}`
-    // console.log(keyword.value)
-    searchPlaces(keyword.value)
-    
+    if (newParams.city && newParams.district && newParams.bank) {
+        keyword.value = `${newParams.city} ${newParams.district} ${newParams.bank}`
+        searchPlaces(keyword.value)
+    }
 }, { deep: true })
 </script>
 

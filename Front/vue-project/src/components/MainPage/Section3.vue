@@ -7,7 +7,7 @@
         <h2 style="display: inline;" class="txt-custom"> 나에게 딱 맞는 추천</h2>
         <h2 style="display: inline;">까지도요.</h2>
     </div>
-    <div>
+    <div class="bank-section">
         <div class="cards">
             <v-card class="card-border" width="100" height="80px">
                 <img class="mt-4 ml-8" width="35px" src="@/assets/images/kb.PNG" alt="bank_logo">
@@ -30,9 +30,11 @@
                 <p class="txt-custom px-5"><b>하나은행</b></p>
             </v-card>
         </div>
-        <v-btn height="45" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
-            <span class="font-weight-bold" style="font-size: medium;">추천 받아보기</span></v-btn>
-
+        <div class="button-container">
+            <v-btn height="45" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
+                <span class="font-weight-bold" style="font-size: medium;">추천 받아보기</span>
+            </v-btn>
+        </div>
     </div>
 </template>
 
@@ -41,18 +43,29 @@
 </script>
 
 <style scoped>
+.bank-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .cards {
     display: flex;
 }
 
 .txt-custom {
     color: #658EA7;
-
 }
 
 .card-border {
     border: 2px solid #9DB9BC;
     margin: 30px;
-    /* 테두리 색상 및 두께 설정 */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /* margin-top: 5px; */
 }
 </style>
