@@ -44,6 +44,8 @@ export const useAccountStore = defineStore('account', () => {
       .then(res => {
         clearErrors()
         console.log('회원가입이 완료되었습니다.')
+        const password = payload.password1
+        logIn({ email, password })
         router.push({name: 'home'})
       })
       .catch(err => {
@@ -92,6 +94,7 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   const loginErr = ref('')
+  const token = ref(null)
   const logIn = (payload) => {
     const formData = new FormData()
     formData.append('email', payload.email)
@@ -104,6 +107,7 @@ export const useAccountStore = defineStore('account', () => {
       .then(res => {
         loginErr.value = ''
         console.log('로그인이 완료되었습니다.')
+        token.value = res.data.key
         router.push({name: 'home'})
       })
       .catch(err => {
@@ -112,7 +116,16 @@ export const useAccountStore = defineStore('account', () => {
       })
   }
 
+  const isLogin = computed(() => {
+    if (token.value === null) {
+      return false
+    } else {
+      return true
+    }
+  })
+
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
-    incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr
+    incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
+    token, isLogin
    }
 }, { persist: true })

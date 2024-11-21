@@ -8,10 +8,13 @@
                         label="Email" clearable></v-text-field>
 
                     <v-text-field v-model="password" :readonly="loading" variant="solo" :rules="[required]"
-                        label="Password" clearable></v-text-field>
+                        label="Password" clearable :type="showPassword ? 'text' : 'password'"
+                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                        @click:append="showPassword = !showPassword">
+                    </v-text-field>
                     <br>
                     <v-btn :disabled="!form" :loading="loading" color="#658EA7" rounded="xl" type="submit" block>
-                        가입하기
+                        로그인 하기
                     </v-btn>
                 </v-form>
                 <p class="p-1">아직 회원이 아니시라면? <RouterLink :to="{ name: 'signup'}"><b> 회원가입</b></RouterLink></p>
@@ -29,6 +32,8 @@ import { useAccountStore } from '@/stores/account';
 const store = useAccountStore()
 
 const router = useRouter()
+
+const showPassword = ref(false);
 
 /// 폼 데이터 로직
 // 폼 데이터
