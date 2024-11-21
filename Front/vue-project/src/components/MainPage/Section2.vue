@@ -2,10 +2,10 @@
     <br>
     <div>
         <h2 class="mt-6 mb-2">Youthful 서비스는,</h2>
-        <h3 class="txt-custom" style="display: inline;">나의</h3>
-        <h3 style="display: inline;"> 나이, 직업, 사는 지역에 따라</h3>
-        <h3 class="txt-custom" style="display: inline;"> 정부지원금 목록을 추천</h3>
-        <h3 style="display: inline;">해줘요.</h3>
+        <h2 class="txt-custom" style="display: inline;">나의</h2>
+        <h2 style="display: inline;"> 나이, 직업, 사는 지역에 따라</h2>
+        <h2 class="txt-custom" style="display: inline;"> 정부지원금 목록을 추천</h2>
+        <h2 style="display: inline;">해줘요.</h2>
     </div><br>
     <div style="width: 800px;">
         <v-card elevation="2">
@@ -28,7 +28,7 @@
 
         </v-card>
     </div>
-    <v-btn height="45" class="mt-3" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
+    <v-btn height="45" class="mt-8" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
         <span class="font-weight-bold" style="font-size: medium;">추천 받아보기</span></v-btn>
 
 </template>

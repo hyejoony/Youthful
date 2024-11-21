@@ -4,7 +4,7 @@
         <h2 style="display: inline;" class="mt-6 mb-2">내 집 주변 은행도 클릭만으로 찾을 수 있어요.</h2>
     </div><br>
 
-    <v-card max-width="800" elevation="2">
+    <v-card width="800" elevation="2">
         <KakaoMap />
 
         <v-card-text>
@@ -12,13 +12,19 @@
         </v-card-text>
 
         <v-card-actions>
-            <v-btn class="txt-custom" rounded="xl" text="찾아보기"></v-btn>
+            <v-btn @click="gotoMap" class="txt-custom" rounded="xl" text="찾아보기"></v-btn>
         </v-card-actions>
     </v-card>
 </template>
 
 <script setup>
 import KakaoMap from '../Bank/KakaoMap.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const gotoMap = () => {
+    router.push({ name: 'searchbank'})
+}
 </script>
 
 

@@ -11,7 +11,11 @@ import CommunityLayOutView from '@/views/Community/CommunityLayOutView.vue'
 import CommunityMainPageView from '@/views/Community/CommunityMainPageView.vue'
 import CommunityDetailPageView from '@/views/Community/CommunityDetailPageView.vue'
 import CommunityWriteView from '@/views/Community/CommunityWriteView.vue'
-import { useAccountStore } from '@/stores/account'
+import DepositLayOutView from '@/views/Deposit/DepositLayOutView.vue'
+import DepositDetailView from '@/views/Deposit/DepositDetailView.vue'
+import DepositListView from '@/views/Deposit/DepositListView.vue'
+import DepositRecommendView from '@/views/Deposit/DepositRecommendView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,7 +63,7 @@ const router = createRouter({
       component: SearchBankView,
     },
     {
-      path: '/community/',
+      path: '/',
       component: CommunityLayOutView,
       children: [
         {
@@ -81,11 +85,34 @@ const router = createRouter({
       ]
       
     },
+    {
+      path: '/',
+      component: DepositLayOutView,
+      children: [
+        {
+          path: '/deposit',
+          name: 'deposit',
+          component: DepositListView
+        },
+        {
+          path: '/deposit/detail',
+          name: 'depositdetail',
+          component: DepositDetailView 
+        },
+        {
+
+          path: '/deposit/recommend',
+          name: 'depositrecommend',
+          component: DepositRecommendView
+        },
+      ]
+      
+    },
   ],
 
 })
 
-
+import { useAccountStore } from '@/stores/account'
 router.beforeEach((to, from) => {
   const store = useAccountStore()
   // 만약 이동하는 목적지가 메인 페이지이면서
