@@ -7,10 +7,9 @@ export const UseCommunityStore = defineStore('community', () => {
   const ArticleList = ref([])
 
   // article id
+  // let i = ref(0) 
   let i = 0
 
-  // 해쉬태그 키워드
-  const selectedButton = ref(null);
 
   // 키워드를 버튼으로
   const buttons = ref([
@@ -19,9 +18,11 @@ export const UseCommunityStore = defineStore('community', () => {
     { caption: '지원금' }
   ]);
 
-  // ----- 생성 페이지 -----
 
-  const SaveArticle = (inputTitle, inputContent) => {
+  // ----- 생성 페이지 -----
+  const comments = ref([])
+  // - 인자로 받기
+  const SaveArticle = (inputTitle, inputContent, selectedButton) => {
     console.log(ArticleList.value)
 
     ArticleList.value.push({
@@ -29,16 +30,13 @@ export const UseCommunityStore = defineStore('community', () => {
       id: i++,
       title: inputTitle.value,
       content: inputContent.value,
-      // keyword: selectedButton.value
+      keyword: selectedButton.value,
+      comments: comments
+
     }) //유저 이메일 어떻게 넣더랑~~ 
     console.log(ArticleList.value)
-  }
 
-  // Function to select a button
-  const selectButton = (index) => {
-    // Update the selected button index
-    selectedButton.value = index;
-  };
+  }
 
   // ----- 단일조회 -----
   // 객체 반환
@@ -47,31 +45,28 @@ export const UseCommunityStore = defineStore('community', () => {
     return detail
   }
 
-
   // ----- 수정페이지 -----
-  const dialog = ref(false) // 모달창 기본설정
 
-  // 임시 수정 데이터
-  const editTitle = ref('')
-  const editContent = ref('')
-
-  // 임시 수정 변수 
-  const editedButton = ref(null)
   // 데이터 저장
-  const saveUpdateChanges = (id) => {
-    index = ArticleList.value.findIndex((article) => (article.id) === id)
+  const saveUpdateChanges = (id, editTitle, editContent, editedButton) => {
 
+    // console.log(ArticleList)
+    console.log('id', Number(id))
+    console.log(ArticleList.value)
+
+    const index = ArticleList.value.findIndex((article) => (article.id) == Number(id))
+    console.log('index', index)
     //해당 index의 article 객체의 속성 
 
     if (index !== -1) {
       // 해당 index의 article 객체의 속성 직접 수정
       ArticleList.value[index].title = editTitle.value;
       ArticleList.value[index].content = editContent.value;
-      ArticleList.value[index].keyword = selectedButton.value;
+      ArticleList.value[index].keyword = editedButton.value;
+      return true
     }
 
-    dialog.value = false
-
+    return false
   }
 
 
@@ -86,9 +81,36 @@ export const UseCommunityStore = defineStore('community', () => {
     ArticleList.value = []
   }
 
+
+  // ---- 댓글 저장 -----
+  let idx = 0
+  const saveComment = (id, comment) => {
+    console.log(ArticleList.value[3].id)
+    const article = ArticleList.value.find(element => element.id == id)
+    console.log('article', article)
+    console.log('id',id)
+    console.log('comment', comment.value)
+    if (article) {
+      article.comments.push({
+        id: idx++,  // 유니크한 ID 생성
+        content: comment.value,
+        // userEmail: userEmail,
+        createdAt: new Date().toISOString()
+      })
+      console.log(article.comments)
+      return true
+    }
+  }
+
+
+  // 댓글 조회 함수
+  const getComments = (id) => {
+    const article = ArticleList.value.find(article => article.id == id)
+    return article ? article.comments : []
+  }
+
   return {
-    buttons, dialog, editContent, editTitle,
-    selectedButton, selectButton, editedButton, saveUpdateChanges,
-     SaveArticle, ArticleList, deleteArticle, getDetail, resetArticle
+    buttons, saveUpdateChanges, saveComment, getComments,
+    SaveArticle, ArticleList, deleteArticle, getDetail, resetArticle
   }
 }, { persist: true })
