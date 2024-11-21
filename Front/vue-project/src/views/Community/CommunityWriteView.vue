@@ -12,7 +12,7 @@
             </card-content>
             <div>
                 <p>키워드를 선택해주세요.</p>
-                <v-btn v-for="(btn, index) in store.buttons" :key="index"
+                <v-btn v-for="(btn, index) in storeCommunity.buttons" :key="index"
                     :class="{ 'active-button': selectedButton === btn.caption }" @click="selectButton(btn.caption)"
                     density="compact">
                     {{ btn.caption }}
@@ -31,7 +31,7 @@ import { UseCommunityStore } from '@/stores/community';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue'
 const router = useRouter()
-const store = UseCommunityStore()
+const storeCommunity = UseCommunityStore()
 
 // 이 컴포넌트에서 입력한 데이터 
 const inputTitle = ref('')
@@ -55,8 +55,12 @@ console.log('selectedButton', selectedButton)
 // 인자로 전달
 const SaveArticleFunc = () => {
     if (isFormValid.value) {
-        
-        store.SaveArticle(inputTitle, inputContent, selectedButton)
+        const payload = {
+            inputTitle: inputTitle.value,
+            inputContent: inputContent.value,
+            selectedButton: selectedButton.value
+        }
+        storeCommunity.SaveArticle(payload)
         router.push({ name: 'community'})
     }
 }

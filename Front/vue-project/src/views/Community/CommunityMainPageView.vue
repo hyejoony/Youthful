@@ -1,9 +1,16 @@
 <template>
     <div class="total-div">
-        <v-card width="900" height="80" elevation="2">
-            <h3 class="mt-2 pl-4" style="color: #658EA7;">로그인 후 이용 가능해요.</h3>
+        <v-card v-if="storeAccount.isLogin" width="900" height="80" elevation="2">
+            <h3 class="mt-2 pl-4" style="color: #658EA7;">내가 알고있는 정보를 공유하거나, 모르는 점을 질문해보세요.</h3>
             <v-btn @click="writeArticle" width="100" height="30" class="mt-2 ml-4"
                 rounded="xl">글쓰기<v-icon>mdi-pencil</v-icon>
+                <RouterLink />
+            </v-btn>
+        </v-card>
+        <v-card v-else width="900" height="80" elevation="2">
+            <h3 class="mt-2 pl-4" style="color: #658EA7;">로그인 후 이용 가능해요.</h3>
+            <v-btn @click="login" width="100" height="30" class="mt-2 ml-4"
+                rounded="xl">로그인<v-icon>mdi-pencil</v-icon>
                 <RouterLink />
             </v-btn>
         </v-card>
@@ -11,8 +18,8 @@
         <v-card class="mt-4 " width="900" height="110" elevation="2">
             <h3 class="mt-2 pl-4" style="color: #658EA7;">인기 게시글</h3>
             <div class="ml-4">
-                <h5 style="display: inline;">{{ store.keyword }} |</h5>
-                <h5 style="font-weight: 400; display: inline;"> {{ store.title }}</h5>
+                <h5 style="display: inline;">{{ storeCoummunity.keyword }} |</h5>
+                <h5 style="font-weight: 400; display: inline;"> {{ storeCoummunity.title }}</h5>
             </div>
         </v-card>
         <v-card class="mt-4" width="900" height="1200px" elevation="2">
@@ -34,10 +41,8 @@
             <card-content v-for="article in displayedArticles">
                 <h5 class="hashtag"> {{ article.keyword }}</h5>
 
-                <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article?.title }}</h4>
-                <h5 style="color: #767676;" class="ml-3"> {{ article?.content }}</h5>
-                <!-- <h5> {{  article.id }}님</h5> -->
-                <!-- <h5> 댓글 {{ article.commentCount }}개</h5> -->
+                <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
+                <h5 style="color: #767676;" class="ml-3"> {{ article.user_display_name }}</h5>
                  <hr class="mt-5 mb-5">
             </card-content>
         </v-card>
@@ -47,20 +52,38 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { UseCommunityStore } from '@/stores/community';
+import { useAccountStore } from '@/stores/account';
 import { ref } from 'vue'
+import axios from 'axios';
 
-const store = UseCommunityStore()
+const storeCoummunity = UseCommunityStore()
+const storeAccount = useAccountStore()
 const router = useRouter()
 
-const writeArticle = () => {
-    // 초기화
-    store.inputTitle = ''
-    store.inputContent = ''
-    store.selectedButton = ''
-    router.push({ name: 'communitywrite' })
+const API_URL = storeAccount.API_URL
+const token = storeAccount.token
 
+onMounted(() => {
+    axios({
+        method: 'get',
+        url: `${API_URL}/api/v1/communities/`,
+        headers: {
+            Authorization: `Token ${token}`
+        },
+    })
+    .then(res => {
+        console.log(res.data)
+        storeCoummunity.ArticleList = res.data
+    })
+    .catch(err => {
+        console.log(err.response.data)
+    })
+})
+
+const writeArticle = () => {
+    router.push({ name: 'communitywrite' })
 }
 
 const getDetail = (id) => {
@@ -70,7 +93,7 @@ const getDetail = (id) => {
 }
 
 // 목록 필터링
-const keywords = ['예금', '적금', '지원금']
+const keywords = ['예금', '적금', '지원금', '기타']
 const selectedKeyword = ref('')
 
 // 키워드 선택 함수
@@ -81,11 +104,15 @@ const selectKeyword = (keyword) => {
 // 필터링된 게시글 목록
 const displayedArticles = computed(() => {
     if (selectedKeyword.value) {
-        return store.ArticleList.filter(article => article.keyword === selectedKeyword.value);
+        return storeCoummunity.ArticleList.filter(article => article.keyword === selectedKeyword.value);
     } else {
-        return store.ArticleList;
+        return storeCoummunity.ArticleList;
     }
 });
+
+const login = () => {
+    router.push({ name: 'login' })
+}
 </script>
 
 <style scoped>

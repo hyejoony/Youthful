@@ -1,48 +1,53 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { useAccountStore } from './account'
+import { useRouter } from 'vue-router'
 
 export const UseCommunityStore = defineStore('community', () => {
+  const storeAccount = useAccountStore()
+  const router = useRouter()
+  
+  const API_URL = storeAccount.API_URL
+  const token = storeAccount.token
 
   // 게시글 리스트
   const ArticleList = ref([])
-
-  // article id
-  // let i = ref(0) 
-  let i = 0
 
 
   // 키워드를 버튼으로
   const buttons = ref([
     { caption: '적금' },
     { caption: '예금' },
-    { caption: '지원금' }
+    { caption: '지원금' },
+    { caption: '기타' }
   ]);
 
 
   // ----- 생성 페이지 -----
 
   // - 인자로 받기
-  const SaveArticle = (inputTitle, inputContent, selectedButton) => {
-    console.log(ArticleList.value)
-
-    //Axios로 요청
-
-    //응답이 성공
-    //서버로부터 응답받은 결과값 받기
-    //저장
-    
-    ArticleList.value.push({
-      // email: email, 
-      id: i++,
-      title: inputTitle.value,
-      content: inputContent.value,
-      keyword: selectedButton.value,
-      comments: []
-
-    }) //유저 이메일 어떻게 넣더랑~~ 
-    console.log(ArticleList.value)
-
+  const SaveArticle = (payload) => {
+    console.log(payload)
+    const formData = new FormData()
+    formData.append('title', payload.inputTitle);
+    formData.append('keyword', payload.selectedButton);
+    formData.append('content', payload.inputContent);
+    axios({
+      method: 'post',
+      url: `${API_URL}/api/v1/communities/`,
+      headers: {
+        Authorization: `Token ${token}`
+      },
+      data: formData
+    })
+    .then(res => {
+      console.log('저장 완료')
+      router.push({ name: 'community' })
+    })
+    .catch(err => {
+      console.log(err.response.data)
+    })
   }
 
   // ----- 단일조회 -----
