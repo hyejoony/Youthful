@@ -3,7 +3,7 @@
         <h1 style="text-align: center;">Login</h1>
         <v-sheet class="mt-1">
             <v-card class="mx-auto px-6 py-8" max-width="500">
-                <v-form v-model="form" @submit.prevent="onSubmit">
+                <v-form v-model="form" @submit.prevent="logIn">
                     <v-text-field v-model="email" :readonly="loading" variant="solo" :rules="[required]" class="mb-2"
                         label="Email" clearable></v-text-field>
 
@@ -17,12 +17,16 @@
                 <p class="p-1">아직 회원이 아니시라면? <RouterLink :to="{ name: 'signup'}"><b> 회원가입</b></RouterLink></p>
             </v-card>
         </v-sheet>
+        <p class='errmsg'>{{ store.loginErr }}</p>
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAccountStore } from '@/stores/account';
+
+const store = useAccountStore()
 
 const router = useRouter()
 
@@ -36,28 +40,14 @@ const loading = ref(false)
 // 유효성 검사 규칙
 const required = (v) => !!v || '입력은 필수입니다.'
 
-// 폼 제출 처리
-const onSubmit = async () => {
-    if (!form.value) return
-
-    loading.value = true
-    // 여기에 로그인 로직을 구현합니다.
-    // 예: API 호출, 인증 처리 등
-    try {
-        // 로그인 API 호출 예시
-        // const response = await loginApi(email.value, password.value)
-
-        // 로그인 성공 시 처리
-        console.log('Login successful')
-        // 로그인 후 리다이렉트
-        router.push({ name: 'home' })
-    } catch (error) {
-        // 에러 처리
-        console.error('Login failed:', error)
-    } finally {
-        loading.value = false
+const logIn = () => {
+    const payload = {
+        email: email.value,
+        password: password.value
     }
+    store.logIn(payload)
 }
+
 
 </script>
 
@@ -75,5 +65,11 @@ h1 {
 
 .login-container {
   margin-top: 20vh; /* 뷰포트 높이의 10%만큼 위쪽 마진 추가 */
+}
+
+.errmsg {
+    color: red;
+    text-align: center;
+    margin-top: 2rem;
 }
 </style>

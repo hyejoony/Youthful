@@ -229,9 +229,11 @@ class CustomRegisterSerializer(RegisterSerializer):
             print('nick')
             # 프로필 이미지 처리
             image_data = self.cleaned_data.get('profile_image', None)
+            print(image_data)
             if image_data:
                 if isinstance(image_data, str) and 'data:image' in image_data:
                     # Base64 이미지 처리
+
                     format, imgstr = image_data.split(';base64,')
                     ext = format.split('/')[-1]
                     file_name = f"{uuid.uuid4()}.{ext}"
