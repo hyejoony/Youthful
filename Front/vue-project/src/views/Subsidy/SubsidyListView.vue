@@ -1,8 +1,6 @@
 <template>
 
     <ProductShortcut />
-    <ProductListHeader />
-    <ProductListContent />
 
 </template>
 

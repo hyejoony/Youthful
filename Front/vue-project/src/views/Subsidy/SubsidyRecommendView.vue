@@ -1,24 +1,21 @@
 <template>
-
     <ProductShortcut />
-    <ProductListHeader />
-    <ProductListContent />
+    <ProductRecoHeader />
+
 
 </template>
 
 <script setup>
 
+import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
-import ProductListHeader from '@/components/Common/ProductListHeader.vue';
+import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
 import ProductListContent from '@/components/Common/ProductListContent.vue';
+
 import { ref } from 'vue'
-
-// const switchState1 = ref(false)
-// const switchState2 = ref(false)
-
-
 
 </script>
 
 <style scoped>
+
 </style>

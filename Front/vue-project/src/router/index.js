@@ -14,6 +14,14 @@ import DepositLayOutView from '@/views/Deposit/DepositLayOutView.vue'
 import DepositDetailView from '@/views/Deposit/DepositDetailView.vue'
 import DepositListView from '@/views/Deposit/DepositListView.vue'
 import DepositRecommendView from '@/views/Deposit/DepositRecommendView.vue'
+import SavingDetailView from '@/views/Saving/SavingDetailView.vue'
+import SavingLayOutView from '@/views/Saving/SavingLayOutView.vue'
+import SavingListView from '@/views/Saving/SavingListView.vue'
+import SavingRecommendView from '@/views/Saving/SavingRecommendView.vue'
+import SubsidyLayOutView from '@/views/Subsidy/SubsidyLayOutView.vue'
+import SubsidyDetailView from '@/views/Subsidy/SubsidyDetailView.vue'
+import SubsidyListView from '@/views/Subsidy/SubsidyListView.vue'
+import SubsidyRecommendView from '@/views/Subsidy/SubsidyRecommendView.vue'
 
 
 const router = createRouter({
@@ -98,6 +106,52 @@ const router = createRouter({
           path: '/deposit/recommend',
           name: 'depositrecommend',
           component: DepositRecommendView
+        },
+      ]
+      
+    },
+    {
+      path: '/',
+      component: SavingLayOutView,
+      children: [
+        {
+          path: '/saving',
+          name: 'saving',
+          component: SavingListView
+        },
+        {
+          path: '/saving/detail',
+          name: 'savingdetail',
+          component: SavingDetailView 
+        },
+        {
+
+          path: '/saving/recommend',
+          name: 'savingrecommend',
+          component: SavingRecommendView
+        },
+      ]
+      
+    },
+    {
+      path: '/',
+      component: SubsidyLayOutView,
+      children: [
+        {
+          path: '/subsidy',
+          name: 'subsidy',
+          component: SubsidyListView
+        },
+        {
+          path: '/subsidy/detail',
+          name: 'subsidydetail',
+          component: SubsidyDetailView 
+        },
+        {
+
+          path: '/subsidy/recommend',
+          name: 'subsidyrecommend',
+          component: SubsidyRecommendView
         },
       ]
       

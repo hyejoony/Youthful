@@ -72,6 +72,7 @@ import { onMounted } from 'vue';
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
 
+
 const store = UseCommunityStore()
 const route = useRoute()
 const router = useRouter()
