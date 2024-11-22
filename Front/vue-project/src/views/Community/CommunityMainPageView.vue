@@ -38,12 +38,21 @@
                 </div>
             </card-head>
             <hr style="color: #767676;" class="mt-3">
-            <card-content v-for="article in displayedArticles">
-                <h5 class="hashtag"> {{ article.keyword }}</h5>
-
-                <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
-                <h5 style="color: #767676;" class="ml-3"> {{ article.user_display_name }}</h5>
-                 <hr class="mt-5 mb-5">
+            <card-content class="card" v-for="article in displayedArticles">
+                <div class="card2">
+                    <div class="left-content">
+                        <h5 class="hashtag">{{ article.keyword }}</h5>
+                        <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
+                    </div>
+                    <div class="right-content">
+                        <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
+                        <p>댓글 {{ article.comments.length }}개</p> |
+                        <p>{{ article.updated_at.slice(0, 10) }}</p>
+                    </div>
+                </div>
+                <div>
+                    <hr class="mt-5 mb-5">
+                </div>
             </card-content>
         </v-card>
     </div>
@@ -87,9 +96,8 @@ const writeArticle = () => {
 }
 
 const getDetail = (id) => {
-    console.log(id)
+    console.log('id', id)
     router.push({ name: 'communitydetail', params: { id: id } })
-
 }
 
 // 목록 필터링
@@ -116,6 +124,35 @@ const login = () => {
 </script>
 
 <style scoped>
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.card2 {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: flex-start; */
+}
+
+.left-content, .right-content {
+  display: flex;
+}
+
+.left-content {
+  align-items: flex-start;
+}
+
+.right-content {
+  align-items: flex-end;
+}
+
+.ml-3 {
+    margin-top: 5%;
+}
+
+
+
 .keyword-div {
     justify-content: end;
 }

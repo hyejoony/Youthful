@@ -19,7 +19,7 @@ from .models import Community, CommunityComment
 def community_list(request):
     if request.method == 'GET':
         communities = get_list_or_404(Community)
-        serializer = CommunityListSerializer(communities, many=True)
+        serializer = CommunityDetailSerializer(communities, many=True)  # 여기서 게시글의 전체 정보를 얻어오기
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -36,6 +36,7 @@ def community_list(request):
 def community_detail(request, community_id):
     community = get_object_or_404(Community, pk=community_id)
 
+    # 위에서 게시글 전체 목록 들어갈때 한번에 정보 불러왔기 때문에 필요 없음
     if request.method == 'GET':
         serializer = CommunityDetailSerializer(community)
         return Response(serializer.data)
@@ -72,8 +73,9 @@ def comment_detail(request, community_id, comment_id):
     comment = get_object_or_404(CommunityComment, pk=comment_id)
     
     if request.method == 'DELETE':
+        deleted_id = comment.id
         comment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'id': deleted_id}, status=status.HTTP_200_OK)
     
     elif request.method == 'PUT':
         serializer = CommunityCommentListSerializer(comment, data=request.data, partial=True)
