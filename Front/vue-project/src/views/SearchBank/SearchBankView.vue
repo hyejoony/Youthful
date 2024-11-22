@@ -1,5 +1,5 @@
 <template>
-    <h1 class="mt-4" style="color:#658EA7;">내 집 주변 은행 찾기</h1>
+    <h1 class="title" style="color:#658EA7;">내 집 주변 은행 찾기</h1>
     <div class="flex">
         <v-form>
             <div class="select-container" style="width: 1000px;">
@@ -96,20 +96,26 @@ const searchBanks = () => {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
 
 }
 
 h1 {
-    margin-left: 50px;
-    margin-bottom: 20px
+    text-align: center;
 }
-
 .flex {
     display: flex;
     flex-direction: column;
     margin: auto;
     align-items: center;
+
+}
+
+.title {
+
+/* margin-left: 50px; */
+margin-bottom: 40px;
+margin-top: 20px;
 
 }
 </style>

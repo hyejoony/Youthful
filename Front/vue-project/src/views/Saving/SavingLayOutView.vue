@@ -1,5 +1,5 @@
 <template>
-        <h1 class="mt-4" style="color:#658EA7;">예적금 비교</h1>
+        <h1 style="color:#658EA7;">예적금 비교</h1>
 
     <RouterView />
 </template>
@@ -12,7 +12,6 @@ import { RouterLink, RouterView } from 'vue-router';
 
 <style scoped>
 h1 {
-    margin-left: 50px;
-    margin-bottom: 20px
+    text-align: center;
 }
 </style>

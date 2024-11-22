@@ -1,5 +1,5 @@
 <template>
-    <h1 class="mt-4" style="color:#658EA7;">환율계산기</h1>
+    <h1  class="title" style="color:#658EA7;">환율계산기</h1>
     <h5 style="color: #767676;">출처 : 네이버 증권</h5>
 
     <v-card class="v-card mx-auto" max-width="820" height="300" hover>
@@ -31,8 +31,15 @@ const ExchangeStandard = ['매매기준율', '송금 보내실 때', '송금 받
 }
 
 h1 {
-    margin-left: 50px;
-    margin-bottom: 20px
+    text-align: center;
+}
+
+.title {
+
+/* margin-left: 50px; */
+margin-bottom: 40px;
+margin-top: 20px;
+
 }
 
 h5 {

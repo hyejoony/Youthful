@@ -1,7 +1,9 @@
 <template>
     <ProductShortcut />
+    <div class="container">
     <ProductRecoHeader />
-
+    <SubsidyListContent />
+</div>
 
 </template>
 
@@ -10,12 +12,16 @@
 import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
-import ProductListContent from '@/components/Common/ProductListContent.vue';
-
+import SubsidyListContent from '@/components/Common/SubsidyListContent.vue';
 import { ref } from 'vue'
 
 </script>
 
 <style scoped>
 
-</style>
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}</style>

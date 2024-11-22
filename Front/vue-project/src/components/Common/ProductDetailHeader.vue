@@ -10,7 +10,10 @@
             </div>
         </v-card>
         <v-card class="mt-3 ml-2" width="90">
-            <div class="pl-4 pt-4">
+            <div v-if="!$route.path.includes('/subsidy')" class="heart-top-left">
+                <v-icon size="large" style="color: #658EA7;">mdi-heart</v-icon>
+            </div>
+            <div v-else class="heart-center">
                 <v-icon size="large" style="color: #658EA7;">mdi-heart</v-icon>
             </div>
         </v-card>
@@ -18,8 +21,11 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 </script>
+
 
 <style scoped>
 .top-div-flex {
@@ -30,5 +36,15 @@
     display: flex;
 }
 
-
+.heart-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.heart-top-left {
+    padding-left: 16px;
+    padding-top: 16px;
+}
 </style>

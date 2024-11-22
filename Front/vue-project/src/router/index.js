@@ -23,7 +23,7 @@ import SubsidyLayOutView from '@/views/Subsidy/SubsidyLayOutView.vue'
 import SubsidyDetailView from '@/views/Subsidy/SubsidyDetailView.vue'
 import SubsidyListView from '@/views/Subsidy/SubsidyListView.vue'
 import SubsidyRecommendView from '@/views/Subsidy/SubsidyRecommendView.vue'
-
+import SubsidyReviewView from '@/views/Subsidy/SubsidyReviewView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -158,6 +158,12 @@ const router = createRouter({
           path: '/subsidy/recommend',
           name: 'subsidyrecommend',
           component: SubsidyRecommendView
+        },
+        {
+
+          path: '/subsidy/review',
+          name: 'subsidyreview',
+          component: SubsidyReviewView
         },
       ]
       
