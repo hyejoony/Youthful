@@ -1,7 +1,7 @@
 <template>
     <ProductShortcut />
-    <div class="container">
-        <SubsidyListContent />
+    <div v-if="storeSubsidy.subsidies" class="container">
+        <SubsidyListContent :subsidies="storeSubsidy.subsidies"/>
     </div>
 
 </template>
@@ -10,14 +10,17 @@
 
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import SubsidyListContent from '@/components/Common/SubsidyListContent.vue';
-import { UseSubsidyStore } from '@/stores/subsidy';
+import { storeToRefs } from 'pinia';
 import { ref, onMounted } from 'vue'
+import { UseSubsidyStore } from '@/stores/subsidy';
 
 const storeSubsidy = UseSubsidyStore()
 onMounted(() => {
     storeSubsidy.getSubsidies()
+    console.log('storeSubsidy.subsidies',storeSubsidy.subsidies)
     
 })
+
 
 
 </script>

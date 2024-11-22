@@ -1,5 +1,5 @@
 <template>
-    <!-- 상품 전체 목록 페이지 본문 -->
+    <!-- 상품(예적금, 정부지원금) 전체 목록 페이지 본문 -->
     <v-card class="mt-4" width="900" height="1200px" elevation="2">
         <card-head class="filterbtn-flex">
             <div class="mt-3 pr-2 " style="display: flex;">

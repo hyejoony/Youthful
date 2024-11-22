@@ -149,7 +149,7 @@ const router = createRouter({
           component: SubsidyListView
         },
         {
-          path: '/subsidy/detail',
+          path: '/subsidy/detail/:id',
           name: 'subsidydetail',
           component: SubsidyDetailView 
         },
@@ -161,7 +161,7 @@ const router = createRouter({
         },
         {
 
-          path: '/subsidy/review',
+          path: '/subsidy/detail/:id/review',
           name: 'subsidyreview',
           component: SubsidyReviewView
         },
