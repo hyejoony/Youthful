@@ -13,6 +13,8 @@ export const UseCommunityStore = defineStore('community', () => {
 
   // 게시글 리스트
   const ArticleList = ref([])
+  const popArticleList = ref([])
+  const myArticleList = ref([])
 
 
   // 키워드를 버튼으로
@@ -124,6 +126,7 @@ export const UseCommunityStore = defineStore('community', () => {
     })
     .then(res => {
       console.log('댓글 저장 완료')
+      console.log(res.data)
       return res.data
     })
     .catch(err => {
@@ -194,6 +197,6 @@ export const UseCommunityStore = defineStore('community', () => {
   return {
     buttons, saveUpdateChanges, saveComment, getComments,SaveArticle, 
     ArticleList, deleteArticle, getDetail, resetArticle, deleteComment, 
-    saveUpdateChangesComment
+    saveUpdateChangesComment, popArticleList, myArticleList
   }
 }, { persist: true })

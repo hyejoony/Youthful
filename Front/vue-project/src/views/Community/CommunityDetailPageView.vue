@@ -61,7 +61,7 @@
                         <!-- 모달창 -->
                         <v-dialog v-model="dialogComment" max-width="500">
                             <v-card>
-                                <v-card-title class="ml-2" style="color: #658EA7;">게시글 수정</v-card-title>
+                                <v-card-title class="ml-2" style="color: #658EA7;">댓글 수정</v-card-title>
                                 <v-card-text>
                                     <v-textarea v-model="editContentComment" label="내용"></v-textarea>
                                 </v-card-text>
@@ -76,6 +76,8 @@
                     <v-btn @click="deleteComment(comment.id)" density="compact" icon="mdi-trash-can-outline"></v-btn>
                 </span>
             </p>
+            <p>작성자 : {{ comment.user_display_name }} | 작성일 : {{ comment?.updated_at.slice(0,10) }}</p>
+            <hr>
         </div>
         <div v-else  class="ml-4" style="color: #767676;">아직 달린 댓글이 없어요.</div>
     </v-card>
