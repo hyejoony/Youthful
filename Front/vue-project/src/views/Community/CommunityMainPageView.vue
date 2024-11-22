@@ -47,7 +47,7 @@
                     <div class="right-content">
                         <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
                         <p>댓글 {{ article.comments.length }}개</p> |
-                        <p>{{ article.updated_at.slice(0, 10) }}</p>
+                        <p>{{ article.updated_at?.slice(0, 10) }}</p>
                     </div>
                 </div>
                 <div>
