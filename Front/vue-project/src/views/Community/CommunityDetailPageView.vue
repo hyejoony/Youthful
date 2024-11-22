@@ -1,12 +1,12 @@
 <template>
     <br>
-    <v-card class="mt-4" width="900" height="800" elevation="2">
+    <v-card v-if="article" class="mt-4" width="900" height="800" elevation="2">
         <card-head>
-            <p class="mt-2 pl-4"> {{ article?.title }}</p>
+            <p class="mt-2 pl-4"> {{ article.title }}</p>
         </card-head>
         <hr style="color: #767676;" class="mt-3">
         <div class="card-user-info mt-2 pl-4" style="color: #767676;">
-            <span> id님</span>
+            <span> {{ article.user_display_name }}님</span>
             <span> 수정날짜</span>
             <div>
                 <v-btn @click="openDialog">수정하기<v-icon>mdi-pencil</v-icon></v-btn>
@@ -30,7 +30,7 @@
                         <template v-slot:actions>
                             <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
                             <v-btn variant="text" class="ms-auto" text="취소" @click="dialog = false"></v-btn>
-                            <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc"></v-btn>
+                            <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc()"></v-btn>
                         </template>
                     </v-card>
                 </v-dialog>
@@ -38,7 +38,7 @@
             <v-btn @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
         </div>
         <card-content>
-            <p class="mt-4 pl-4">{{ article?.content }}</p>
+            <p class="mt-4 pl-4">{{ article.content }}</p>
         </card-content>
         <hr style="color: #767676;" class="mt-3">
 
@@ -56,8 +56,24 @@
         <div v-if="commentList.length > 0" v-for="comment in commentList" :key="comment.createdAt">
             <p>{{ comment.content }}
                 <span>
-                    <v-btn @click="UpdateComment(comment.commentId)" density="compact" icon="mdi-pencil"></v-btn>
-                    <v-btn density="compact" icon="mdi-trash-can-outline"></v-btn>
+                    <span>
+                        <v-btn @click="openDialogComment(comment)" density="compact" icon="mdi-pencil"></v-btn>
+                        <!-- 모달창 -->
+                        <v-dialog v-model="dialogComment" max-width="500">
+                            <v-card>
+                                <v-card-title class="ml-2" style="color: #658EA7;">게시글 수정</v-card-title>
+                                <v-card-text>
+                                    <v-textarea v-model="editContentComment" label="내용"></v-textarea>
+                                </v-card-text>
+                                <template v-slot:actions>
+                                    <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
+                                    <v-btn variant="text" class="ms-auto" text="취소" @click="dialogComment = false"></v-btn>
+                                    <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesComment(comment.id)"></v-btn>
+                                </template>
+                            </v-card>
+                        </v-dialog>
+                    </span>
+                    <v-btn @click="deleteComment(comment.id)" density="compact" icon="mdi-trash-can-outline"></v-btn>
                 </span>
             </p>
         </div>
@@ -69,14 +85,13 @@
 <script setup>
 import { UseCommunityStore } from '@/stores/community';
 import { onMounted } from 'vue';
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router';
+import { ref, watch } from 'vue'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 
 const store = UseCommunityStore()
 const route = useRoute()
 const router = useRouter()
-
 const id = route.params.id // 특정 id, route 파라미터 불러오기
 
 
@@ -85,12 +100,13 @@ const id = route.params.id // 특정 id, route 파라미터 불러오기
 // 반응형으로 해야 안정적 (데이터 로드)
 const article = ref(null)
 onMounted(() => {
-    // console.log('id',id)
+    console.log('idDetail',id)
     article.value = store.getDetail(id); // onmount
-    // console.log('articlevalue',article.value)
+    console.log('articlevalue',article.value)
     commentList.value = store.getComments(id) // 댓글
-    // console.log(commentList.value)
+    console.log('comment', commentList.value)
 })
+
 
 const dialog = ref(false) // 모달창 기본설정
 
@@ -112,39 +128,78 @@ const editButton = (caption) => {
     editedButton.value = caption
 }
 
-// 데이터 저장
-// - 파라미터로 불러왔으니 매개변수 필요없음x
-const saveChangesFunc = () => {
-    const result = store.saveUpdateChanges(id, editTitle, editContent, editedButton)
-    if (result) {
-        dialog.value = false
+// 게시글 수정
+const saveChangesFunc = async () => {
+    const payload = {
+        id: id,
+        editTitle: editTitle.value,
+        editContent: editContent.value,
+        editedButton: editedButton.value
     }
+    const result = await store.saveUpdateChanges(payload)
+    article.value.title = editTitle
+    article.value.keyword = editedButton
+    article.value.content = editContent
+    dialog.value = false
 }
 
 // 삭제
 const deleteArticleFunc = () => {
     store.deleteArticle(id)
     router.push({ name: 'community' })
-
 }
+
 
 // 댓글 
 const inputComment = ref('') // 사용자 입력 댓글
 const commentList = ref([])
 // 댓글 저장
-const saveComment = () => {
-    store.saveComment(id, inputComment)
+const saveComment = async () => {
+    const payload = {
+        id: id, inputComment: inputComment.value
+    }
+    const result = await store.saveComment(payload)
+    commentList.value.push(result)
     inputComment.value = '' // 입력 필드 초기화
-
-
 }
 
-const UpdateComment = (commentId) => {
-    store.UpdateComment(id,commentId)
+const deleteComment = async (commentId) => {
+    const result = await store.deleteComment(id, commentId)
+    const index = commentList.value.findIndex(comment => comment.id === result.id)
+    commentList.value.splice(index, 1)
 }
+
+
+
+const editContentComment = ref('')
+const dialogComment = ref(false) // 모달창 기본설정
+const currentEditingCommentId = ref(null)
+
+const openDialogComment = (comment) => {
+    currentEditingCommentId.value = comment.id
+    editContentComment.value = comment.content
+    dialogComment.value = true
+}
+
+
+// 댓글 수정
+const saveChangesComment = async () => {
+    const payload = {
+        articleId: id,
+        commentId: currentEditingCommentId.value,
+        editContentComment: editContentComment.value,
+    }
+    const result = await store.saveUpdateChangesComment(payload)
+    const comment = commentList.value.find(comment => comment.id === currentEditingCommentId.value)
+    comment.content = editContentComment.value
+    dialogComment.value = false
+    currentEditingCommentId.value = null
+}
+
 
 // 테스트용 // 데이터 초기화
 // store.resetArticle()
+
 
 </script>
 
