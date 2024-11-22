@@ -10,11 +10,14 @@
 
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import SubsidyListContent from '@/components/Common/SubsidyListContent.vue';
-import { ref } from 'vue'
+import { UseSubsidyStore } from '@/stores/subsidy';
+import { ref, onMounted } from 'vue'
 
-// const switchState1 = ref(false)
-// const switchState2 = ref(false)
-
+const storeSubsidy = UseSubsidyStore()
+onMounted(() => {
+    storeSubsidy.getSubsidies()
+    
+})
 
 
 </script>
