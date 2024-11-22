@@ -1,6 +1,5 @@
 <template>
     <h4 class="pa-4 mb-">보조금 이름</h4>
-
     <v-card width="800" class="pa-4">
         <!-- 리뷰 작성 폼 -->
         <v-form @submit.prevent="submitReview">
@@ -30,7 +29,7 @@
         <div class="review-list">
             <v-list>
                 <!-- 각 리뷰 항목을 순회하며 표시 -->
-                <v-list-item v-for="(review, index) in reviews" :key="index">
+                <v-list-item v-for="(review, index) in subsidy.comments" :key="index">
                     <v-list-item-content>
                         <!-- 리뷰 텍스트 및 버튼들 -->
                         <div class="d-flex align-center justify-space-between">
@@ -85,7 +84,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { UseSubsidyStore } from '@/stores/subsidy';
+import { useAccountStore } from '@/stores/account';
+import { useRoute } from 'vue-router';
+const storeAccount = useAccountStore()
+const storeSubsidy = UseSubsidyStore()
+const route = useRoute()
+
+const subsidy = ref('')
+
+onMounted(() => {
+    axios({
+        method: 'get',
+        url: `${storeSubsidy.API_URL}/api/v1/subsidies/${route.params.id}/`,
+        headers: {
+            Authorization: `Token ${storeAccount.token}`
+        }
+    })
+        .then((res => {
+            console.log('상세 보조금 데이터 반환',res.data) // 객체반환
+            subsidy.value = res.data
+        }))
+})
 
 const reviewText = ref('');
 const rating = ref(0);
@@ -176,4 +198,9 @@ const deleteReview = (index) => {
     width: 20px;
     height: 20px;
 }
+.clickable-title {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
 </style>
