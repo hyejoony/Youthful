@@ -25,7 +25,7 @@ def save_subsidy(request):
     params = {
         'serviceKey' : serviceKey,
         'page' : '1',
-        'perPage' : '100'
+        'perPage' : '2000'
     }
     response = requests.get(URL, params=params).json()
 
@@ -49,10 +49,12 @@ def save_subsidy(request):
             name_category = "어업 및 수산업"
         elif any(keyword in name for keyword in ["법률", "복지", "상담", "피해자"]):
             name_category = "법률 및 복지"
-        elif any(keyword in name for keyword in ["청년", "취약계층", "노인", '여성']):
-            name_category = '청년 및 취약계층'
+        elif any(keyword in name for keyword in ["취약계층", "노인", '여성']):
+            name_category = '취약계층'
         elif any(keyword in name for keyword in ["농업","농촌","농민"]):
             name_category = '농업'
+        elif any(keyword in name for keyword in ["1인", "청년" "1인 가구"]):
+            name_category = '청년 1인'
         else:
             name_category = '기타'
         
@@ -86,7 +88,7 @@ def subsidy_list(request):
 
     # 페이지네이션 설정 (선택사항)
     page = request.GET.get('page', 1)
-    page_size = 10  # 페이지당 아이템 수
+    page_size = 100  # 페이지당 아이템 수
     paginator = Paginator(subsidies, page_size)
     current_page = paginator.page(page)
 

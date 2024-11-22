@@ -7,13 +7,25 @@
             <hr>
             <div class="card-content">
                 <!-- 상품 정보 반복 -->
-                <div class="info-row mt-3 ml-7" v-for="(item, index) in productInfo" :key="index">
-                    <span class="label">{{ item.label }}</span>
-                    <span class="value">{{ item.value }}</span>
+                <div class="info-row mt-3 ml-7">
+                    <span class="label">분류</span>
+                    <span class="value">{{ subsidy.name_category }}</span>
+                </div>
+                <div class="info-row mt-3 ml-7">
+                    <span class="label">지원대상</span>
+                    <span class="value">{{ subsidy.target }}</span>
+                </div>
+                <div class="info-row mt-3 ml-7">
+                    <span class="label">내용</span>
+                    <span class="value">{{ subsidy.content }}</span>
+                </div>
+                <div class="info-row mt-3 ml-7">
+                    <span class="label">문의처</span>
+                    <span class="value">{{ subsidy.contact }}</span>
                 </div>
             </div>
         </v-card>
-        <v-card  v-if="!route.path.includes('/subsidy')" class="option-card mt-3 ml-2" width="900">
+        <v-card v-if="!route.path.includes('/subsidy')" class="option-card mt-3 ml-2" width="900">
             <div class="card-header">
                 <h3>옵션</h3>
             </div>
@@ -47,19 +59,16 @@
 
 import { useRoute } from 'vue-router'
 
-const route = useRoute()
-
-defineProps( {
-    productInfo: Object,
-    interestRates: Object
-    
+defineProps({
+    subsidy: Object
 })
+
+const route = useRoute()
 
 
 </script>
 
 <style scoped>
-
 .product-cards {
     display: grid;
     gap: 20px;
@@ -111,4 +120,5 @@ defineProps( {
 
 :deep(.v-table tr:hover) {
     background-color: #f8f9fa;
-}</style>
+}
+</style>

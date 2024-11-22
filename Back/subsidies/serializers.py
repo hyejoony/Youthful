@@ -51,7 +51,6 @@ class SubsidyCommentListSerializers(serializers.ModelSerializer):
 
 # 보조금 상세 페이지
 class SubsidyDetailSerializers(serializers.ModelSerializer):
-
     comments = SubsidyCommentListSerializers(many=True, read_only=True)
 
     class Meta:
