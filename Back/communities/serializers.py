@@ -13,9 +13,9 @@ class UserDisplayNameSerializer(serializers.ModelSerializer):
 
     def get_user_display_name(self, obj):
         """닉네임이 있으면 닉네임을 반환하고, 없으면 이메일의 '@' 전까지의 부분을 반환합니다."""
-        if obj.user.nickname:
-            return obj.user.nickname
-        return obj.user.email.split('@')[0] if obj.user.email else None
+        if obj.user.nickname == 'null':  # 해당 값이 null값이므로 조건을 이렇게 달아줘야 한다
+            return obj.user.email.split('@')[0]
+        return obj.user.nickname
 
 
 # 커뮤니티 전체 목록 시리얼라이즈

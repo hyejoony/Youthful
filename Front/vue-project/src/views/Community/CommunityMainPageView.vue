@@ -17,16 +17,16 @@
 
         <v-card class="mt-4 " width="900" height="110" elevation="2">
             <h3 class="mt-2 pl-4" style="color: #658EA7;">인기 게시글</h3>
-            <div class="ml-4">
-                <h5 style="display: inline;">{{ storeCoummunity.keyword }} |</h5>
-                <h5 style="font-weight: 400; display: inline;"> {{ storeCoummunity.title }}</h5>
+            <div class="ml-4" v-for="popArticle in storeCoummunity.popArticleList" :key="popArticle.id">
+                <h5 style="display: inline;">{{ popArticle.keyword }} |</h5>
+                <h5 @click="getDetail(popArticle.id)" class="clickable-title" style="font-weight: 400; display: inline;"> {{ popArticle.title }}</h5>
             </div>
         </v-card>
         <v-card class="mt-4" width="900" height="1200px" elevation="2">
             <card-head>
                 <div class="mt-3 pr-2 keyword-div" style="display: flex;">
                     <v-btn style="font-size: 14px;" density="compact"
-                        variant="text"><v-icon>mdi-filter-variant</v-icon>내 글
+                        variant="text" @click="toggle"><v-icon>mdi-filter-variant</v-icon>내 글
                         보기</v-btn>
 
                     <span style="font-weight: 400; font-size: 14px;">키워드 검색<v-icon>mdi-magnify</v-icon></span>
@@ -38,22 +38,42 @@
                 </div>
             </card-head>
             <hr style="color: #767676;" class="mt-3">
-            <card-content class="card" v-for="article in displayedArticles">
-                <div class="card2">
-                    <div class="left-content">
-                        <h5 class="hashtag">{{ article.keyword }}</h5>
-                        <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
+            <template v-if="myLook">
+                <card-content class="card" v-for="article in myDisplayedArticles">
+                    <div class="card2" v-if="article">
+                        <div class="left-content">
+                            <h5 class="hashtag">{{ article.keyword }}</h5>
+                            <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
+                        </div>
+                        <div class="right-content">
+                            <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
+                            <p>댓글 {{ article.comments.length }}개</p> |
+                            <p>{{ article.updated_at?.slice(0, 10) }}</p>
+                        </div>
                     </div>
-                    <div class="right-content">
-                        <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
-                        <p>댓글 {{ article.comments.length }}개</p> |
-                        <p>{{ article.updated_at?.slice(0, 10) }}</p>
+                    <div>
+                        <hr class="mt-5 mb-5">
                     </div>
-                </div>
-                <div>
-                    <hr class="mt-5 mb-5">
-                </div>
-            </card-content>
+                </card-content>
+            </template>
+            <template v-else>
+                <card-content class="card" v-for="article in displayedArticles">
+                    <div class="card2" v-if="article">
+                        <div class="left-content">
+                            <h5 class="hashtag">{{ article.keyword }}</h5>
+                            <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
+                        </div>
+                        <div class="right-content">
+                            <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
+                            <p>댓글 {{ article.comments.length }}개</p> |
+                            <p>{{ article.updated_at?.slice(0, 10) }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <hr class="mt-5 mb-5">
+                    </div>
+                </card-content>
+            </template>
         </v-card>
     </div>
 </template>
@@ -83,11 +103,28 @@ onMounted(() => {
         },
     })
     .then(res => {
-        console.log(res.data)
-        storeCoummunity.ArticleList = res.data
+        return storeCoummunity.ArticleList = res.data
+    })
+    .then(articles => {
+        console.log(articles)
+        // 댓글 수를 기준으로 내림차순 정렬
+        const sortedArticles = articles.sort((a, b) => b.comments.length - a.comments.length);
+        // 상위 3개 항목 선택
+        const topThreeArticles = sortedArticles.slice(0, 3);
+        // storeCoummunity.popArticleList에 저장
+        storeCoummunity.popArticleList = topThreeArticles;
+
+        console.log(articles[0].user)
+        console.log(storeAccount.userId)
+
+        // user 값이 storeCoummunity.userId와 일치하는 항목만 필터링
+        const myArticles = articles.filter(article => article.user == storeAccount.userId);
+        // 필터링된 결과를 storeCoummunity.myArticleList에 저장
+        console.log(myArticles)
+        storeCoummunity.myArticleList = myArticles;
     })
     .catch(err => {
-        console.log(err.response.data)
+        console.log(err)
     })
 })
 
@@ -117,6 +154,18 @@ const displayedArticles = computed(() => {
         return storeCoummunity.ArticleList;
     }
 });
+
+const myLook = ref(false)
+const toggle = () => {
+    myLook.value = !myLook.value
+}
+const myDisplayedArticles = computed(() => {
+    if (myLook) {
+        return storeCoummunity.myArticleList
+    } else {
+        return storeCoummunity.ArticleList
+    }
+})
 
 const login = () => {
     router.push({ name: 'login' })

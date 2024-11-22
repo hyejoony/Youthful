@@ -17,6 +17,7 @@ export const useAccountStore = defineStore('account', () => {
   const sameErr = ref('')
 
   const signUp = (payload) => {
+    const email = payload.email
 
     const formData = new FormData();
     formData.append('email', payload.email);
@@ -45,6 +46,7 @@ export const useAccountStore = defineStore('account', () => {
         console.log('회원가입이 완료되었습니다.')
         const password = payload.password1
         logIn({ email, password })
+        console.log('dfdfdfdf')
         router.push({name: 'home'})
       })
       .catch(err => {
@@ -77,7 +79,7 @@ export const useAccountStore = defineStore('account', () => {
       if (err.response.data.detail === '회원가입 처리 중 오류가 발생했습니다.') {
         sameErr.value = '이미 존재하는 회원입니다';
       }
-        console.log(err.response.data)
+        // console.log(err.response.data)
       })
   }
 
