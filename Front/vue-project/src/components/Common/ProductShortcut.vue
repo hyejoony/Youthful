@@ -1,29 +1,33 @@
 <template>
-    <!-- 상품 페이지 예금/적금 바로가기, 전체/추천 바로가기 컴포넌트 -->
-    <v-btn-toggle v-model="toggle_exclusive" class="toggle-color" mandatory @update:modelValue="handleToggleChange">
-        <v-btn v-if="isSubsidyRoute" :value="'전체'" :class="{ 'selected-btn': toggle_exclusive === '전체' }">
-            전체
-        </v-btn>
-        <v-btn v-if="isSubsidyRoute" :value="'추천'" :class="{ 'selected-btn': toggle_exclusive === '추천' }">
-            추천
-        </v-btn>
-        <v-btn v-if="!isSubsidyRoute" :value="'예금'" :class="{ 'selected-btn': toggle_exclusive === '예금' }">
-            예금
-        </v-btn>
-        <v-btn v-if="!isSubsidyRoute" :value="'적금'" :class="{ 'selected-btn': toggle_exclusive === '적금' }">
-            적금
-        </v-btn>
-    </v-btn-toggle>
-    <div v-if="!isSubsidyRoute" style="margin-left: 55px; margin-top: 20px;">
-        <span @click="goback" class="clickable-title"
-        :class="{ 'active-title': selectedTitle === '전체' }">전체 </span>
-        <span> | </span>
-        <span @click="gotoReco" class="clickable-title"
-        :class="{ 'active-title': selectedTitle === '추천' }"> 추천</span>
-        <span class="speech-bubble">
-            나에게 딱 맞는 상품을 추천해드려요
-        </span>
-    </div>
+
+        <!-- 상품 페이지 예금/적금 바로가기, 전체/추천 바로가기 컴포넌트 -->
+        <v-btn-toggle v-model="toggle_exclusive" class="toggle-color" mandatory @update:modelValue="handleToggleChange">
+            <v-btn v-if="isSubsidyRoute" :value="'전체'" :class="{ 'selected-btn': toggle_exclusive === '전체' }">
+                전체
+            </v-btn>
+            <v-btn v-if="isSubsidyRoute" :value="'추천'" :class="{ 'selected-btn': toggle_exclusive === '추천' }">
+                추천
+            </v-btn>
+            <v-btn v-if="!isSubsidyRoute" :value="'예금'" :class="{ 'selected-btn': toggle_exclusive === '예금' }">
+                예금
+            </v-btn>
+            <v-btn v-if="!isSubsidyRoute" :value="'적금'" :class="{ 'selected-btn': toggle_exclusive === '적금' }">
+                적금
+            </v-btn>
+        </v-btn-toggle>
+
+
+
+        <div v-if="!isSubsidyRoute" style="margin-left: 55px; margin-top: 20px;">
+            <span @click="goback" class="clickable-title" :class="{ 'active-title': selectedTitle === '전체' }">전체 </span>
+            <span> | </span>
+            <span @click="gotoReco" class="clickable-title" :class="{ 'active-title': selectedTitle === '추천' }">
+                추천</span>
+            <span class="speech-bubble">
+                나에게 딱 맞는 상품을 추천해드려요
+            </span>
+        </div>
+
 </template>
 
 <script setup>
@@ -83,9 +87,6 @@ const handleToggleChange = (value) => {
 }
 </script>
 
-<style scoped>
-/* 스타일은 그대로 유지 */
-</style>
 
 <style scoped>
 .txt-custom {
@@ -123,6 +124,7 @@ const handleToggleChange = (value) => {
     width: 220px;
     margin: 20px;
 }
+
 .speech-bubble::after {
     content: "";
     position: absolute;
@@ -151,7 +153,9 @@ const handleToggleChange = (value) => {
 
 /* 기존 스타일 유지 */
 .active-title {
-   font-weight: bold;
-   color: #658EA7;  /* 원하는 강조 색상으로 변경 가능 */
+    font-weight: bold;
+    color: #658EA7;
+    /* 원하는 강조 색상으로 변경 가능 */
 }
+
 </style>

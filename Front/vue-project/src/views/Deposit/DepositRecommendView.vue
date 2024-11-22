@@ -2,7 +2,6 @@
     <ProductShortcut />
     <ProductRecoHeader />
     <div class="container">
-
         <ProductListContent />
     </div>
 </template>

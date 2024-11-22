@@ -1,7 +1,6 @@
 <template>
-
-    <ProductShortcut />
-    <div class=container>
+        <ProductShortcut />
+        <div class=container>
         <ProductListHeader />
         <ProductListContent />
     </div>
@@ -28,4 +27,6 @@ import { ref } from 'vue'
     align-items: center;
 
 }
+
+
 </style>

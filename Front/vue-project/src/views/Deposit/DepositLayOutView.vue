@@ -1,7 +1,7 @@
 <template>
-        <h1 style="color:#658EA7;">예적금 비교</h1>
-
+    <h1 style="color:#658EA7;">예적금 비교</h1>
     <RouterView />
+
 </template>
 
 <script setup>

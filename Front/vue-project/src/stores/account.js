@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 
-
 export const useAccountStore = defineStore('account', () => {
   const API_URL = 'http://127.0.0.1:8000'
   const router = useRouter()
@@ -157,7 +156,6 @@ export const useAccountStore = defineStore('account', () => {
       console.log(err.response.data)
     })
   }
-
 
 
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
