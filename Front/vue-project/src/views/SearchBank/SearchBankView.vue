@@ -1,20 +1,27 @@
 <template>
-    <h1 class="mt-4" style="color:#658EA7;">내 집 주변 은행 찾기</h1>
-    <div class="flex">
-        <v-form>
-            <div class="select-container" style="width: 1000px;">
-                <v-select  v-model="selectedCity" label="광역시/도" :items="location1" variant="solo"></v-select>
-                <v-select  v-model="selectedDistrict" label="시/군/구" :items="location2" variant="solo"></v-select>
-                <v-select  v-model="selectedBank" label="은행명" :items="bankname" variant="solo"></v-select>
-                <v-btn @click="searchBanks" style="height: 56px; color: #658EA7;  font-size: 18px;"
-                    rounded="small"><v-icon>mdi-map</v-icon>찾기</v-btn>
-            </div>
-        </v-form>
+    <v-container>
+        <v-row>
+            <v-col sm='12' lg="12">
+                <h1 class="title" style="color:#658EA7;">내 집 주변 은행 찾기</h1>
+                <div class="flex">
+                    <v-form>
+                        <div class="select-container" style="max-width: 700px; margin: auto;">
+                            <v-select v-model="selectedCity" label="광역시/도" :items="location1" variant="solo"></v-select>
+                            <v-select v-model="selectedDistrict" label="시/군/구" :items="location2"
+                                variant="solo"></v-select>
+                            <v-select v-model="selectedBank" label="은행명" :items="bankname" variant="solo"></v-select>
+                            <v-btn @click="searchBanks" style="height: 56px; color: #658EA7;  font-size: 18px;"
+                                rounded="small"><v-icon>mdi-map</v-icon>찾기</v-btn>
+                        </div>
+                    </v-form>
 
-        <v-card height="400px" width="1000px" hover>
-            <KakaoMap :searchParams="searchParams" />
-        </v-card>
-    </div>
+                    <v-card height="400px"  hover>
+                        <KakaoMap :searchParams="searchParams" />
+                    </v-card>
+                </div>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script setup>
@@ -96,20 +103,27 @@ const searchBanks = () => {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
 
 }
 
 h1 {
-    margin-left: 50px;
-    margin-bottom: 20px
+    text-align: center;
 }
 
 .flex {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    align-items: center;
+    /* margin: auto; */
+    /* align-items: center; */
+
+}
+
+.title {
+
+    /* margin-left: 50px; */
+    margin-bottom: 40px;
+    margin-top: 20px;
 
 }
 </style>

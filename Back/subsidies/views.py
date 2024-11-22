@@ -76,7 +76,6 @@ def save_subsidy(request):
     return JsonResponse({'message' : '저장 성공!'})
 
 
-
 # 보조금 상품 목록 조회
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

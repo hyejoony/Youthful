@@ -1,9 +1,8 @@
 <template>
-    <div>
-        <div id="map" style="width: 100%; height: 400px;"></div>
+        <div id="map" style=" height: 400px;"></div>
         <ul id="placesList"></ul>
         <div id="pagination"></div>
-    </div>
+
 </template>
 
 <script setup>
@@ -98,4 +97,5 @@ watch(() => props.searchParams, (newParams) => {
     width: 100%;
     height: 400px;
 }
+
 </style>

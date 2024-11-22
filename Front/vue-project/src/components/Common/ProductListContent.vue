@@ -11,16 +11,7 @@
                     순</v-btn>
             </div>
         </card-head>
-        <hr class="mt-2">
-        <card-content v-for="article in displayedArticles">
-            <h5 class="hashtag"> {{ article.keyword }}</h5>
 
-            <h4 @click="getDetail" class="clickable-title ml-3">{{ article?.title }}</h4>
-            <h5 style="color: #767676;" class="ml-3"> {{ article?.content }}</h5>
-            <!-- <h5> {{  article.id }}님</h5> -->
-            <!-- <h5> 댓글 {{ article.commentCount }}개</h5> -->
-            <hr class="mt-5 mb-5">
-        </card-content>
     </v-card>
 </template>
 
