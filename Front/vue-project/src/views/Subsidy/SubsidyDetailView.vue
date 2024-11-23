@@ -8,6 +8,9 @@
 
             <h5 style="color: #658EA7;" @click="gotoReview" class=" ml-7 mt-1 clickable-title">이용자 리뷰 보기</h5>
         </v-card>
+
+        <a href="/subsidy" style="color: #767676; font-size: 13px" class="mt-2 mb-2">이전 페이지로 돌아가기<v-icon>mdi-chevron-left</v-icon></a>
+
     </div>
 </template>
 
@@ -16,7 +19,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import ProductDetailHeader from '@/components/Common/ProductDetailHeader.vue';
 import ProductDetailContent from '@/components/Common/ProductDetailContent.vue';
-
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { onMounted } from 'vue';
@@ -29,6 +31,8 @@ const route = useRoute();
 
 const subsidy = ref('')
 const id = ref('')
+
+
 onMounted(() => {
     axios({
         method: 'get',
@@ -38,9 +42,10 @@ onMounted(() => {
         }
     })
         .then((res => {
-            console.log(res.data) // 객체반환
+            console.log('특정 data',res.data) // 객체반환
             subsidy.value = res.data
             id.value = route.params.id
+            console.log('id',id.value)
         }))
 })
 
@@ -50,7 +55,7 @@ const router = useRouter()
 // const id = route.params.id
 const gotoReview = () => {
     console.log('id', id)
-    router.push({ name: 'subsidyreview' , params: { id }})
+    router.push({ name: 'subsidyreview' , params: { id: id.value }})
 }
 
 

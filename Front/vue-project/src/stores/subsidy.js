@@ -5,9 +5,8 @@ import { useRouter } from 'vue-router';
 import { useAccountStore } from './account';
 
 export const UseSubsidyStore = defineStore('Subsidy', () => {
-    const subsidies = ref('')
+    const subsidies = ref([])
     const API_URL =  'http://127.0.0.1:8000'
-    
     
     const getSubsidies = function () {
         const storeAccount = useAccountStore()
@@ -27,6 +26,7 @@ export const UseSubsidyStore = defineStore('Subsidy', () => {
         })
         .catch(err => console.log(err))
     }
+
     
   return { getSubsidies, subsidies, API_URL
    }
