@@ -1,5 +1,5 @@
 <template>
-    <h4 class="pa-4 mb-">보조금 이름</h4>
+    <h4 class="pa-4 mb-2">보조금 이름</h4>
     <v-card width="800" class="pa-4">
         <!-- 리뷰 작성 폼 -->
         <v-form @submit.prevent="submitReview">
@@ -27,26 +27,21 @@
 
         <!-- 리뷰 목록 표시 영역 -->
         <div class="review-list">
-            <v-list>
+            <p v-if="subsidy?.comments?.length === 0">아직 작성된 리뷰가 없어요. 리뷰를 남겨보세요.</p>
+            <v-list v-else>
                 <!-- 각 리뷰 항목을 순회하며 표시 -->
-                <v-list-item v-for="(review, index) in subsidy.comments" :key="index">
+                <v-list-item v-for="(review, index) in subsidy?.comments" :key="index">
                     <v-list-item-content>
                         <!-- 리뷰 텍스트 및 버튼들 -->
                         <div class="d-flex align-center justify-space-between">
-                            <v-list-item-title>{{ review.text }}</v-list-item-title>
+                            <v-list-item-title style="font-size: 15px;"> {{ review.content }}</v-list-item-title>
                             <div class="button-group">
-                                <!-- 좋아요 버튼 -->
-                                <v-btn icon small @click="toggleLike(index)" class="icon-button">
-                                    <v-icon size="19" :color="review.liked ? '#658EA7' : ''">
-                                        {{ review.liked ? 'mdi-heart' : 'mdi-heart-outline' }}
-                                    </v-icon>
-                                </v-btn>
                                 <!-- 수정 버튼 (모달 열기) -->
                                 <v-btn icon small @click="openEditDialog(review, index)" class="icon-button">
                                     <v-icon size="19">mdi-pencil</v-icon>
                                 </v-btn>
                                 <!-- 삭제 버튼 -->
-                                <v-btn icon small @click="deleteReview(index)" class="icon-button">
+                                <v-btn icon small @click="deleteReview(review.id, index)" class="icon-button">
                                     <v-icon size="19">mdi-delete</v-icon>
                                 </v-btn>
                             </div>
@@ -57,8 +52,9 @@
                                 :size="16" color="#658EA7" />
                         </v-list-item-subtitle>
                         <!-- 작성자 및 작성일자 정보 -->
-                        <span class="text-caption mr-2">작성자 {{ review.author }}</span>
-                        <span class="text-caption">작성일자 {{ review.date }}</span>
+                        <span class="text-caption mr-2">작성자 {{ review.user }}</span>
+                        <span class="text-caption ">작성일자 {{ review.updated_at.match(/^(\d{4}-\d{2}-\d{2})/)[1] }}</span>
+
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -71,6 +67,14 @@
                 <v-card-text>
                     <!-- 수정할 리뷰 내용 입력 필드 -->
                     <v-text-field v-model="editedReviewText" placeholder="리뷰 내용을 수정하세요." hide-details></v-text-field>
+                    <v-row class="mt-2">
+                        <v-col cols="12">
+                            <!-- 별점 선택 컴포넌트 -->
+                            <v-rating v-model="editedRating" hover clearable :length="5" :size="32" color="#658EA7" />
+                            <!-- 선택된 별점 표시 -->
+                            <span class="ml-2">{{ editedRating || '0' }}점</span>
+                        </v-col>
+                    </v-row>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -79,13 +83,16 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
     </v-card>
+    <div style="text-align: center;">
+        <a href="/subsidy/detail/${subsidyId}" style="color: #767676; font-size: 13px;" class="mt-2 mb-2">이전 페이지로
+            돌아가기<v-icon>mdi-chevron-left</v-icon></a>
+    </div>
 </template>
 
 <script setup>
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { UseSubsidyStore } from '@/stores/subsidy';
 import { useAccountStore } from '@/stores/account';
 import { useRoute } from 'vue-router';
@@ -93,8 +100,9 @@ const storeAccount = useAccountStore()
 const storeSubsidy = UseSubsidyStore()
 const route = useRoute()
 
-const subsidy = ref('')
+const subsidy = ref('') // 여기에서 내가 사용할 변수 
 
+const subsidyId = route.params.id
 onMounted(() => {
     axios({
         method: 'get',
@@ -104,19 +112,18 @@ onMounted(() => {
         }
     })
         .then((res => {
-            console.log('상세 보조금 데이터 반환',res.data) // 객체반환
+            console.log('상세 보조금 데이터 반환', res.data) // 객체반환
             subsidy.value = res.data
+            console.log('subsidy', subsidy)
         }))
 })
 
+// 리뷰 생성 -------------------------------------------------------------------
 const reviewText = ref('');
 const rating = ref(0);
-const reviews = ref([]);
-const editDialog = ref(false); // 모달 상태
-const editedReviewText = ref(''); // 수정할 리뷰 내용
-let currentEditIndex = ref(null); // 현재 수정 중인 리뷰 인덱스
 
-const submitReview = () => {
+// - 비동기처리 !! 
+const submitReview = async () => {
     if (!reviewText.value.trim()) {
         alert('리뷰 내용을 입력해주세요.');
         return;
@@ -126,33 +133,56 @@ const submitReview = () => {
         return;
     }
 
-    // 현재 날짜 생성
-    const currentDate = new Date().toLocaleDateString();
-
-    reviews.value.push({
-        text: reviewText.value,
+    const newComment = {
+        content: reviewText.value,
         rating: rating.value,
-        author: '익명', // 실제 사용시 로그인된 사용자 이름으로 대체
-        date: currentDate,
-        liked: false
-    });
+        id: subsidyId
+    };
 
-    console.log('리뷰 내용:', reviewText.value);
-    console.log('별점:', rating.value);
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${storeSubsidy.API_URL}/api/v1/subsidies/${route.params.id}/comments/`,
+            headers: {
+                Authorization: `Token ${storeAccount.token}`
+            },
+            data: newComment
+        });
 
-    reviewText.value = '';
-    rating.value = 0;
+        // API 응답에서 새로 생성된 댓글 정보를 받아옵니다.
+        const createdComment = response.data;
+
+        subsidy.value.comments.push(createdComment);
+
+        // 입력 필드 초기화
+        reviewText.value = '';
+        rating.value = 0;
+
+        console.log('댓글이 성공적으로 추가되었습니다.', subsidy.value.comments);
+
+    } catch (error) {
+        console.error('댓글 추가 중 오류 발생:', error);
+    }
 };
 
-// 좋아요 토글 함수
-const toggleLike = (index) => {
-    reviews.value[index].liked = !reviews.value[index].liked;
-};
 
-// 모달 열기 함수
+// 리뷰 수정 ----------------------------------------------------------------------------------
+const editDialog = ref(false); // 모달 상태
+const editedReviewText = ref(''); // 수정할 리뷰 내용
+const editedRating = ref('')
+const currentReviewId = ref(null);
+const currentReviewIndex = ref(null)
+
+// 모달 열기 함수 
 const openEditDialog = (review, index) => {
-    editedReviewText.value = review.text; // 기존 리뷰 내용으로 초기화
-    currentEditIndex.value = index; // 현재 수정 중인 인덱스 저장
+    console.log('opendialog_idx', index)
+    editedReviewText.value = review.content; // 기존 리뷰 내용으로 초기화
+    currentReviewId.value = review.id
+    currentReviewIndex.value = index
+    console.log('review.rating', review.rating)
+    editedRating.value = review.rating
+
+    console.log('currentReviewId)', currentReviewId.value)
     editDialog.value = true; // 모달 열기
 };
 
@@ -161,20 +191,64 @@ const closeEditDialog = () => {
     editDialog.value = false; // 모달 닫기
 };
 
-// 리뷰 수정 함수
-const updateReview = () => {
-    if (currentEditIndex.value !== null) {
-        reviews.value[currentEditIndex.value].text = editedReviewText.value; // 수정된 내용으로 업데이트
+
+const updateReview = async () => {
+
+    const newComment = {
+        content: editedReviewText.value,
+        rating: editedRating.value,
+    };
+
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `${storeSubsidy.API_URL}/api/v1/subsidies/${subsidyId}/comments/${currentReviewId.value}/`,
+            headers: {
+                Authorization: `Token ${storeAccount.token}`
+            },
+            data: newComment
+        });
+
+
+        subsidy.value.comments[currentReviewIndex.value] = response.data;
+
+        // 입력 필드 초기화
+        reviewText.value = '';
+        rating.value = 0;
+
+        console.log('댓글이 성공적으로 수정되었습니다.', subsidy.value.comments);
+        editDialog.value = false; // 모달닫기
+
+    } catch (error) {
+        console.error('댓글 수정 중 오류 발생:', error);
     }
-    closeEditDialog(); // 모달 닫기
 };
 
-// 리뷰 삭제 함수
-const deleteReview = (index) => {
-    if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
-        reviews.value.splice(index, 1);
+
+// 리뷰 삭제 ---------------------------------------------------------------------------
+
+const deleteReview = async (reviewId, index) => {
+
+    try {
+        const response = await axios({
+            method: 'delete',
+            url: `${storeSubsidy.API_URL}/api/v1/subsidies/${subsidyId}/comments/${reviewId}/`,
+            headers: {
+                Authorization: `Token ${storeAccount.token}`
+            },
+
+        });
+
+        subsidy.value.comments.splice(index, 1)
+
+        editDialog.value = false; // 모달닫기
+
+    } catch (error) {
+        console.error('댓글 삭제 중 오류 발생:', error);
     }
 };
+
+
 </script>
 
 <style scoped>
@@ -198,9 +272,9 @@ const deleteReview = (index) => {
     width: 20px;
     height: 20px;
 }
+
 .clickable-title {
     cursor: pointer;
     transition: color 0.3s ease;
 }
-
 </style>

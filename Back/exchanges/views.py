@@ -1,6 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django.http import HttpRequest
+import re # 정규표현식 
+
 
 # permission Decorators
 from rest_framework.decorators import permission_classes
@@ -37,29 +40,39 @@ def save_exchange(request):
         
         # 열의 개수가 7개 이상인 경우에만 데이터 처리 (헤더 행 제외)
         if len(columns) >= 7:
-            # 각 열에서 필요한 데이터 추출 및 공백 제거
-            cur_unit = columns[0].text.strip()  # 통화 단위
-            
+
+            country_currency = columns[0].text.strip() #나라명, 화폐단위
+        # 국가명, 통화 단위, 단위 정보 분리
+            match = re.match(r'(.+)\s+([A-Z]{3})\s*(\(.+\))?', country_currency)
+            if match:
+                country_name = match.group(1).strip()
+                cur_unit = match.group(2)
+            else:
+                country_name = country_currency
+                cur_unit = "N/A"
+                
+
             # 링크 추출
             link_pre = columns[0].find('a')['href']
             link = f'https://finance.naver.com{link_pre}'  # 전체 URL 생성
 
             
-            basic_rate = columns[1].text.strip()  # 기준 환율
-            remittance_send = columns[4].text.strip()  # 송금 시 환율
-            remittance_receive = columns[5].text.strip()  # 수신 시 환율
+            basic_rate = columns[1].text.strip()  # 매매 기준율
+            cash_send = columns[2].text.strip()  # 현찰 살때 환율
+            cash_receive = columns[3].text.strip()  # 현찰 팔때 환율
 
             # 추가 크롤링: 상세 페이지에서 이미지 링크 가져오기
             img_src = get_image_src(link)
 
             # 저장할 데이터를 딕셔너리 형태로 구성
             save_data = {
+                'country_name': country_name,
                 'cur_unit': cur_unit,
                 'link': link,
                 'image_src': img_src,  # 이미지 링크 추가
                 'basic_rate': basic_rate,
-                'remittance_send': remittance_send,
-                'remittance_receive': remittance_receive
+                'cash_send': cash_send,
+                'cash_receive': cash_receive
             }
 
             # 시리얼라이저를 사용하여 데이터를 검증 및 저장
@@ -97,4 +110,19 @@ def exchange_list(request):
         exchanges = get_list_or_404(Exchange)
         serializer = ExchangeSerializers(exchanges, many=True)
         return Response(serializer.data)
-
+    
+#매일 특정시간에 데이터 새로고침
+@api_view(['DELETE'])
+def clear_list(request):
+    exchanges = Exchange.objects.all()
+    exchanges.delete()
+    # HttpRequest 객체 생성하여 전달
+    http_request = HttpRequest()
+    http_request.method = 'GET'  # save_exchange는 GET 메소드를 기대합니다
+    
+    # 새로운 데이터 저장
+    save_exchange(http_request)
+    if request:
+        return Response({'message': '데이터 초기화 및 새로고침 완료'}, status=status.HTTP_200_OK)
+        
+    

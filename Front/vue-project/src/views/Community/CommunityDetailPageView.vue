@@ -81,7 +81,7 @@
         </div>
         <div v-else  class="ml-4" style="color: #767676;">아직 달린 댓글이 없어요.</div>
     </v-card>
-    <a href="/community" style="color: #767676;">이전 페이지로 돌아가기<v-icon>mdi-chevron-left</v-icon></a>
+    <a href="/community" style="color: #767676; font-size: 13px" class="mt-2 mb-2">이전 페이지로 돌아가기<v-icon>mdi-chevron-left</v-icon></a>
 </template>
 
 <script setup>
