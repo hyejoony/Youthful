@@ -1,5 +1,5 @@
 <template>
-
+    <RouterView />
                 <h1 class="title" style="color:#658EA7;">내 집 주변 은행 찾기</h1>
                 <div class="flex">
                     <v-form>
@@ -21,6 +21,19 @@
 </template>
 
 <script setup>
+
+import { RouterLink, RouterView } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
+const storeAccount = useAccountStore()
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 import KakaoMap from '@/components/Bank/KakaoMap.vue';
 
 const location1 = [

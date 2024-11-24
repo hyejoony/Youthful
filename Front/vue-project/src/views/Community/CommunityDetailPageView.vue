@@ -1,10 +1,11 @@
 <template>
+    <Routerview />
     <br>
-    <v-card v-if="article" class="mt-4" width="900" height="800" elevation="2">
+    <v-card v-if="article" class="mt-4" width="900" max-height="800" elevation="2">
         <card-head>
             <p class="mt-2 pl-4"> {{ article.title }}</p>
         </card-head>
-        <hr style="color: #767676;" class="mt-3">
+        <hr  style="color: #767676;" class="mt-3">
         <div class="card-user-info mt-2 pl-4" style="color: #767676;">
             <span>{{ article.user_display_name }}님 | 작성일 : {{ article.created_at.slice(0,10) }}</span>
             <card-content>
@@ -12,7 +13,7 @@
             </card-content>
             <div class="change">
                 <v-btn @click="goProfile(article.user)" class="clickable-item">프로필<v-icon>mdi-account</v-icon></v-btn>
-                <div>
+                <div v-if="storeAccount.userId == article.user">
                     <v-btn @click="openDialog">수정하기<v-icon>mdi-pencil</v-icon></v-btn>
                     <!-- 모달창 -->
                     <v-dialog v-model="dialog" max-width="500">
@@ -39,7 +40,7 @@
                         </v-card>
                     </v-dialog>
                 </div>
-                <v-btn @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                <v-btn v-if="storeAccount.userId == article.user" @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
             </div>
         </div>
         <hr style="color: #767676;" class="mt-3">
@@ -56,11 +57,11 @@
         </v-form>
 
         <div v-if="commentList.length > 0" v-for="comment in commentList" :key="comment.createdAt">
-            <p>{{ comment.content }}
+            <p style="margin-bottom: 3px;">{{ comment.content }}
                 <span>
                     <span>
-                        <v-btn @click="goProfile(comment.user)" class="clickable-item" density="compact" icon="mdi-account"></v-btn>
-                        <v-btn @click="openDialogComment(comment)" density="compact" icon="mdi-pencil"></v-btn>
+                        <v-btn  v-if="storeAccount.userId != comment.user" @click="goProfile(comment.user)" class="clickable-item" density="compact" icon="mdi-account"></v-btn>
+                        <v-btn v-if="storeAccount.userId == comment.user" @click="openDialogComment(comment)" density="compact" icon="mdi-pencil"></v-btn>
                         <!-- 모달창 -->
                         <v-dialog v-model="dialogComment" max-width="500">
                             <v-card>
@@ -76,13 +77,13 @@
                             </v-card>
                         </v-dialog>
                     </span>
-                    <v-btn @click="deleteComment(comment.id)" density="compact" icon="mdi-trash-can-outline"></v-btn>
+                    <v-btn  v-if="storeAccount.userId == comment.user" @click="deleteComment(comment.id)" density="compact" icon="mdi-trash-can-outline"></v-btn>
                 </span>
             </p>
-            <span>작성자 : {{ comment.user_display_name }} | 작성일 : {{ comment?.updated_at.slice(0,10) }}</span>
-            <hr>
+            <span>작성자 : {{ comment.user_display_name }}님 | 작성일 : {{ comment?.updated_at.slice(0,10) }}</span>
+            <hr class="mb-5">
         </div>
-        <div v-else  class="ml-4" style="color: #767676;">아직 달린 댓글이 없어요.</div>
+        <div v-else  class="ml-4 mb-5" style="color: #767676;">아직 달린 댓글이 없어요.</div>
     </v-card>
     <a href="/community" style="color: #767676; font-size: 13px" class="mt-2 mb-2">이전 페이지로 돌아가기<v-icon>mdi-chevron-left</v-icon></a>
 </template>
@@ -91,8 +92,18 @@
 import { UseCommunityStore } from '@/stores/community';
 import { onMounted } from 'vue';
 import { ref, watch } from 'vue'
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { RouterLink, RouterView } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { onBeforeMount } from 'vue';
 
+const storeAccount = useAccountStore()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 
 const store = UseCommunityStore()
 const route = useRoute()
@@ -233,8 +244,9 @@ const goProfile = (id) => {
   cursor: pointer;
 }
 
+/* 버튼인데 underline 되길래 지워뒀어  */
 .clickable-item:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   color: #658EA7;
 }
 </style>

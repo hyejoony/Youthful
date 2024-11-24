@@ -1,4 +1,5 @@
 <template>
+    <RouterView />
     <ProductShortcut />
     <div v-if="storeSaving.savings" class="container">
         <ProductListHeader />
@@ -14,6 +15,20 @@ import ProductListHeader from '@/components/Common/ProductListHeader.vue';
 import SavingListContent from '@/components/Common/SavingListContent.vue';
 import { ref, onMounted } from 'vue'
 import { UseSavingStore } from '@/stores/saving'
+
+import { RouterLink, RouterView } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
+const storeAccount = useAccountStore()
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
+
 
 const storeSaving = UseSavingStore()
 onMounted(() => {

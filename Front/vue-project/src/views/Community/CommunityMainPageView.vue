@@ -1,6 +1,6 @@
 <template>
     <div class="total-div">
-        <v-card v-if="storeAccount.isLogin" width="900" height="80" elevation="2">
+        <v-card v-if="storeAccount.isLogin" width="900" height="90" elevation="2">
             <h3 class="mt-2 pl-4" style="color: #658EA7;">내가 알고있는 정보를 공유하거나, 모르는 점을 질문해보세요.</h3>
             <v-btn @click="writeArticle" width="100" height="30" class="mt-2 ml-4"
                 rounded="xl">글쓰기<v-icon>mdi-pencil</v-icon>
@@ -15,14 +15,14 @@
             </v-btn>
         </v-card>
 
-        <v-card class="mt-4 " width="900" height="110" elevation="2">
+        <v-card class="mt-4 " width="900" height="120" elevation="2">
             <h3 class="mt-2 pl-4" style="color: #658EA7;">인기 게시글</h3>
             <div class="ml-4" v-for="popArticle in storeCoummunity.popArticleList" :key="popArticle.id">
                 <h5 style="display: inline;">{{ popArticle.keyword }} |</h5>
                 <h5 @click="getDetail(popArticle.id)" class="clickable-title" style="font-weight: 400; display: inline;"> {{ popArticle.title }}</h5>
             </div>
         </v-card>
-        <v-card class="mt-4" width="900" height="900px" elevation="2">
+        <v-card class="mt-4 mb-5" width="900" max-height="900px" elevation="2">
             <card-head>
                 <div class="mt-3 pr-2 keyword-div" style="display: flex;">
                     <v-btn style="font-size: 14px;" density="compact"
