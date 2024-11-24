@@ -27,7 +27,40 @@
                     <p class="p-1">직업 : {{ user.career }}</p><br>
                 </div>
                 <hr>
-                <v-btn class='signup-bttn' rounded="xl">회원정보 수정</v-btn>
+                <div>
+                    <v-btn @click="openDialog" class='signup-bttn' rounded="xl">회원정보 수정</v-btn>
+                    <!-- 모달창 -->
+                    <v-dialog v-model="dialog" max-width="600">
+                        <v-card>
+                            <v-card-title class="ml-2" style="color: #658EA7;">회원정보 수정</v-card-title>
+                            <v-card-text>
+                                <v-text-field v-model="editNickname" label="닉네임"></v-text-field>
+                                <v-radio-group v-model="editIncome" inline color="#658EA7">
+                                    <v-radio label="0~50%" value="0~50%"></v-radio>
+                                    <v-radio label="51~75%" value="51~75%"></v-radio>
+                                    <v-radio label="76~100%" value="76~100%"></v-radio>
+                                    <v-radio label="101~200%" value="101~200%"></v-radio>
+                                    <v-radio label="200%~" value="200%~"></v-radio>
+                                </v-radio-group>
+                                <v-select v-model="editregion" label="지역" :items="regions" variant="solo"></v-select>
+                                <v-select v-model="editCareer" label="직업" :items="careers" variant="solo"></v-select><br>
+                                <p class="mb-2 p-first"><b>2024년 1인 가구 기준중위 소득표</b></p>
+                                    <div class="border-first px-4 py-2 mb-4 d-flex justify-space-between">
+                                        <span>1,114,223원</span>
+                                        <span>1,671,334원</span>
+                                        <span>2,228,445원</span>
+                                        <span>4,456,890원</span>
+                                        <span>4,456,890원 초과</span>
+                                    </div>
+                            </v-card-text>
+                            <template v-slot:actions>
+                                <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
+                                <v-btn variant="text" class="ms-auto" text="취소" @click="dialog = false"></v-btn>
+                                <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc()"></v-btn>
+                            </template>
+                        </v-card>
+                    </v-dialog>
+                </div>
             </v-col>
             <v-col cols="6">
                 <UserLikeList :user="user"/>
@@ -121,6 +154,87 @@ const onFileSelected = (event) => {
         reader.readAsDataURL(file);
     }
 };
+
+const dialog = ref(false) // 모달창 기본설정
+
+// 임시 수정 데이터
+const editNickname = ref('')
+const editIncome = ref('')
+const editCareer = ref('')
+const editregion = ref('')
+
+// 모달 열 때 기존 내용을 수정용 변수에 복사 
+const openDialog = () => {
+    editNickname.value = user.value.nickname
+    editIncome.value = user.value.income
+    editCareer.value = user.value.career
+    editregion.value = user.value.region
+    dialog.value = true
+}
+
+// 회원정보 수정
+const saveChangesFunc = async () => {
+    const payload = {
+        id: store.userId,
+        editNickname: editNickname.value,
+        editIncome: editIncome.value,
+        editCareer: editCareer.value,
+        editregion: editregion.value
+    }
+    const result = await store.saveUpdateChanges(payload)
+    user.value.nickname = editNickname
+    user.value.income = editIncome
+    user.value.career = editCareer
+    user.value.region = editregion
+    dialog.value = false
+}
+
+const regions = [
+    '서울특별시',
+    '부산광역시',
+    '대구광역시',
+    '인천광역시',
+    '광주광역시',
+    '대전광역시',
+    '울산광역시',
+    '세종특별자치시',
+    '경기도',
+    '강원특별자치도',
+    '충청북도',
+    '충청남도',
+    '전라북도',
+    '전라남도',
+    '경상북도',
+    '경상남도',
+    '제주특별자치도'
+]
+
+const careers = [
+    '학생',
+    '회사원',
+    '공무원',
+    '전문직',
+    '자영업자',
+    '프리랜서',
+    '사업자',
+    '아르바이트/비정규직',
+    '전업주부',
+    '무직/구직중',
+    '은퇴자',
+    '농업/어업/임업',
+    '군인',
+    '교사/교육자',
+    '의료종사자',
+    '금융업 종사자',
+    'IT업계 종사자',
+    '서비스업 종사자',
+    '제조업 종사자',
+    '스타트업 창업자',
+    '사회복지사',
+    '연구원',
+    '기타'
+]
+
 </script>
 
 <style scoped>
@@ -168,5 +282,16 @@ hr {
     margin-bottom: 30px;
     margin-top: 30px;
 
+}
+
+.border-first {
+    text-align: center;
+    border-radius: 10px;
+    background-color: #EFEFEF;
+    font-size: 13px;
+}
+
+.p-first {
+    font-size: 14px;
 }
 </style>
