@@ -19,7 +19,6 @@ import SavingDetailView from '@/views/Saving/SavingDetailView.vue'
 import SavingLayOutView from '@/views/Saving/SavingLayOutView.vue'
 import SavingListView from '@/views/Saving/SavingListView.vue'
 import SavingRecommendView from '@/views/Saving/SavingRecommendView.vue'
-import SavingReviewView from '@/views/Saving/SavingReviewView.vue'
 import SubsidyLayOutView from '@/views/Subsidy/SubsidyLayOutView.vue'
 import SubsidyDetailView from '@/views/Subsidy/SubsidyDetailView.vue'
 import SubsidyListView from '@/views/Subsidy/SubsidyListView.vue'
@@ -135,11 +134,6 @@ const router = createRouter({
           path: '/saving/recommend',
           name: 'savingrecommend',
           component: SavingRecommendView
-        },
-        {
-          path: '/saving/detail/:id/review',
-          name: 'savingreview',
-          component: SavingReviewView
         },
       ]
       

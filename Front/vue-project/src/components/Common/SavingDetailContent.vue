@@ -41,7 +41,9 @@
                 </div>
             </div>
         </v-card>
-        <!-- <v-card v-if="!route.path.includes('/saving')" class="option-card mt-3 ml-2" width="900">
+
+
+        <v-card class="option-card mt-3 ml-2" width="900">
             <div class="card-header">
                 <h3>옵션</h3>
             </div>
@@ -49,37 +51,41 @@
             <v-table>
                 <thead>
                     <tr>
-                        <th v-if="route.path.includes('/saving')">적립유형명</th>
+                        <th>적립유형명</th>
                         <th>저축 금리 유형명</th>
                         <th>저축금리</th>
                         <th>최고 우대금리</th>
                         <th>저축기간</th>
-
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in interestRates" :key="index">
-                        <td v-if="route.path.includes('/saving')"> ?? </td>
-                        <td>{{ item.type }}</td>
-                        <td>{{ item.rate }}%</td>
-                        <td>{{ item.maxRate }}%</td>
-                        <td>{{ item.period }}개월</td>
+                    <tr v-for="option in savingOptions" :key="option.id">
+                        <td>{{ option.rsrv_type_nm }}</td>
+                        <td>{{ option.intr_rate_type_nm }}</td>
+                        <td>{{ option.intr_rate }}%</td>
+                        <td>{{ option.intr_rate2 }}%</td>
+                        <td>{{ option.save_trm }}개월</td>
                     </tr>
                 </tbody>
             </v-table>
-        </v-card> -->
+        </v-card>
     </div>
 </template>
 
 <script setup>
 
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
-defineProps({
+const props = defineProps({
     saving: Object
 })
 
 const route = useRoute()
+
+const savingOptions = computed(() => {
+    return props.saving?.saving_options || [];
+})
 
 
 </script>
