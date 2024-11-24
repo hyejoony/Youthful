@@ -159,9 +159,36 @@ export const useAccountStore = defineStore('account', () => {
     })
   }
 
+    // 데이터 저장
+    const saveUpdateChanges = (payload) => {
+      console.log(payload)
+      const id = payload.id
+      const formData = new FormData()
+      formData.append('nickname', payload.editNickname);
+      formData.append('income', payload.editIncome);
+      formData.append('career', payload.editCareer);
+      formData.append('region', payload.editregion);
+      return axios({
+        method: 'put',
+        url: `${API_URL}/accounts/profile/${id}/`,
+        headers: {
+          Authorization: `Token ${token.value}`
+        },
+        data: formData
+      })
+      .then(res => {
+        console.log('수정 완료')
+        return true
+      })
+      .catch(err => {
+        console.log(err.response.data)
+        return false
+      })
+    }
+
 
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
     incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
-    token, isLogin, userId, logout
+    token, isLogin, userId, logout, saveUpdateChanges
    }
 }, { persist: true })
