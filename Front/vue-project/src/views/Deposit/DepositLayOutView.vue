@@ -1,7 +1,7 @@
 <template>
-    <h1 style="color:#658EA7;">예적금 비교</h1>
-    <RouterView />
+    <h1 style="color:#658EA7;">예금 비교</h1>
 
+<RouterView />
 </template>
 
 <script setup>
@@ -12,6 +12,6 @@ import { RouterLink, RouterView } from 'vue-router';
 
 <style scoped>
 h1 {
-    text-align: center;
+text-align: center;
 }
 </style>

@@ -43,14 +43,6 @@ onMounted(() => {
 })
 
 
-const router = useRouter()
-
-// const id = route.params.id
-const gotoReview = () => {
-    console.log('id', id)
-    router.push({ name: 'savingreview' , params: { id: id.value }})
-}
-
 </script>
 
 <style scoped>
