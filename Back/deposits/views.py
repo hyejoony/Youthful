@@ -116,7 +116,7 @@ def deposit_product_list(request):
 
     # 페이지네이션 설정 (선택사항)
     page = request.GET.get('page', 1)
-    page_size = 10  # 페이지당 아이템 수
+    page_size = 100  # 페이지당 아이템 수
     paginator = Paginator(deposit_products, page_size)
     current_page = paginator.page(page)
 
