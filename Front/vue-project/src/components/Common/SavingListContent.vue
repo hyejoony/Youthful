@@ -16,10 +16,10 @@
                 <tr>
                     <td class="td-1">{{ item.kor_co_nm }}</td>
                     <td class="clickable-title" @click="gotoDetail(item.id)">{{ item.fin_prdt_nm }}</td>
-
-                    <!-- <td>{{ item.contact }}</td> -->
-                    <!-- <td>{{ item.target }}</td> -->
-                    <!-- <td>{{ item.likes }}개</td> -->
+                    <td>{{ getInterestRate(item.saving_options, 6) }}</td>
+                    <td>{{ getInterestRate(item.saving_options, 12) }}</td>
+                    <td>{{ getInterestRate(item.saving_options, 24) }}</td>
+                    <td>{{ getInterestRate(item.saving_options, 36) }}</td>
                 </tr>
             </template>
         </v-data-table>
@@ -54,10 +54,16 @@ onMounted(() => {
 const headers = [
     { title: '은행명', key: 'fin_prdt_nm', align: 'start', sortable: true },
     { title: '상품명', key: 'kor_co_nm', align: 'start', sortable: true },
-    // { title: '주최기관 및 문의처', key: 'contact', align: 'start', sortable: true },
-    // { title: '대상', key: 'target', align: 'start', sortable: true },
-    // { title: '찜 갯수', key: 'likes', align: 'start', sortable: true },
+    { title: '6개월', key: 'intr_rate_6', align: 'start', sortable: true },
+    { title: '12개월', key: 'intr_rate_12', align: 'start', sortable: true },
+    { title: '24개월', key: 'intr_rate_24', align: 'start', sortable: true },
+    { title: '36개월', key: 'intr_rate_36', align: 'start', sortable: true },
 ]
+
+const getInterestRate = (options, term) => {
+    const option = options.find(opt => opt.save_trm === term);
+    return option ? option.intr_rate2 : '-'
+    }
 
 </script>
 

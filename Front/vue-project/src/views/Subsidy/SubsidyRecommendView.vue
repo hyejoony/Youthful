@@ -1,10 +1,9 @@
 <template>
     <ProductShortcut />
     <div class="container">
-    <ProductRecoHeader />
-    <SubsidyListContent />
-</div>
-
+        <ProductRecoHeader />
+        <SubsidyListContent />
+    </div>
 </template>
 
 <script setup>
@@ -23,5 +22,5 @@ import { ref } from 'vue'
     display: flex;
     flex-direction: column;
     align-items: center;
-
-}</style>
+}
+</style>

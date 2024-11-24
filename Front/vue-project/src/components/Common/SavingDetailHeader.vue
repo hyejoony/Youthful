@@ -2,7 +2,7 @@
     <div class='top-div-flex'>
         <v-card class="product-card mt-3 ml-2 pb-3" width="800">
             <div class="card-flex mt-3 ml-7 pt-1">
-                <h3> {{saving.fin_prdt_nm}}</h3>
+                <h3>{{saving.fin_prdt_nm}} | {{ saving.kor_co_nm }}</h3>
                 <!-- <span class="bank-name ml-10 mt-1"> {{ saving. }} </span> -->
                 <span class="ml-10 mt-1" style="font-size: 14px;"> 
                     <v-icon size="small" style="color: #658EA7;">mdi-heart</v-icon> 찜 개수 {{ saving.likes_count }}개

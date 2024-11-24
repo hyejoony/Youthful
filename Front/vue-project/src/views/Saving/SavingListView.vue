@@ -1,5 +1,4 @@
 <template>
-
     <ProductShortcut />
     <div v-if="storeSaving.savings" class="container">
         <ProductListHeader />
@@ -20,7 +19,6 @@ const storeSaving = UseSavingStore()
 onMounted(() => {
     storeSaving.getSavings()
     console.log('storeSaving.savings',storeSaving.savings)
-    
 })
 
 

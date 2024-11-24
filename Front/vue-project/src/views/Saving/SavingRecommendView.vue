@@ -21,6 +21,5 @@ import { ref } from 'vue'
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 </style>
