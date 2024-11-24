@@ -1,9 +1,9 @@
 <template>
 
     <ProductShortcut />
-    <div class="container">
+    <div v-if="storeSaving.savings" class="container">
         <ProductListHeader />
-        <ProductListContent />
+        <SavingListContent :savings="storeSaving.savings"/>
     </div>
 
 </template>
@@ -12,9 +12,16 @@
 
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductListHeader from '@/components/Common/ProductListHeader.vue';
-import ProductListContent from '@/components/Common/ProductListContent.vue';
-import { ref } from 'vue'
+import SavingListContent from '@/components/Common/SavingListContent.vue';
+import { ref, onMounted } from 'vue'
+import { UseSavingStore } from '@/stores/saving'
 
+const storeSaving = UseSavingStore()
+onMounted(() => {
+    storeSaving.getSavings()
+    console.log('storeSaving.savings',storeSaving.savings)
+    
+})
 
 
 </script>

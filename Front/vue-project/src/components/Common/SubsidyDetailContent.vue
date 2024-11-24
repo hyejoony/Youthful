@@ -25,7 +25,7 @@
                 </div>
             </div>
         </v-card>
-        <v-card v-if="!route.path.includes('/subsidy')" class="option-card mt-3 ml-2" width="900">
+        <!-- <v-card v-if="!route.path.includes('/subsidy')" class="option-card mt-3 ml-2" width="900">
             <div class="card-header">
                 <h3>옵션</h3>
             </div>
@@ -51,7 +51,7 @@
                     </tr>
                 </tbody>
             </v-table>
-        </v-card>
+        </v-card> -->
     </div>
 </template>
 
