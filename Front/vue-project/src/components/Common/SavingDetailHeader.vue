@@ -5,7 +5,7 @@
                 <h3>{{saving.fin_prdt_nm}} | {{ saving.kor_co_nm }}</h3>
                 <!-- <span class="bank-name ml-10 mt-1"> {{ saving. }} </span> -->
                 <span class="ml-10 mt-1" style="font-size: 14px;"> 
-                    <v-icon size="small" style="color: #658EA7;">mdi-heart</v-icon> 찜 개수 {{ saving.likes_count }}개
+                    <v-icon size="small" style="color: #658EA7;">mdi-heart</v-icon> 찜 개수 {{likesCount}}개
                 </span>
             </div>
         </v-card>

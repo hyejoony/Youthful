@@ -21,6 +21,7 @@
           <Section3 />
           <Section4 />
           <Section5 />
+          <Section6 />
         </div>
       </v-col>
 
@@ -35,6 +36,7 @@ import Section2 from '@/components/MainPage/Section2.vue';
 import Section3 from '@/components/MainPage/Section3.vue';
 import Section4 from '@/components/MainPage/Section4.vue';
 import Section5 from '@/components/MainPage/Section5.vue';
+import Section6 from '@/components/MainPage/Section6.vue';
 </script>
 
 <style scoped>
