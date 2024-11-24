@@ -135,7 +135,7 @@ def deposit_product_list(request):
 
 
 
-@api_view(['GET'])
+@api_view(['GET','PUT'])
 @permission_classes([IsAuthenticated])
 def deposit_product_detail(request, product_id):
     """
@@ -144,18 +144,43 @@ def deposit_product_detail(request, product_id):
     # 주어진 ID로 예금 상품을 조회합니다. 존재하지 않으면 404 에러를 반환합니다.
     deposit_product = get_object_or_404(DepositProduct, id=product_id)
 
-    # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
-    is_liked = request.user in deposit_product.like_users.all()
+    if request.method == 'GET':
 
-    # 시리얼라이저를 사용하여 데이터 직렬화
-    serializer = DepositProductDetailSerializers(deposit_product)
+        # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
+        is_liked = request.user in deposit_product.like_users.all()
 
-    # 좋아요 정보를 추가합니다.
-    response_data = serializer.data
-    response_data['is_liked'] = is_liked
-    response_data['likes_count'] = deposit_product.like_users.count()
+        # 시리얼라이저를 사용하여 데이터 직렬화
+        serializer = DepositProductDetailSerializers(deposit_product)
 
-    return Response(response_data, status=status.HTTP_200_OK)
+        # 좋아요 정보를 추가합니다.
+        response_data = serializer.data
+        response_data['is_liked'] = is_liked
+        response_data['likes_count'] = deposit_product.like_users.count()
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    
+    elif request.method == 'PUT':
+                # 좋아요/취소 액션 처리
+                action = request.data.get('action')
+                
+                if action == 'like':
+                    # 좋아요 추가
+                    if request.user not in deposit_product.like_users.all():
+                        deposit_product.like_users.add(request.user)
+                elif action == 'unlike':
+                    # 좋아요 취소
+                    if request.user in deposit_product.like_users.all():
+                        deposit_product.like_users.remove(request.user)
+                else:
+                    return Response({'error': '잘못된 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+                
+                # 업데이트된 좋아요 정보 반환
+                return Response({
+                    'is_liked': request.user in deposit_product.like_users.all(),
+                    'likes_count': deposit_product.like_users.count()
+                }, status=status.HTTP_200_OK)
+
 
 
 # 좋아요 기능
