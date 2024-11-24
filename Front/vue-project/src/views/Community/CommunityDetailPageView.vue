@@ -6,40 +6,42 @@
         </card-head>
         <hr style="color: #767676;" class="mt-3">
         <div class="card-user-info mt-2 pl-4" style="color: #767676;">
-            <span> {{ article.user_display_name }}님</span>
-            <span> 수정날짜</span>
-            <div>
-                <v-btn @click="openDialog">수정하기<v-icon>mdi-pencil</v-icon></v-btn>
-                <!-- 모달창 -->
-                <v-dialog v-model="dialog" max-width="500">
-                    <v-card>
-                        <v-card-title class="ml-2" style="color: #658EA7;">게시글 수정</v-card-title>
-                        <v-card-text>
-                            <v-text-field v-model="editTitle" label="제목"></v-text-field>
-                            <v-textarea v-model="editContent" label="내용"></v-textarea>
-                            <div>
-                                <p class="mb-1">키워드를 선택해주세요.</p>
-                                <v-btn v-for="(btn, index) in store.buttons" :key="index"
-                                    :class="{ 'active-button': editedButton === btn.caption }"
-                                    @click="editButton(btn.caption)" density="compact">
-                                    {{ btn.caption }}
-                                </v-btn>
-                            </div>
+            <span>{{ article.user_display_name }}님 | 작성일 : {{ article.created_at.slice(0,10) }}</span>
+            <card-content>
+                <p class="mt-4 pl-4">{{ article.content }}</p>
+            </card-content>
+            <div class="change">
+                <v-btn @click="goProfile(article.user)" class="clickable-item">프로필<v-icon>mdi-account</v-icon></v-btn>
+                <div>
+                    <v-btn @click="openDialog">수정하기<v-icon>mdi-pencil</v-icon></v-btn>
+                    <!-- 모달창 -->
+                    <v-dialog v-model="dialog" max-width="500">
+                        <v-card>
+                            <v-card-title class="ml-2" style="color: #658EA7;">게시글 수정</v-card-title>
+                            <v-card-text>
+                                <v-text-field v-model="editTitle" label="제목"></v-text-field>
+                                <v-textarea v-model="editContent" label="내용"></v-textarea>
+                                <div>
+                                    <p class="mb-1">키워드를 선택해주세요.</p>
+                                    <v-btn v-for="(btn, index) in store.buttons" :key="index"
+                                        :class="{ 'active-button': editedButton === btn.caption }"
+                                        @click="editButton(btn.caption)" density="compact">
+                                        {{ btn.caption }}
+                                    </v-btn>
+                                </div>
 
-                        </v-card-text>
-                        <template v-slot:actions>
-                            <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
-                            <v-btn variant="text" class="ms-auto" text="취소" @click="dialog = false"></v-btn>
-                            <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc()"></v-btn>
-                        </template>
-                    </v-card>
-                </v-dialog>
+                            </v-card-text>
+                            <template v-slot:actions>
+                                <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
+                                <v-btn variant="text" class="ms-auto" text="취소" @click="dialog = false"></v-btn>
+                                <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc()"></v-btn>
+                            </template>
+                        </v-card>
+                    </v-dialog>
+                </div>
+                <v-btn @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
             </div>
-            <v-btn @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
         </div>
-        <card-content>
-            <p class="mt-4 pl-4">{{ article.content }}</p>
-        </card-content>
         <hr style="color: #767676;" class="mt-3">
 
         <v-form @submit.prevent="saveComment">
@@ -57,6 +59,7 @@
             <p>{{ comment.content }}
                 <span>
                     <span>
+                        <v-btn @click="goProfile(comment.user)" class="clickable-item" density="compact" icon="mdi-account"></v-btn>
                         <v-btn @click="openDialogComment(comment)" density="compact" icon="mdi-pencil"></v-btn>
                         <!-- 모달창 -->
                         <v-dialog v-model="dialogComment" max-width="500">
@@ -76,7 +79,7 @@
                     <v-btn @click="deleteComment(comment.id)" density="compact" icon="mdi-trash-can-outline"></v-btn>
                 </span>
             </p>
-            <p>작성자 : {{ comment.user_display_name }} | 작성일 : {{ comment?.updated_at.slice(0,10) }}</p>
+            <span>작성자 : {{ comment.user_display_name }} | 작성일 : {{ comment?.updated_at.slice(0,10) }}</span>
             <hr>
         </div>
         <div v-else  class="ml-4" style="color: #767676;">아직 달린 댓글이 없어요.</div>
@@ -199,20 +202,39 @@ const saveChangesComment = async () => {
 }
 
 
-// 테스트용 // 데이터 초기화
-// store.resetArticle()
+const goProfile = (id) => {
+    router.push({name: 'profile', params: { id: id }})
+}
 
 
 </script>
 
 <style scoped>
 .card-user-info {
-    font-size: 15px,
-
+    font-size: 15px;
 }
 
 .active-button {
     background-color: #658EA7;
     color: white;
+}
+
+.change {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 버튼 사이의 간격 */
+}
+
+.change > * {
+  flex-shrink: 0; /* 자식 요소들이 줄어들지 않도록 설정 */
+}
+
+.clickable-item {
+  cursor: pointer;
+}
+
+.clickable-item:hover {
+  text-decoration: underline;
+  color: #658EA7;
 }
 </style>

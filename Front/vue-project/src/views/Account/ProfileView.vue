@@ -6,8 +6,11 @@
                     <div class="profile-header">
                         <div v-if="user" class="position-relative">
                             <v-avatar color="#658EA7" size="90">
-                                <!-- avatarImage가 존재할 경우 이미지를 표시합니다. -->
-                                <v-img v-if="user.profile_image" :src="user.profile_image" alt="User Avatar"></v-img>
+                                <v-img 
+                                    v-if="user.profile_image" 
+                                    :src="`${baseUrl}${user.profile_image}`" 
+                                    alt="User Avatar"
+                                ></v-img>
                                 <v-icon v-else size="85" icon="mdi-account-circle"></v-icon>
                             </v-avatar>
                             <v-btn icon width="38" height="38" color="grey" class="upload-btn"
@@ -34,6 +37,26 @@
                         <v-card>
                             <v-card-title class="ml-2" style="color: #658EA7;">회원정보 수정</v-card-title>
                             <v-card-text>
+                                <v-container>
+                                    <v-row justify="center">
+                                        <v-col cols="12" class="text-center">
+                                            <!-- position-relative: 상대적 위치 지정 -->
+                                            <div class="position-relative">
+                                                <v-avatar color="#658EA7" size="70">
+                                                    <!-- profile_image가 존재할 경우 이미지를 표시합니다. -->
+                                                    <v-img v-if="editProfileImage" :src="editProfileImage" alt="User Avatar"></v-img>
+                                                    <v-icon v-else size="65" icon="mdi-account-circle"></v-icon>
+                                                </v-avatar>
+                                                <v-btn icon width="38" height="38" color="grey" class="upload-btn"
+                                                    @click="triggerFileInput">
+                                                    <v-icon size="20">mdi-camera</v-icon>
+                                                </v-btn>
+                                                <input ref="fileInput" type="file" style="display: none" @change="onFileSelected"
+                                                    accept="image/*">
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                                 <v-text-field v-model="editNickname" label="닉네임"></v-text-field>
                                 <v-radio-group v-model="editIncome" inline color="#658EA7">
                                     <v-radio label="0~50%" value="0~50%"></v-radio>
@@ -135,29 +158,14 @@ onMounted(() => {
 
 
 const fileInput = ref(null);
-const avatarImage = ref(null);
+// const avatarImage = ref(null);
 
-// - 파일선택상자 열기
-const triggerFileInput = () => {
-    // fileInput의 현재 값을 가져와 click() 메서드를 호출하여 파일 선택 대화상자를 엽니다.
-    fileInput.value.click();
-};
-
-// - 사용자가 선택한 파일 반영
-const onFileSelected = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            avatarImage.value = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-};
 
 const dialog = ref(false) // 모달창 기본설정
 
 // 임시 수정 데이터
+const editProfileImage = ref(null)
+const profileImageFile = ref(null);
 const editNickname = ref('')
 const editIncome = ref('')
 const editCareer = ref('')
@@ -165,6 +173,7 @@ const editregion = ref('')
 
 // 모달 열 때 기존 내용을 수정용 변수에 복사 
 const openDialog = () => {
+    editProfileImage.value = `${baseUrl}${user.value.profile_image}`
     editNickname.value = user.value.nickname
     editIncome.value = user.value.income
     editCareer.value = user.value.career
@@ -176,18 +185,22 @@ const openDialog = () => {
 const saveChangesFunc = async () => {
     const payload = {
         id: store.userId,
+        editProfileImage: profileImageFile.value,
         editNickname: editNickname.value,
         editIncome: editIncome.value,
         editCareer: editCareer.value,
         editregion: editregion.value
     }
     const result = await store.saveUpdateChanges(payload)
+    user.value.profile_image = profileImageFile
     user.value.nickname = editNickname
     user.value.income = editIncome
     user.value.career = editCareer
     user.value.region = editregion
     dialog.value = false
 }
+
+
 
 const regions = [
     '서울특별시',
@@ -234,6 +247,27 @@ const careers = [
     '연구원',
     '기타'
 ]
+
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+// - 파일선택상자 열기
+const triggerFileInput = () => {
+    // fileInput의 현재 값을 가져와 click() 메서드를 호출하여 파일 선택 대화상자를 엽니다.
+    fileInput.value.click();
+};
+
+// - 사용자가 선택한 파일 반영
+const onFileSelected = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        profileImageFile.value = file; // 파일 객체 저장
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            profile_image.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
 
 </script>
 
