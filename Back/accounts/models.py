@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-
 # Create your models here.
 class UserManager(BaseUserManager):
     """이메일을 고유 식별자로 사용하는 커스텀 유저 매니저"""

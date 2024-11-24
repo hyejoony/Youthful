@@ -107,28 +107,48 @@ def subsidy_list(request):
 
 
 # 보조금 상세 페이지
-@api_view(['GET'])
+@api_view(['GET','PUT'])
 @permission_classes([IsAuthenticated])
 def subsidy_detail(request, subsidy_id):
-
     # 주어진 ID로 보조금을 조회합니다. 존재하지 않으면 404 에러를 반환합니다.
     subsidy = get_object_or_404(Subsidy, id=subsidy_id)
+    if request.method == 'GET':
+        # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
+        is_liked = request.user in subsidy.like_users.all()
 
-    # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
-    is_liked = request.user in subsidy.like_users.all()
+        # 시리얼라이저를 사용하여 데이터 직렬화
+        serializer = SubsidyDetailSerializers(subsidy)
+        # 사용자 정보 직렬화
+        like_users_data = UserSerializer(subsidy.like_users.all(), many=True).data
 
-    # 시리얼라이저를 사용하여 데이터 직렬화
-    serializer = SubsidyDetailSerializers(subsidy)
-    # 사용자 정보 직렬화
-    like_users_data = UserSerializer(subsidy.like_users.all(), many=True).data
+        # 좋아요 정보를 추가합니다.
+        response_data = serializer.data
+        response_data['is_liked'] = is_liked
+        response_data['likes_count'] = subsidy.like_users.count()
+        response_data['like_users'] = like_users_data  # 좋아요한 사용자 정보 추가
 
-    # 좋아요 정보를 추가합니다.
-    response_data = serializer.data
-    response_data['is_liked'] = is_liked
-    response_data['likes_count'] = subsidy.like_users.count()
-    response_data['like_users'] = like_users_data  # 좋아요한 사용자 정보 추가
+        return Response(response_data, status=status.HTTP_200_OK)
 
-    return Response(response_data, status=status.HTTP_200_OK)
+    elif request.method == 'PUT':
+            # 좋아요/취소 액션 처리
+            action = request.data.get('action')
+            
+            if action == 'like':
+                # 좋아요 추가
+                if request.user not in subsidy.like_users.all():
+                    subsidy.like_users.add(request.user)
+            elif action == 'unlike':
+                # 좋아요 취소
+                if request.user in subsidy.like_users.all():
+                    subsidy.like_users.remove(request.user)
+            else:
+                return Response({'error': '잘못된 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 업데이트된 좋아요 정보 반환
+            return Response({
+                'is_liked': request.user in subsidy.like_users.all(),
+                'likes_count': subsidy.like_users.count()
+            }, status=status.HTTP_200_OK)
 
 
 # POST - 리뷰 생성

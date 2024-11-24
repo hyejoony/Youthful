@@ -19,7 +19,7 @@
 
                     <td>{{ item.contact }}</td>
                     <!-- <td>{{ item.target }}</td> -->
-                    <!-- <td>{{ item.likes }}개</td> -->
+                    <td><v-icon style="color: #658EA7;" >mdi-heart</v-icon> {{ item.likes_count }}개</td>
                 </tr>
             </template>
         </v-data-table>
@@ -45,7 +45,6 @@ const gotoDetail = (id) => {
     router.push({ name: 'subsidydetail', params: { id }})
     console.log('id',id)
 
-
 }
 
 
@@ -58,8 +57,7 @@ const headers = [
     { title: '카테고리', key: 'name_category', align: 'start', sortable: true },
     { title: '지원금명', key: 'name', align: 'start', sortable: true },
     { title: '주최기관 및 문의처', key: 'contact', align: 'start', sortable: true },
-    // { title: '대상', key: 'target', align: 'start', sortable: true },
-    // { title: '찜 갯수', key: 'likes', align: 'start', sortable: true },
+    { title: '찜 개수', key: 'likes_count', align: 'start', sortable: true },
 ]
 
 </script>
