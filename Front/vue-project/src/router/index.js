@@ -103,7 +103,7 @@ const router = createRouter({
           component: DepositListView
         },
         {
-          path: '/deposit/detail',
+          path: '/deposit/detail/:id',
           name: 'depositdetail',
           component: DepositDetailView 
         },

@@ -1,8 +1,8 @@
 <template>
     <ProductShortcut />
-    <ProductRecoHeader />
     <div class="container">
-        <ProductListContent />
+        <ProductRecoHeader />
+        <DepositListContent />
     </div>
 </template>
 
@@ -11,8 +11,7 @@
 import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
-import ProductListContent from '@/components/Common/SavingListContent.vue';
-
+import DepositListContent from '@/components/Common/DepositListContent.vue';
 import { ref } from 'vue'
 
 </script>
@@ -22,6 +21,5 @@ import { ref } from 'vue'
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 </style>

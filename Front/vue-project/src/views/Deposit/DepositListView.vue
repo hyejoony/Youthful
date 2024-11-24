@@ -1,21 +1,25 @@
 <template>
-        <ProductShortcut />
-        <div class=container>
+    <ProductShortcut />
+    <div v-if="storeDeposit.deposits" class="container">
         <ProductListHeader />
-        <ProductListContent />
+        <DepositListContent :deposits="storeDeposit.deposits"/>
     </div>
+
 </template>
 
 <script setup>
 
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductListHeader from '@/components/Common/ProductListHeader.vue';
-import ProductListContent from '@/components/Common/SavingListContent.vue';
-import { ref } from 'vue'
+import DepositListContent from '@/components/Common/DepositListContent.vue';
+import { ref, onMounted } from 'vue'
+import { UseDepositStore } from '@/stores/deposit'
 
-// const switchState1 = ref(false)
-// const switchState2 = ref(false)
-
+const storeDeposit = UseDepositStore()
+onMounted(() => {
+    storeDeposit.getDeposits()
+    console.log('storeDeposit.deposits',storeDeposit.deposits)
+})
 
 
 </script>
@@ -27,6 +31,4 @@ import { ref } from 'vue'
     align-items: center;
 
 }
-
-
 </style>
