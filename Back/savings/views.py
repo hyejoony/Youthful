@@ -109,54 +109,81 @@ def save_saving(request):
     return JsonResponse({'message' : '저장 성공!'})
 
 
-# 예금 상품 목록 조회
+# 적금 상품 목록 조회
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def saving_product_list(request):
 
-    # 모든 예금 상품을 가져옵니다.
+    # 모든 적금 상품을 가져옵니다.
     saving_products = get_list_or_404(SavingProduct)
-
-    # 페이지네이션 설정 (선택사항)
-    page = request.GET.get('page', 1)
-    page_size = 100  # 페이지당 아이템 수
-    paginator = Paginator(saving_products, page_size)
-    current_page = paginator.page(page)
-
-    # 시리얼라이저를 사용하여 데이터 직렬화
-    serializer = SavingProductListSerializers(current_page, many=True)
-
-    # 페이지네이션 정보 추가
-    response_data = {
-        'count': paginator.count,
-        'num_pages': paginator.num_pages,
-        'current_page': int(page),
-        'results': serializer.data
-    }
-
-    return Response(response_data, status=status.HTTP_200_OK)
+    if request.method == 'GET':
 
 
-# 예금 상품 상세 페이지
-@api_view(['GET'])
+        # 페이지네이션 설정 (선택사항)
+        page = request.GET.get('page', 1)
+        page_size = 100  # 페이지당 아이템 수
+        paginator = Paginator(saving_products, page_size)
+        current_page = paginator.page(page)
+
+        # 시리얼라이저를 사용하여 데이터 직렬화
+        serializer = SavingProductListSerializers(current_page, many=True)
+
+        # 페이지네이션 정보 추가
+        response_data = {
+            'count': paginator.count,
+            'num_pages': paginator.num_pages,
+            'current_page': int(page),
+            'results': serializer.data
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+    
+
+
+# 적금 상품 상세 페이지
+@api_view(['GET','PUT'])
 @permission_classes([IsAuthenticated])
 def saving_product_detail(request, product_id):
 
     # 주어진 ID로 예금 상품을 조회합니다. 존재하지 않으면 404 에러를 반환합니다.
     saving_product = get_object_or_404(SavingProduct, id=product_id)
+    if request.method == 'GET':
 
-    # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
-    is_liked = request.user in saving_product.like_users.all()
+        # 현재 사용자가 이 상품을 좋아요 했는지 확인합니다.
+        is_liked = request.user in saving_product.like_users.all()
 
-    # 시리얼라이저를 사용하여 데이터 직렬화
-    serializer = SavingProductDetailSerializers(saving_product)
+        # 시리얼라이저를 사용하여 데이터 직렬화
+        serializer = SavingProductDetailSerializers(saving_product)
 
-    # 좋아요 정보를 추가합니다.
-    response_data = serializer.data
-    response_data['is_liked'] = is_liked
-    response_data['likes_count'] = saving_product.like_users.count()
+        # 좋아요 정보를 추가합니다.
+        response_data = serializer.data
+        response_data['is_liked'] = is_liked
+        response_data['likes_count'] = saving_product.like_users.count()
 
-    return Response(response_data, status=status.HTTP_200_OK)
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    elif request.method == 'PUT':
+                # 좋아요/취소 액션 처리
+                action = request.data.get('action')
+                
+                if action == 'like':
+                    # 좋아요 추가
+                    if request.user not in saving_product.like_users.all():
+                        saving_product.like_users.add(request.user)
+                elif action == 'unlike':
+                    # 좋아요 취소
+                    if request.user in saving_product.like_users.all():
+                        saving_product.like_users.remove(request.user)
+                else:
+                    return Response({'error': '잘못된 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+                
+                # 업데이트된 좋아요 정보 반환
+                return Response({
+                    'is_liked': request.user in saving_product.like_users.all(),
+                    'likes_count': saving_product.like_users.count()
+                }, status=status.HTTP_200_OK)
+
 
 
 # 좋아요 기능
