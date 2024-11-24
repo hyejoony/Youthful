@@ -1,7 +1,7 @@
 <template>
 
         <!-- 상품 전체 목록 페이지 헤더 -->
-        <v-card class="mt-6 " width="900" height="150px">
+        <v-card class="mt-6 " width="815" height="150px">
             <div class="card-border">
                 <div class="bank-section">
                     <v-card class=" card-border" width="100" height="80px">

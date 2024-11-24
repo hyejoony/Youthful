@@ -1,7 +1,5 @@
 <template>
-    <v-container>
-        <v-row>
-            <v-col sm='12' lg="12">
+
                 <h1 class="title" style="color:#658EA7;">내 집 주변 은행 찾기</h1>
                 <div class="flex">
                     <v-form>
@@ -15,13 +13,11 @@
                         </div>
                     </v-form>
 
-                    <v-card height="400px"  hover>
+                    <v-card height="400px" width="700px" style="margin: auto;" hover>
                         <KakaoMap :searchParams="searchParams" />
                     </v-card>
                 </div>
-            </v-col>
-        </v-row>
-    </v-container>
+
 </template>
 
 <script setup>

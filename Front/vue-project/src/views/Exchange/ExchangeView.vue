@@ -1,7 +1,5 @@
 <template>
-    <v-container>
-        <v-row>
-            <v-col sm='12' lg="12">
+
                 <h1 class="title" style="color:#658EA7;">환율계산기</h1>
                 <h5 style="color: #767676;">출처 : 네이버 증권(수수료 제외)</h5>
 
@@ -27,9 +25,7 @@
 
                 </v-card><br>
                 <ExchangeGraph :exchanges="exchanges"/>
-            </v-col>
-        </v-row>
-    </v-container>
+
 </template>
 
 <script setup>
