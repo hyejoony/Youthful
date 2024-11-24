@@ -1,4 +1,5 @@
 <template>
+    <RouterView />
     <div class="container">
         <SavingDetailHeader :saving="saving" />
         <SavingDetailContent :saving="saving" />
@@ -16,7 +17,18 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { onMounted } from 'vue';
 import { UseSavingStore } from '@/stores/saving';
+
+import { RouterLink, RouterView } from 'vue-router';
 import { useAccountStore } from '@/stores/account';
+import { onBeforeMount } from 'vue';
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
+
 const storeAccount = useAccountStore()
 const storeSaving = UseSavingStore()
 
@@ -41,6 +53,7 @@ onMounted(() => {
             console.log('id',id.value)
         }))
 })
+
 
 
 </script>

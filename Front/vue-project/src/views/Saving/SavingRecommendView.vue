@@ -1,4 +1,5 @@
 <template>
+    <RouterView />
     <ProductShortcut />
     <div class="container">
         <ProductRecoHeader />
@@ -14,6 +15,17 @@ import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
 import SavingListContent from '@/components/Common/SavingListContent.vue';
 import { ref } from 'vue'
 
+import { RouterLink, RouterView } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { onBeforeMount } from 'vue';
+const storeAccount = useAccountStore()
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 </script>
 
 <style scoped>

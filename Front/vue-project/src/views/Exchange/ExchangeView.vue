@@ -1,5 +1,5 @@
 <template>
-
+    <RouterView />
                 <h1 class="title" style="color:#658EA7;">환율계산기</h1>
                 <h5 style="color: #767676;">출처 : 네이버 증권(수수료 제외)</h5>
 
@@ -25,13 +25,25 @@
 
                 </v-card><br>
                 <ExchangeGraph :exchanges="exchanges"/>
-
 </template>
 
 <script setup>
 import ExchangeGraph from '@/components/Exchange/ExchangeGraph.vue';
 import { UseExchangeStore } from '@/stores/exchange';
 import { ref, onMounted, computed } from 'vue';
+
+import { RouterView } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
+const storeAccount = useAccountStore()
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 
 const storeExchange = UseExchangeStore()
 const exchanges = ref([])

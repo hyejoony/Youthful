@@ -1,4 +1,5 @@
 <template>
+    <RouterView />
     <div class="container">
         <SubsidyDetailHeader :subsidy="subsidy" />
         <SubsidyDetailContent :subsidy="subsidy" />
@@ -26,6 +27,15 @@ import { UseSubsidyStore } from '@/stores/subsidy';
 import { useAccountStore } from '@/stores/account';
 const storeAccount = useAccountStore()
 const storeSubsidy = UseSubsidyStore()
+
+import { RouterLink, RouterView } from 'vue-router';
+import { onBeforeMount } from 'vue';
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 
 const route = useRoute();
 

@@ -1,5 +1,8 @@
 <template>
-    <h4 class="pa-4 mb-2">보조금 이름</h4>
+    <Routerview />
+    <div class="container">
+    <h3 class="pa-4">{{ subsidy.name }}</h3>
+    <!-- <h3 class="pa-4">{{ subsidy }}</h3> -->
     <v-card width="800" class="pa-4">
         <!-- 리뷰 작성 폼 -->
         <v-form @submit.prevent="submitReview">
@@ -31,17 +34,19 @@
             <v-list v-else>
                 <!-- 각 리뷰 항목을 순회하며 표시 -->
                 <v-list-item v-for="(review, index) in subsidy?.comments" :key="index">
+                    <!-- <p> {{ review.user_display_name }}</p> -->
                     <v-list-item-content>
                         <!-- 리뷰 텍스트 및 버튼들 -->
                         <div class="d-flex align-center justify-space-between">
                             <v-list-item-title style="font-size: 15px;"> {{ review.content }}</v-list-item-title>
                             <div class="button-group">
                                 <!-- 수정 버튼 (모달 열기) -->
-                                <v-btn icon small @click="openEditDialog(review, index)" class="icon-button">
+
+                                <v-btn  v-if="storeAccount.userId == review.user" icon small @click="openEditDialog(review, index)" class="icon-button">
                                     <v-icon size="19">mdi-pencil</v-icon>
                                 </v-btn>
                                 <!-- 삭제 버튼 -->
-                                <v-btn icon small @click="deleteReview(review.id, index)" class="icon-button">
+                                <v-btn   v-if="storeAccount.userId == review.user" icon small @click="deleteReview(review.id, index)" class="icon-button">
                                     <v-icon size="19">mdi-delete</v-icon>
                                 </v-btn>
                             </div>
@@ -52,8 +57,9 @@
                                 :size="16" color="#658EA7" />
                         </v-list-item-subtitle>
                         <!-- 작성자 및 작성일자 정보 -->
-                        <span class="text-caption mr-2">작성자 {{ review.user }}</span>
+                        <span class="text-caption mr-2">작성자 {{ review.user_display_name }}님</span>
                         <span class="text-caption ">작성일자 {{ review.updated_at.match(/^(\d{4}-\d{2}-\d{2})/)[1] }}</span>
+                        <hr> 
 
                     </v-list-item-content>
                 </v-list-item>
@@ -84,6 +90,7 @@
             </v-card>
         </v-dialog>
     </v-card>
+</div>
     <div style="text-align: center;">
         <a href="/subsidy/detail/${subsidyId}" style="color: #767676; font-size: 13px;" class="mt-2 mb-2">이전 페이지로
             돌아가기<v-icon>mdi-chevron-left</v-icon></a>
@@ -96,6 +103,17 @@ import { ref, onMounted, computed } from 'vue';
 import { UseSubsidyStore } from '@/stores/subsidy';
 import { useAccountStore } from '@/stores/account';
 import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { RouterLink, RouterView } from 'vue-router';
+import { onBeforeMount } from 'vue';
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
+
 const storeAccount = useAccountStore()
 const storeSubsidy = UseSubsidyStore()
 const route = useRoute()
@@ -252,6 +270,15 @@ const deleteReview = async (reviewId, index) => {
 </script>
 
 <style scoped>
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+
 .v-rating {
     display: inline-flex;
     align-items: center;
@@ -277,4 +304,6 @@ const deleteReview = async (reviewId, index) => {
     cursor: pointer;
     transition: color 0.3s ease;
 }
+
+
 </style>

@@ -1,20 +1,28 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col sm='12' lg="12">
+
+
         <h1 style="color:#658EA7;">
           {{ headerText }}
         </h1>
 
         <RouterView />
-      </v-col>
-    </v-row>
-  </v-container>
+
 </template>
 
 <script setup>
-import { RouterLink, RouterView, useRoute } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { onBeforeMount } from 'vue';
+const storeAccount = useAccountStore()
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 
 const route = useRoute();
 

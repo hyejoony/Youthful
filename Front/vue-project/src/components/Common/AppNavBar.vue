@@ -13,7 +13,7 @@
             <v-list-item class="user-info"
             v-if="store.isLogin == true"
               prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              title="store.nickname || store.email "
+              title="store.nickname || store.email.split "
               subtitle="store.email"
             ></v-list-item>
             <v-list-item v-else-if="!store.isLogin">
@@ -30,7 +30,6 @@
           <v-divider></v-divider>
   
           <v-list density="compact" nav>
-            <!-- 우리 로고로 -->
             <v-list-item
               to="/"
               prepend-icon="mdi-home"

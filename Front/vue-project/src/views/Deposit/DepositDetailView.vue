@@ -1,4 +1,5 @@
 <template>
+    <RouterView />
     <div class="container">
         <DepositDetailHeader :deposit="deposit" />
         <DepositDetailContent :deposit="deposit" />
@@ -17,6 +18,17 @@ import axios from 'axios';
 import { onMounted } from 'vue';
 import { UseDepositStore } from '@/stores/deposit';
 import { useAccountStore } from '@/stores/account';
+
+import { RouterLink, RouterView } from 'vue-router';
+import { onBeforeMount } from 'vue';
+
+const router = useRouter()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
 const storeAccount = useAccountStore()
 const storeDepoist = UseDepositStore()
 
