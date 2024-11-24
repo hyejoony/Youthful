@@ -20,6 +20,8 @@
                     <td>{{ getInterestRate(item.saving_options, 12) }}</td>
                     <td>{{ getInterestRate(item.saving_options, 24) }}</td>
                     <td>{{ getInterestRate(item.saving_options, 36) }}</td>
+                    <td><v-icon style="color: #658EA7;" >mdi-heart</v-icon> {{ item.likes_count }}개</td>
+
                 </tr>
             </template>
         </v-data-table>
@@ -58,6 +60,8 @@ const headers = [
     { title: '12개월', key: 'intr_rate_12', align: 'start', sortable: true },
     { title: '24개월', key: 'intr_rate_24', align: 'start', sortable: true },
     { title: '36개월', key: 'intr_rate_36', align: 'start', sortable: true },
+    { title: '찜 개수', key: 'likes_count', align: 'start', sortable: true },
+
 ]
 
 const getInterestRate = (options, term) => {
