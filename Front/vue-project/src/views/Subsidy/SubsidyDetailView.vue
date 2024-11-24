@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <ProductDetailHeader :subsidy="subsidy" />
-        <ProductDetailContent :subsidy="subsidy" />
+        <SubsidyDetailHeader :subsidy="subsidy" />
+        <SubsidyDetailContent :subsidy="subsidy" />
         <v-card class="product-card mt-3 ml-2 pb-3" width="900">
             <h3 class=" ml-7 mt-1 " style="padding-top: 10px; padding-bottom: 10px;"> 이용자 리뷰 </h3>
             <hr>
@@ -17,8 +17,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
-import ProductDetailHeader from '@/components/Common/ProductDetailHeader.vue';
-import ProductDetailContent from '@/components/Common/ProductDetailContent.vue';
+import SubsidyDetailHeader from '@/components/Common/SubsidyDetailHeader.vue';
+import SubsidyDetailContent from '@/components/Common/SubsidyDetailContent.vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { onMounted } from 'vue';

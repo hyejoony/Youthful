@@ -2,7 +2,7 @@
     <ProductShortcut />
     <div class="container">
         <ProductRecoHeader />
-        <SubsidyListContent />
+        <SavingListContent />
     </div>
 </template>
 
@@ -11,7 +11,7 @@
 import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
-import SubsidyListContent from '@/components/Common/SubsidyListContent.vue';
+import SavingListContent from '@/components/Common/SavingListContent.vue';
 import { ref } from 'vue'
 
 </script>

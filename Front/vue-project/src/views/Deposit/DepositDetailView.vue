@@ -8,8 +8,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import ProductDetailHeader from '@/components/Common/ProductDetailHeader.vue';
-import ProductDetailContent from '@/components/Common/ProductDetailContent.vue';
+import ProductDetailHeader from '@/components/Common/SubsidyDetailHeader.vue';
+import ProductDetailContent from '@/components/Common/SubsidyDetailContent.vue';
 
 // 예시(Ui 보여주기위함, PROPS )
 const productInfo = [
