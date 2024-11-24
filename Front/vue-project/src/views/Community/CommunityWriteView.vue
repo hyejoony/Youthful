@@ -1,4 +1,5 @@
 <template>
+    <Routerview />
     <v-form @submit.prevent="SaveArticleFunc">
         <v-card width="900" height="400" elevation="4">
             <card-title>
@@ -30,6 +31,17 @@
 import { UseCommunityStore } from '@/stores/community';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue'
+import { RouterLink, RouterView } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { onBeforeMount } from 'vue';
+const storeAccount = useAccountStore()
+
+onBeforeMount(() => {
+  if (!storeAccount.isLogin) {
+    router.push('/login');
+  }
+});
+
 const router = useRouter()
 const storeCommunity = UseCommunityStore()
 
