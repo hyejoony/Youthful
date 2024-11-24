@@ -22,7 +22,7 @@
                 <h5 @click="getDetail(popArticle.id)" class="clickable-title" style="font-weight: 400; display: inline;"> {{ popArticle.title }}</h5>
             </div>
         </v-card>
-        <v-card class="mt-4" width="900" height="1200px" elevation="2">
+        <v-card class="mt-4" width="900" height="900px" elevation="2">
             <card-head>
                 <div class="mt-3 pr-2 keyword-div" style="display: flex;">
                     <v-btn style="font-size: 14px;" density="compact"
@@ -39,14 +39,14 @@
             </card-head>
             <hr style="color: #767676;" class="mt-3">
             <template v-if="myLook">
-                <card-content class="card" v-for="article in myDisplayedArticles">
+                <card-content class="card" v-for="article in myPaginatedArticles">
                     <div class="card2" v-if="article">
                         <div class="left-content">
                             <h5 class="hashtag">{{ article.keyword }}</h5>
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
+                            <h5 @click="goProfile(article.user)" style="color: #767676;" class="ml-3 clickable-item">{{ article.user_display_name }}님</h5> |
                             <p>댓글 {{ article.comments.length }}개</p> |
                             <p>{{ article.updated_at?.slice(0, 10) }}</p>
                         </div>
@@ -55,17 +55,24 @@
                         <hr class="mt-5 mb-5">
                     </div>
                 </card-content>
+                <v-pagination
+                    v-model="currentPage"
+                    :length="Math.ceil(myDisplayedArticles.length / itemsPerPage)"
+                    @input="myHandlePageChange"
+                ></v-pagination>
             </template>
             <template v-else>
-                <card-content class="card" v-for="article in displayedArticles">
+                <!-- <card-content class="card" v-for="article in displayedArticles"> -->
+                <card-content class="card" v-for="article in paginatedArticles">
                     <div class="card2" v-if="article">
                         <div class="left-content">
                             <h5 class="hashtag">{{ article.keyword }}</h5>
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님</h5> |
-                            <p>댓글 {{ article.comments.length }}개</p> |
+                            <v-btn density="compact" icon="mdi-account"></v-btn>
+                            <h5 @click="goProfile(article.user)" style="color: #767676;" class="ml-3 clickable-item">{{ article.user_display_name }}님 | </h5>
+                            <p>댓글 {{ article.comments.length }}개 | </p>
                             <p>{{ article.updated_at?.slice(0, 10) }}</p>
                         </div>
                     </div>
@@ -73,6 +80,11 @@
                         <hr class="mt-5 mb-5">
                     </div>
                 </card-content>
+                <v-pagination
+                    v-model="currentPage"
+                    :length="Math.ceil(displayedArticles.length / itemsPerPage)"
+                    @input="handlePageChange"
+                ></v-pagination>
             </template>
         </v-card>
     </div>
@@ -170,6 +182,36 @@ const myDisplayedArticles = computed(() => {
 const login = () => {
     router.push({ name: 'login' })
 }
+
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
+
+const paginatedArticles = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return displayedArticles.value.slice(start, end)
+})
+
+const handlePageChange = (page) => {
+  currentPage.value = page
+}
+
+const myCurrentPage = ref(1)
+const myItemsPerPage = ref(10)
+
+const myPaginatedArticles = computed(() => {
+  const start = (myCurrentPage.value - 1) * myItemsPerPage.value
+  const end = start + myItemsPerPage.value
+  return myDisplayedArticles.value.slice(start, end)
+})
+
+const myHandlePageChange = (page) => {
+  myCurrentPage.value = page
+}
+
+const goProfile = (id) => {
+    router.push({name: 'profile', params: { id: id }})
+}
 </script>
 
 <style scoped>
@@ -240,6 +282,15 @@ h1 {
 .clickable-title {
   cursor: pointer;
   transition: color 0.3s ease;
+}
+
+.clickable-item {
+  cursor: pointer;
+}
+
+.clickable-item:hover {
+  text-decoration: underline;
+  color: #658EA7;
 }
 
 </style>
