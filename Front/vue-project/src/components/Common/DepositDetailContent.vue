@@ -23,10 +23,10 @@
                     <span class="label">만기 후 이자율</span>
                     <span class="value">{{ deposit.mtrt_int }}</span>
                 </div>
-                <div class="info-row mt-3 ml-7">
+                <!-- <div class="info-row mt-3 ml-7">
                     <span class="label">가입제한</span>
                     <span class="value">{{ deposit.join_deny  }}</span>
-                </div>
+                </div> -->
                 <div class="info-row mt-3 ml-7">
                     <span class="label">기타 유의사항</span>
                     <span class="value">{{ deposit.etc_note  }}</span>

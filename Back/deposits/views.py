@@ -134,6 +134,42 @@ def deposit_product_list(request):
     return Response(response_data, status=status.HTTP_200_OK)
 
 
+from django.forms.models import model_to_dict
+# 보조금 추천 상품 목록 조회
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def deposit_recommend_list(request):
+    deposits = get_list_or_404(DepositProduct)
+    serializers = DepositProductListSerializers(deposits, many=True)
+    reco_deposits = []
+
+    current_user = request.user
+    # 현재 유저의 모든 필드를 딕셔너리로 변환
+    current_user_data = model_to_dict(current_user)
+
+    for serializer in serializers.data:
+        print(serializer)
+        cnt = 0
+        if len(serializer['liked_users_info']) > 0:
+            for like_user in serializer['liked_users_info']:
+                print('아아아', like_user['birthyear'])
+                print('아아아2', current_user_data['birthyear'])
+                if current_user_data['birthyear']-5 <= like_user['birthyear'] <= current_user_data['birthyear']+5:
+                    cnt += 2
+                if like_user['income'] == current_user_data['income']:
+                    cnt += 2
+                if like_user['career'] == current_user_data['career']:
+                    cnt += 1
+                if like_user['region'] == current_user_data['region']:
+                    cnt += 1
+            reco_deposits.append((cnt, serializer))
+        else:
+            reco_deposits.append((0, serializer))
+    # 정렬 시, 점수를 기준으로 정렬
+    reco_deposits.sort(key=lambda x: x[0], reverse=True)
+
+    return Response([deposit for _, deposit in reco_deposits], status=status.HTTP_200_OK)
+
 
 @api_view(['GET','PUT'])
 @permission_classes([IsAuthenticated])

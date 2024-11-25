@@ -1,9 +1,9 @@
 <template>
     <RouterView />
     <ProductShortcut />
-    <div class="container">
+    <div v-if="storeSaving.recoSavings" class="container">
         <ProductRecoHeader />
-        <SavingListContent />
+        <SavingRecommendContent :reco-savings="storeSaving.recoSavings"/>
     </div>
 </template>
 
@@ -12,20 +12,32 @@
 import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
-import SavingListContent from '@/components/Common/SavingListContent.vue';
+import SavingRecommendContent from '@/components/Common/SavingRecommendContent.vue';
 import { ref } from 'vue'
 
 import { RouterLink, RouterView } from 'vue-router';
 import { useAccountStore } from '@/stores/account';
-import { onBeforeMount } from 'vue';
+import { UseSavingStore } from '@/stores/saving';
+import { onBeforeMount, onMounted } from 'vue';
 const storeAccount = useAccountStore()
 const router = useRouter()
+
+const storeSaving = UseSavingStore()
 
 onBeforeMount(() => {
   if (!storeAccount.isLogin) {
     router.push('/login');
   }
 });
+
+onMounted(async () => {
+  try {
+    await storeSaving.getRecoSavings()
+    console.log('storeSaving.recoSavings', storeSaving.recoSavings)
+  } catch (err) {
+    console.error(err)
+  }
+})
 </script>
 
 <style scoped>
