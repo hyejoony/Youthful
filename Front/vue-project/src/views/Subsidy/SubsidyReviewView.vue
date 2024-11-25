@@ -41,7 +41,9 @@
                             <v-list-item-title style="font-size: 15px;"> {{ review.content }}</v-list-item-title>
                             <div class="button-group">
                                 <!-- 수정 버튼 (모달 열기) -->
-
+                                <v-avatar v-if="storeAccount.userId !== review.user" @click="goProfile(review.user)" class="clickable-item" size="small">
+                                    <v-img :src="`${baseUrl}${review.profile_image}`" alt="Review Profile"></v-img>
+                                </v-avatar>   
                                 <v-btn  v-if="storeAccount.userId == review.user" icon small @click="openEditDialog(review, index)" class="icon-button">
                                     <v-icon size="19">mdi-pencil</v-icon>
                                 </v-btn>
@@ -107,6 +109,7 @@ import { useRouter } from 'vue-router';
 import { RouterLink, RouterView } from 'vue-router';
 import { onBeforeMount } from 'vue';
 const router = useRouter()
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 onBeforeMount(() => {
   if (!storeAccount.isLogin) {
@@ -135,6 +138,10 @@ onMounted(() => {
             console.log('subsidy', subsidy)
         }))
 })
+
+const goProfile = (id) => {
+    router.push({name: 'profile', params: { id: id }})
+}
 
 // 리뷰 생성 -------------------------------------------------------------------
 const reviewText = ref('');
@@ -303,6 +310,16 @@ const deleteReview = async (reviewId, index) => {
 .clickable-title {
     cursor: pointer;
     transition: color 0.3s ease;
+}
+
+.clickable-item {
+    cursor: pointer
+}
+
+/* 버튼인데 underline 되길래 지워뒀어  */
+.clickable-item:hover {
+  /* text-decoration: underline; */
+  color: #658EA7;
 }
 
 
