@@ -8,11 +8,17 @@
         <hr  style="color: #767676;" class="mt-3">
         <div class="card-user-info mt-2 pl-4" style="color: #767676;">
             <span>{{ article.user_display_name }}님 | 작성일 : {{ article.created_at.slice(0,10) }}</span>
+            <h5 class="hashtag">{{ article.keyword }}</h5>
             <card-content>
                 <p class="mt-4 pl-4">{{ article.content }}</p>
             </card-content>
             <div class="change">
-                <v-btn @click="goProfile(article.user)" class="clickable-item">프로필<v-icon>mdi-account</v-icon></v-btn>
+                <v-btn v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)" class="clickable-item">
+                    프로필
+                    <v-avatar size="24">
+                        <v-img :src="`${baseUrl}${article.profile_image}`" alt="User Profile"></v-img>
+                    </v-avatar>
+                </v-btn>
                 <div v-if="storeAccount.userId == article.user">
                     <v-btn @click="openDialog">수정하기<v-icon>mdi-pencil</v-icon></v-btn>
                     <!-- 모달창 -->
@@ -60,7 +66,9 @@
             <p style="margin-bottom: 3px;">{{ comment.content }}
                 <span>
                     <span>
-                        <v-btn  v-if="storeAccount.userId != comment.user" @click="goProfile(comment.user)" class="clickable-item" density="compact" icon="mdi-account"></v-btn>
+                        <v-avatar v-if="storeAccount.userId !== comment.user" @click="goProfile(comment.user)" class="clickable-item" size="small">
+                            <v-img :src="`${baseUrl}${comment.profile_image}`" alt="Comment Profile"></v-img>
+                        </v-avatar>   
                         <v-btn v-if="storeAccount.userId == comment.user" @click="openDialogComment(comment)" density="compact" icon="mdi-pencil"></v-btn>
                         <!-- 모달창 -->
                         <v-dialog v-model="dialogComment" max-width="500">
@@ -98,6 +106,7 @@ import { useAccountStore } from '@/stores/account';
 import { onBeforeMount } from 'vue';
 
 const storeAccount = useAccountStore()
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 onBeforeMount(() => {
   if (!storeAccount.isLogin) {
@@ -118,9 +127,9 @@ const article = ref(null)
 onMounted(() => {
     console.log('idDetail',id)
     article.value = store.getDetail(id); // onmount
-    console.log('articlevalue',article.value)
+    console.log('articlevalue는',article.value)
     commentList.value = store.getComments(id) // 댓글
-    console.log('comment', commentList.value)
+    console.log('comment는', commentList.value)
 })
 
 
@@ -248,5 +257,19 @@ const goProfile = (id) => {
 .clickable-item:hover {
   /* text-decoration: underline; */
   color: #658EA7;
+}
+
+.hashtag {
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 10px;
+    border: 2px solid #658EA7;
+    background-color: #658EA7;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    width: 70px;
+    height: 32px;
+    text-align: center;
 }
 </style>
