@@ -121,6 +121,7 @@ onMounted(() => {
         Authorization: `Token ${store.token}`
     }
   })
+  
     .then((res) => {
         console.log(res.data);
         user.value = res.data;

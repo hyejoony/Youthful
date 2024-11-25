@@ -5,18 +5,18 @@
           expand-on-hover
           rail
           :rail-width="56"
-            width="220"
-            permanent
+          width="220"
+          permanent
         >
           <v-list>
             <!-- // nickname 없음 email 로 처리 추가 필요 -->
             <v-list-item class="user-info"
-            v-if="store.isLogin == true"
+            v-if="storeAccount.isLogin == true"
               prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              title="store.nickname || store.email.split "
-              subtitle="store.email"
+              :title="user.nickname || user.email "
+              :subtitle="user.email"
             ></v-list-item>
-            <v-list-item v-else-if="!store.isLogin">
+            <v-list-item v-else-if="!storeAccount.isLogin">
             <template v-slot:prepend>
                 <v-avatar color="#658EA7">
                 <v-icon icon="mdi-account-question"></v-icon>
@@ -39,8 +39,8 @@
             ></v-list-item>
   
             <v-list-item
-              v-if="store.isLogin"
-              :to="{ name: 'profile', params: { id: store.userId }}"
+              v-if="storeAccount.isLogin"
+              :to="{ name: 'profile', params: { id: storeAccount.userId }}"
               prepend-icon="mdi-account"
               title="프로필"
               value="profile"
@@ -48,7 +48,7 @@
             ></v-list-item>
 
             <v-list-item
-              v-else="!store.isLogin"
+              v-else="!storeAccount.isLogin"
               :to="{ name: 'login'}"
               prepend-icon="mdi-account"
               title="프로필"
@@ -98,7 +98,7 @@
             ></v-list-item>
   
             <!-- 로그인 상태에 따른 조건부 렌더링 -->
-            <div v-if="!store.isLogin">
+            <div v-if="!storeAccount.isLogin">
               <v-list-item
                 to="/signup"
                 prepend-icon="mdi-account-plus"
@@ -123,7 +123,7 @@
               prepend-icon="mdi-logout"
               title="로그아웃"
               value="logout"
-              @click="store.logout"
+              @click="storeAccount.logout"
               class="nav-item"
             ></v-list-item>
           </v-list>
@@ -138,10 +138,24 @@
   <script setup>
   import { RouterLink, RouterView } from 'vue-router'
   import { useAccountStore } from '@/stores/account'
-  
-  const store = useAccountStore()
+  import { onMounted, ref } from 'vue';
+  import axios from 'axios'
+
+  const storeAccount = useAccountStore()
+  const user = ref('')
+
+
+
+
   </script>
   
+
+  /accounts/user/
+
+
+
+  
+
   <style scoped>
   :deep(.nav-item .v-icon) {
     color: #A3A3A3 !important;

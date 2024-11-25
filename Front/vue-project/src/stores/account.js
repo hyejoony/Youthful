@@ -123,6 +123,7 @@ export const useAccountStore = defineStore('account', () => {
     .then(userRes => {
         // 사용자 정보 저장
         userId.value = userRes.data.id;  // userId는 반응형 변수라고 가정
+        console.log('userId', userId)
         console.log(userId.value)
         router.push({ name: 'home' });
     })

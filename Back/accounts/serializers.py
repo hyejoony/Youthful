@@ -352,4 +352,4 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id',)# 필요한 필드 추가
+        fields = ('id', )# 필요한 필드 추가

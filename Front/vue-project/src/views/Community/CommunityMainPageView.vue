@@ -70,8 +70,10 @@
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <v-btn density="compact" icon="mdi-account"></v-btn>
-                            <h5 @click="goProfile(article.user)" style="color: #767676;" class="ml-3 clickable-item">{{ article.user_display_name }}님 | </h5>
+                            <v-avatar @click="goProfile(article.user)" class="clickable-item" size="small">
+                                <v-img :src="`${baseUrl}${article.profile_image}`" alt="Article Profile"></v-img>
+                            </v-avatar>                            
+                            <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님 | </h5>
                             <p>댓글 {{ article.comments.length }}개 | </p>
                             <p>{{ article.updated_at?.slice(0, 10) }}</p>
                         </div>
@@ -105,6 +107,7 @@ const router = useRouter()
 
 const API_URL = storeAccount.API_URL
 const token = storeAccount.token
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 onMounted(() => {
     axios({
