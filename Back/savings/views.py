@@ -128,6 +128,7 @@ def saving_product_list(request):
         # 시리얼라이저를 사용하여 데이터 직렬화
         serializer = SavingProductListSerializers(current_page, many=True)
 
+        print(serializer.data)
         # 페이지네이션 정보 추가
         response_data = {
             'count': paginator.count,
