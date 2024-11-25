@@ -39,17 +39,23 @@ class SubsidyListSerializers(serializers.ModelSerializer):
 class SubsidyCommentListSerializers(serializers.ModelSerializer):
 
     user_display_name = serializers.SerializerMethodField()
+    profile_image = serializers.SerializerMethodField()
 
     class Meta:
         model = SubsidyComment
         fields = '__all__'
-        read_only_fields = ('user', 'subsidy',)
+        read_only_fields = ('user', 'subsidy', 'profile_image')
 
     def get_user_display_name(self, obj):
         """닉네임이 있으면 닉네임을 반환하고, 없으면 이메일의 '@' 전까지의 부분을 반환합니다."""
         if obj.user.nickname == 'null':  # 해당 값이 null값이므로 조건을 이렇게 달아줘야 한다
             return obj.user.email.split('@')[0]
         return obj.user.nickname
+    
+    def get_profile_image(self, obj):
+        if obj.user.profile_image:
+            return obj.user.profile_image.url
+        return None  # 또는 기본 이미지 URL을 반환할 수 있습니다.
 
 # 보조금 상세 페이지
 class SubsidyDetailSerializers(serializers.ModelSerializer):
