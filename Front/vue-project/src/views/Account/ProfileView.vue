@@ -13,14 +13,8 @@
                                 ></v-img>
                                 <v-icon v-else size="85" icon="mdi-account-circle"></v-icon>
                             </v-avatar>
-                            <v-btn icon width="38" height="38" color="grey" class="upload-btn"
-                                @click="triggerFileInput">
-                                <v-icon size="20">mdi-camera</v-icon>
-                            </v-btn>
-                            <input ref="fileInput" type="file" style="display: none" @change="onFileSelected"
-                                accept="image/*">
                         </div>
-                        <h1 class="profile-title" style="text-align: center; color: #658EA7;">님의 프로필</h1>
+                        <h1 v-if="user" class="profile-title" style="text-align: center; color: #658EA7;">{{ store.userName }}님의 프로필</h1>
                     </div>
                 </div>
                 <div class="user-info mt-8" v-if="user"> 
@@ -30,8 +24,8 @@
                     <p class="p-1">직업 : {{ user.career }}</p><br>
                 </div>
                 <hr>
-                <div>
-                    <v-btn @click="openDialog" class='signup-bttn' rounded="xl">회원정보 수정</v-btn>
+                <div v-if="user">
+                    <v-btn v-if="store.userId == user.pk" @click="openDialog" class='signup-bttn' rounded="xl">회원정보 수정</v-btn>
                     <!-- 모달창 -->
                     <v-dialog v-model="dialog" max-width="600">
                         <v-card>
@@ -216,6 +210,9 @@ const saveChangesFunc = async () => {
     const result = await store.saveUpdateChanges(payload)
     console.log('닉네임은', editNickname)
     console.log('이미지는', result.profile_image)
+    console.log('결과는', result)
+    store.userName = result.user_display_name
+    store.userImage = result.profile_image
     user.value.profile_image = result.profile_image
     user.value.nickname = editNickname
     user.value.income = editIncome

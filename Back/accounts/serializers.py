@@ -276,6 +276,7 @@ class LikeSubsidySerializer(serializers.ModelSerializer):
 # 회원 정보 수정을 위한 시리얼라이즈
 # 회원 프로필 정보를 위한 시리얼라이저
 class CustomUserDetailsSerializer(UserDetailsSerializer):
+    user_display_name = serializers.SerializerMethodField() # 현재 추가
     profile_image = serializers.ImageField(
         required=False,
         allow_null=True,
@@ -305,9 +306,15 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'email', 'nickname', 'profile_image', 'birthyear', 
+        fields = ('pk', 'email', 'user_display_name', 'nickname', 'profile_image', 'birthyear', 
                   'income', 'career', 'region', 'like_deposits', 'like_savings', 'like_subsidies')
-        read_only_fields = ('email',)
+        read_only_fields = ('email', 'user_display_name')
+
+    def get_user_display_name(self, obj):
+        """닉네임이 있으면 닉네임을 반환하고, 없으면 이메일의 '@' 전까지의 부분을 반환합니다."""
+        if obj.nickname == 'null' or not obj.nickname:
+            return obj.email.split('@')[0]
+        return obj.nickname
         
     def validate_profile_image(self, image_data):
         """프로필 이미지 유효성 검사"""
@@ -350,6 +357,14 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     
 # 유저의 id값 가져오는 시리얼라이즈
 class UserSerializer(serializers.ModelSerializer):
+    user_display_name = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', )# 필요한 필드 추가
+        fields = ('id', 'profile_image', 'user_display_name', 'email')# 필요한 필드 추가
+
+    def get_user_display_name(self, obj):
+        """닉네임이 있으면 닉네임을 반환하고, 없으면 이메일의 '@' 전까지의 부분을 반환합니다."""
+        if obj.nickname == 'null':  # 해당 값이 null값이므로 조건을 이렇게 달아줘야 한다
+            return obj.email.split('@')[0]
+        return obj.nickname

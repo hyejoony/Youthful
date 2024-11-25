@@ -9,22 +9,24 @@
           permanent
         >
           <v-list>
-            <!-- // nickname 없음 email 로 처리 추가 필요 -->
-            <v-list-item class="user-info"
-            v-if="storeAccount.isLogin == true"
-              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              :title="user.nickname || user.email "
-              :subtitle="user.email"
-            ></v-list-item>
-            <v-list-item v-else-if="!storeAccount.isLogin">
-            <template v-slot:prepend>
-                <v-avatar color="#658EA7">
-                <v-icon icon="mdi-account-question"></v-icon>
+            <v-list-item v-if="storeAccount.isLogin" class="user-info">
+              <template v-slot:prepend>
+                <v-avatar>
+                  <v-img :src="`${baseUrl}${storeAccount.userImage}`" alt="User Profile"></v-img>
                 </v-avatar>
-            </template>
-            <v-list-item-title>로그인이 필요합니다</v-list-item-title>
+              </template>
+              <v-list-item-title>{{ storeAccount.userName }}</v-list-item-title>
+              <v-list-item-subtitle>{{ storeAccount.userEmail }}</v-list-item-subtitle>
             </v-list-item>
-
+            
+            <v-list-item v-else>
+              <template v-slot:prepend>
+                <v-avatar color="#658EA7">
+                  <v-icon icon="mdi-account-question"></v-icon>
+                </v-avatar>
+              </template>
+              <v-list-item-title>로그인이 필요합니다</v-list-item-title>
+            </v-list-item>
           </v-list>
   
           <v-divider></v-divider>
@@ -143,18 +145,13 @@
 
   const storeAccount = useAccountStore()
   const user = ref('')
-
+  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 
 
   </script>
   
 
-  /accounts/user/
-
-
-
-  
 
   <style scoped>
   :deep(.nav-item .v-icon) {

@@ -97,6 +97,10 @@ export const useAccountStore = defineStore('account', () => {
   const loginErr = ref('')
   const token = ref(null)
   const userId = ref(null)
+  const userImage = ref(null)
+  const userEmail = ref('')
+  const userName = ref('')
+
   const logIn = (payload) => {
     const formData = new FormData();
     formData.append('email', payload.email);
@@ -122,9 +126,13 @@ export const useAccountStore = defineStore('account', () => {
     })
     .then(userRes => {
         // 사용자 정보 저장
+        console.log(userRes.data)
         userId.value = userRes.data.id;  // userId는 반응형 변수라고 가정
-        console.log('userId', userId)
+        userImage.value = userRes.data.profile_image
+        userEmail.value = userRes.data.email
+        userName.value = userRes.data.user_display_name
         console.log(userId.value)
+        console.log(userImage.value)
         router.push({ name: 'home' });
     })
     .catch(err => {
@@ -197,6 +205,7 @@ export const useAccountStore = defineStore('account', () => {
 
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
     incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
-    token, isLogin, userId, logout, saveUpdateChanges
+    token, isLogin, userId, logout, saveUpdateChanges, userImage, userEmail, 
+    userName
    }
 }, { persist: true })
