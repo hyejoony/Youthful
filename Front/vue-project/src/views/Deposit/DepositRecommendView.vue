@@ -1,9 +1,9 @@
 <template>
     <RouterView />
     <ProductShortcut />
-    <div class="container">
+    <div v-if="storeDeposit.recoDeposits" class="container">
         <ProductRecoHeader />
-        <DepositListContent />
+        <DepositRecommendContent :reco-deposits="storeDeposit.recoDeposits"/>
     </div>
 </template>
 
@@ -12,20 +12,32 @@
 import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
-import DepositListContent from '@/components/Common/DepositListContent.vue';
+import DepositRecommendContent from '@/components/Common/DepositRecommendContent.vue';
 import { ref } from 'vue'
 
 import { RouterLink, RouterView } from 'vue-router';
 import { useAccountStore } from '@/stores/account';
-import { onBeforeMount } from 'vue';
+import { UseDepositStore } from '@/stores/deposit';
+import { onBeforeMount, onMounted } from 'vue';
 const storeAccount = useAccountStore()
 const router = useRouter()
+
+const storeDeposit = UseDepositStore()
 
 onBeforeMount(() => {
   if (!storeAccount.isLogin) {
     router.push('/login');
   }
 });
+
+onMounted(async () => {
+  try {
+    await storeDeposit.getRecoDeposits()
+    console.log('storeDeposit.recoDeposits', storeDeposit.recoDeposits)
+  } catch (err) {
+    console.error(err)
+  }
+})
 
 </script>
 

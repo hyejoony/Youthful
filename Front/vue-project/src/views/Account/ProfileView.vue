@@ -14,7 +14,7 @@
                                 <v-icon v-else size="85" icon="mdi-account-circle"></v-icon>
                             </v-avatar>
                         </div>
-                        <h1 v-if="user" class="profile-title" style="text-align: center; color: #658EA7;">{{ store.userName }}님의 프로필</h1>
+                        <h1 v-if="user" class="profile-title" style="text-align: center; color: #658EA7;">{{ user.user_display_name }}님의 프로필</h1>
                     </div>
                 </div>
                 <div class="user-info mt-8" v-if="user"> 
@@ -95,10 +95,10 @@
 import UserLikeList from '@/components/Account/UserLikeList.vue';
 
 // 2. 프로필 이미지 반영
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios'
 import { useAccountStore } from '@/stores/account'
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 
 const store = useAccountStore()
 const route = useRoute()
@@ -106,25 +106,28 @@ const route = useRoute()
 const user = ref(null)
 const age = ref(null)
 
-onMounted(() => {
-  console.log('ID', route.params.id)
-  axios({
-    method: 'get',
-    url: `${store.API_URL}/accounts/profile/${route.params.id}/`,
-    headers: {
-        Authorization: `Token ${store.token}`
-    }
-  })
-  
+const userId = ref(route.params.id)
+
+// 사용자 프로필을 가져오는 함수
+function fetchUserProfile(id) {
+    console.log('ID', id);
+    axios({
+        method: 'get',
+        url: `${store.API_URL}/accounts/profile/${id}/`,
+        headers: {
+            Authorization: `Token ${store.token}`
+        }
+    })
     .then((res) => {
         console.log(res.data);
         user.value = res.data;
-        console.log(res.data.profile_image)
+        console.log(res.data.profile_image);
 
         // 현재 연도 가져오기
         const currentYear = new Date().getFullYear();
         // 나이 계산
         const ageTrue = currentYear - res.data.birthyear;
+
         // 10대, 20대, 30대 등으로 구분하여 age 변수에 저장
         if (ageTrue >= 10 && ageTrue < 20) {
             age.value = 10;
@@ -138,19 +141,33 @@ onMounted(() => {
             age.value = 50;
         } else if (ageTrue >= 60 && ageTrue < 70) {
             age.value = 60;
-        }  else if (ageTrue >= 70 && ageTrue < 80) {
+        } else if (ageTrue >= 70 && ageTrue < 80) {
             age.value = 70;
         } else if (ageTrue >= 80 && ageTrue < 90) {
             age.value = 80;
         } else if (ageTrue >= 90 && ageTrue < 100) {
             age.value = 100;
-        } 
+        }
     })
     .catch((err) => {
-      console.log(err)
-    })
-})
+      console.log(err);
+    });
+}
 
+// userId가 변경될 때마다 API 호출
+watch(userId, (newId) => {
+    fetchUserProfile(newId);
+});
+
+// 라우터가 변경될 때 userId 업데이트
+onBeforeRouteUpdate((to, from) => {
+    userId.value = to.params.id; // 새로운 ID로 업데이트
+});
+
+// 컴포넌트가 처음 마운트될 때 사용자 프로필을 가져옴
+onMounted(() => {
+    fetchUserProfile(userId.value);
+});
 
 const fileInput = ref(null);
 // const avatarImage = ref(null);

@@ -18,16 +18,31 @@ export const UseSavingStore = defineStore('Saving', () => {
             }
         })
         .then( res => {
-            console.log(res)
-            // console.log('dd')
-            console.log(res.data)
             savings.value = res.data.results
-            console.log('savings.value',subsidies.value)
         })
         .catch(err => console.log(err))
     }
 
+    const recoSavings = ref([])
+
+    const getRecoSavings = function () {
+        const storeAccount = useAccountStore()
+        axios({
+            method: 'get',
+            url: `${API_URL}/api/v1/savings/recommend/`,
+            headers : {
+                Authorization: `Token ${storeAccount.token}`
+            }
+        })
+        .then( res => {
+            console.log('과연!!!!!!!', res.data)
+            recoSavings.value = res.data
+        })
+        .catch(err => console.log(err))
+    }
     
-  return { getSavings, savings, API_URL
+
+    
+  return { getSavings, savings, API_URL, getRecoSavings, recoSavings
    }
 }, { persist: true })

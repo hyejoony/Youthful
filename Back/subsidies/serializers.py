@@ -26,6 +26,7 @@ class SavingSubsidySerializers(serializers.ModelSerializer):
         model = Subsidy
         fields = '__all__'
 
+# 보조금 상품 목록 페이지
 class SubsidyListSerializers(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(source='like_users.count', read_only=True)
     liked_users_info = serializers.SerializerMethodField()

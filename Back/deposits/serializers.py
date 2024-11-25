@@ -46,10 +46,22 @@ class DepositProductListSerializers(serializers.ModelSerializer):
     
     deposit_options = DepositOptionListSerializers(many=True, read_only=True)
     likes_count = serializers.IntegerField(source='like_users.count', read_only=True)
+    liked_users_info = serializers.SerializerMethodField()
 
     class Meta:
         model = DepositProduct
-        fields = ('id', 'kor_co_nm', 'fin_prdt_nm', 'deposit_options', 'likes_count')
+        fields = ('id', 'kor_co_nm', 'fin_prdt_nm', 'deposit_options', 'likes_count', 'liked_users_info')
+
+    def get_liked_users_info(self, obj):
+        return [
+            {
+                'birthyear': user.birthyear,
+                'income': user.income,
+                'career': user.career,
+                'region': user.region
+            }
+            for user in obj.like_users.all()
+        ]
 
 
 # 예금 상품 상세 페이지
