@@ -38,8 +38,14 @@ class CommunityCommentListSerializer(UserDisplayNameSerializer):
 # 커뮤니티 상세, 생성, 수정 시리얼라이즈
 class CommunityDetailSerializer(UserDisplayNameSerializer):
     comments = CommunityCommentListSerializer(many=True, read_only=True)
+    profile_image = serializers.SerializerMethodField()
 
     class Meta(UserDisplayNameSerializer.Meta):
         model = Community
         fields = '__all__'
-        read_only_fields = ('user_display_name','user')
+        read_only_fields = ('user_display_name', 'user', 'profile_image')
+
+    def get_profile_image(self, obj):
+        if obj.user.profile_image:
+            return obj.user.profile_image.url
+        return None  # 또는 기본 이미지 URL을 반환할 수 있습니다.
