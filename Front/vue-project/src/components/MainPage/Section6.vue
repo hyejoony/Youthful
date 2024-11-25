@@ -68,7 +68,7 @@
   const messages = ref([
     {
       role: 'assistant',
-      content: '안녕하세요! 금융과 관련된 궁금한 점을 물어보세요. 전문적인 답변을 제공해드리겠습니다.'
+      content: '안녕하세요! 금융과 관련된 궁금한 점을 물어보세요. 금융 지식 전문가로서 전문적인 답변을 제공해드리겠습니다.'
     }
   ])
   const userInput = ref('')
@@ -113,17 +113,18 @@
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey.value}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json' // 서버가 수신하는 데이터형식
         },
         body: JSON.stringify({
           messages: [
-            {"role": "system", "content": "you are a helpful finance assistant."},
+            {"role": "system", "content": "넌 금융 설명 전문가야, 한국어로만 답을 해줘, 내가 물어보는 개념에 대해 예시와 함께 아주 쉽게 설명해줘. 설명해줄 때 어느 자료를 참고했는지 출처 url 주소를 제외한 명칭만을 알려줘."},
             {"role": "user", "content": userMessage}
           ],
-          model: "mixtral-8x7b-32768",
-          temperature: 0.5,
-          max_tokens: 1024,
-          top_p: 1
+          model: "llama3-8b-8192",
+          temperature: 0.2, // 무작위성
+          max_tokens: 2500, // 모델이 생성할 수 있는 응답길이 // 사용자 입력 토큰, 모델 출력 토큰 포함
+          top_p: 0.3 // 언어 모델이 다음 토큰을 선택할 때 고려하는 확률의 누적 임계값을 설정하는 매개변수
+          //이 값은 선택된 토큰들의 누적 확률이 지정된 Top P 값에 도달할 때까지 가장 가능성이 높은 토큰들을 포함하는 가장 작은 집합을 결정합니다.
         })
       })
   
