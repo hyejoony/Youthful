@@ -34,7 +34,6 @@ onBeforeMount(() => {
 onMounted(() => {
     storeSubsidy.getSubsidies()
     console.log('storeSubsidy.subsidies',storeSubsidy.subsidies)
-    
 })
 
 

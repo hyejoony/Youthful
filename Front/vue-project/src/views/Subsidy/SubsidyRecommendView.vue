@@ -1,9 +1,9 @@
 <template>
     <RouterView />
     <ProductShortcut />
-    <div class="container">
+    <div v-if="storeSubsidy.recoSubsidies" class="container">
         <ProductRecoHeader />
-        <SubsidyListContent />
+        <SubsidyRecommendContent :reco-subsidies="storeSubsidy.recoSubsidies"/>
     </div>
 </template>
 
@@ -12,20 +12,32 @@
 import { useRouter } from 'vue-router';
 import ProductShortcut from '@/components/Common/ProductShortcut.vue';
 import ProductRecoHeader from '@/components/Common/ProductRecoHeader.vue';
-import SubsidyListContent from '@/components/Common/SubsidyListContent.vue';
+import SubsidyRecommendContent from '@/components/Common/SubsidyRecommendContent.vue';
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router';
 import { useAccountStore } from '@/stores/account';
-import { onBeforeMount } from 'vue';
+import { UseSubsidyStore } from '@/stores/subsidy';
+import { onBeforeMount, onMounted } from 'vue';
 
 const storeAccount = useAccountStore()
 const router = useRouter()
+
+const storeSubsidy = UseSubsidyStore()
 
 onBeforeMount(() => {
   if (!storeAccount.isLogin) {
     router.push('/login');
   }
 });
+
+onMounted(async () => {
+  try {
+    await storeSubsidy.getRecoSubsidies()
+    console.log('storeSubsidy.recoSubsidies', storeSubsidy.recoSubsidies)
+  } catch (err) {
+    console.error(err)
+  }
+})
 
 </script>
 
