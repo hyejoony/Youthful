@@ -18,16 +18,28 @@ export const UseSubsidyStore = defineStore('Subsidy', () => {
             }
         })
         .then( res => {
-            console.log(res)
-            // console.log('dd')
-            console.log(res.data)
             subsidies.value = res.data.results
-            console.log('subsidies.value',subsidies.value)
         })
         .catch(err => console.log(err))
     }
-
     
-  return { getSubsidies, subsidies, API_URL
+    const recoSubsidies = ref([])
+    
+    const getRecoSubsidies = function () {
+        const storeAccount = useAccountStore()
+        axios({
+            method: 'get',
+            url: `${API_URL}/api/v1/subsidies/recommend/`,
+            headers : {
+                Authorization: `Token ${storeAccount.token}`
+            }
+        })
+        .then( res => {
+            console.log('과연!!!!!!!', res.data)
+            recoSubsidies.value = res.data
+        })
+        .catch(err => console.log(err))
+    }
+  return { getSubsidies, subsidies, API_URL, getRecoSubsidies, recoSubsidies
    }
 }, { persist: true })

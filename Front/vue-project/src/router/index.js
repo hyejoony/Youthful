@@ -153,13 +153,11 @@ const router = createRouter({
           component: SubsidyDetailView 
         },
         {
-
           path: '/subsidy/recommend',
           name: 'subsidyrecommend',
           component: SubsidyRecommendView
         },
         {
-
           path: '/subsidy/detail/:id/review',
           name: 'subsidyreview',
           component: SubsidyReviewView

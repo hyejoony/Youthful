@@ -26,14 +26,24 @@ class SavingSubsidySerializers(serializers.ModelSerializer):
         model = Subsidy
         fields = '__all__'
 
-# 보조금 목록 페이지
 class SubsidyListSerializers(serializers.ModelSerializer):
-
     likes_count = serializers.IntegerField(source='like_users.count', read_only=True)
+    liked_users_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Subsidy
-        fields = ('id' ,'name', 'name_category', 'target', 'contact', 'likes_count')
+        fields = ('id', 'name', 'name_category', 'target', 'contact', 'likes_count', 'liked_users_info')
+
+    def get_liked_users_info(self, obj):
+        return [
+            {
+                'birthyear': user.birthyear,
+                'income': user.income,
+                'career': user.career,
+                'region': user.region
+            }
+            for user in obj.like_users.all()
+        ]
 
 # 특정 보조금 리뷰 조회, 생성, 수정
 class SubsidyCommentListSerializers(serializers.ModelSerializer):
