@@ -1,7 +1,7 @@
 <template>
     <Routerview />
     <v-form @submit.prevent="SaveArticleFunc">
-        <v-card width="900" height="400" elevation="4">
+        <v-card width="800" height="400" elevation="4">
             <card-title>
                 <v-text-field  v-model="inputTitle" placeholder="제목을 작성해주세요."
                     variant="solo"></v-text-field>
@@ -11,7 +11,7 @@
                 <v-text-field  v-model="inputContent" class="v-text-field2"
                     placeholder="본문을 작성해주세요."></v-text-field>
             </card-content>
-            <div>
+            <div class="ml-4">
                 <p>키워드를 선택해주세요.</p>
                 <v-btn v-for="(btn, index) in storeCommunity.buttons" :key="index"
                     :class="{ 'active-button': selectedButton === btn.caption }" @click="selectButton(btn.caption)"

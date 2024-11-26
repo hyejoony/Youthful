@@ -41,8 +41,11 @@
                             <v-list-item-title style="font-size: 15px;"> {{ review.content }}</v-list-item-title>
                             <div class="button-group">
                                 <!-- 수정 버튼 (모달 열기) -->
-                                <v-avatar v-if="storeAccount.userId !== review.user" @click="goProfile(review.user)" class="clickable-item" size="small">
+                                <v-avatar v-if="storeAccount.userId !== review.user && review.profile_image && storeAccount.isLogin" @click="goProfile(review.user)" class="clickable-item" size="small">
                                     <v-img :src="`${baseUrl}${review.profile_image}`" alt="Review Profile"></v-img>
+                                </v-avatar>   
+                                <v-avatar v-else-if="storeAccount.userId !== review.user" color="#658EA7" size="30" @click="goProfile(review.user)" class="clickable-item">
+                                    <v-icon size="25" icon="mdi-account-circle"></v-icon>
                                 </v-avatar>   
                                 <v-btn  v-if="storeAccount.userId == review.user" icon small @click="openEditDialog(review, index)" class="icon-button">
                                     <v-icon size="19">mdi-pencil</v-icon>

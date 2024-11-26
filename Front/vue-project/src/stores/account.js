@@ -16,6 +16,8 @@ export const useAccountStore = defineStore('account', () => {
   const careerErr = ref('')
   const sameErr = ref('')
 
+
+
   const signUp = (payload) => {
     const email = payload.email
 
@@ -30,6 +32,7 @@ export const useAccountStore = defineStore('account', () => {
     formData.append('region', payload.region);
     formData.append('condition1', payload.condition1);
     formData.append('condition2', payload.condition2);
+
 
     // profile_image가 File 객체인 경우
     if (payload.profile_image instanceof File) {
@@ -46,7 +49,7 @@ export const useAccountStore = defineStore('account', () => {
         console.log('회원가입이 완료되었습니다.')
         const password = payload.password1
         logIn({ email, password })
-        console.log('dfdfdfdf')
+        // console.log('dfdfdfdf')
         router.push({name: 'home'})
       })
       .catch(err => {

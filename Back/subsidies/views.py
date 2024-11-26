@@ -112,7 +112,7 @@ from django.forms.models import model_to_dict
 @permission_classes([IsAuthenticated])
 def subsidy_recommend_list(request):
     subsidies = get_list_or_404(Subsidy)
-    serializers = SubsidyListSerializers(subsidies, many=True)
+    serializers = SubsidyListSerializers(subsidies, many=True, context={'request': request})
     reco_subsidies = []
 
     current_user = request.user
@@ -120,12 +120,12 @@ def subsidy_recommend_list(request):
     current_user_data = model_to_dict(current_user)
 
     for serializer in serializers.data:
-        print(serializer)
+        # print(serializer)
         cnt = 0
         if len(serializer['liked_users_info']) > 0:
             for like_user in serializer['liked_users_info']:
-                print('아아아', like_user['birthyear'])
-                print('아아아2', current_user_data['birthyear'])
+                # print('아아아', like_user['birthyear'])
+                # print('아아아2', current_user_data['birthyear'])
                 if current_user_data['birthyear']-5 <= like_user['birthyear'] <= current_user_data['birthyear']+5:
                     cnt += 2
                 if like_user['income'] == current_user_data['income']:

@@ -30,16 +30,21 @@
                 <p class="txt-custom px-5"><b>하나은행</b></p>
             </v-card>
         </div>
-        <div class="button-container">
+        <div class="button-container" >
             <v-btn height="45" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
-                <span class="font-weight-bold" style="font-size: medium;">추천 받아보기</span>
+                <span  @click="gotoDeposit" class="font-weight-bold" style="font-size: medium;">추천 받아보기</span>
             </v-btn>
         </div>
     </div>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
+const gotoDeposit = () => {
+  router.push({ name: 'deposit' });
+};
 </script>
 
 <style scoped>

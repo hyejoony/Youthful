@@ -1,6 +1,6 @@
 <template>
     <br>
-    <div class="mt-6">
+    <div  style="margin-top: 2%;">
         <h2 style="display: inline;" class="mt-6 mb-2">내 집 주변 은행도 클릭만으로 찾을 수 있어요.</h2>
     </div><br>
 

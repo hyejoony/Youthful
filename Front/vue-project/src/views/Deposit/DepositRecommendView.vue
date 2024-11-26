@@ -2,7 +2,7 @@
     <RouterView />
     <ProductShortcut />
     <div v-if="storeDeposit.recoDeposits" class="container">
-        <ProductRecoHeader />
+        <!-- <ProductRecoHeader /> -->
         <DepositRecommendContent :reco-deposits="storeDeposit.recoDeposits"/>
     </div>
 </template>

@@ -1,13 +1,13 @@
 <template>
     <div class="total-div">
-        <v-card v-if="storeAccount.isLogin" width="900" height="90" elevation="2">
+        <v-card v-if="storeAccount.isLogin" width="800" height="90" elevation="2">
             <h3 class="mt-2 pl-4" style="color: #658EA7;">내가 알고있는 정보를 공유하거나, 모르는 점을 질문해보세요.</h3>
             <v-btn @click="writeArticle" width="100" height="30" class="mt-2 ml-4"
                 rounded="xl">글쓰기<v-icon>mdi-pencil</v-icon>
                 <RouterLink />
             </v-btn>
         </v-card>
-        <v-card v-else width="900" height="80" elevation="2">
+        <v-card v-else width="800" height="80" elevation="2">
             <h3 class="mt-2 pl-4" style="color: #658EA7;">로그인 후 이용 가능해요.</h3>
             <v-btn @click="login" width="100" height="30" class="mt-2 ml-4"
                 rounded="xl">로그인<v-icon>mdi-pencil</v-icon>
@@ -15,14 +15,14 @@
             </v-btn>
         </v-card>
 
-        <v-card class="mt-4 " width="900" height="120" elevation="2">
-            <h3 class="mt-2 pl-4" style="color: #658EA7;">인기 게시글</h3>
+        <v-card class="mt-4 " width="800" height="120" elevation="2">
+            <h3 class="mt-2 pl-4 mb-2" style="color: #658EA7;">인기 게시글</h3>
             <div class="ml-4" v-for="popArticle in storeCoummunity.popArticleList" :key="popArticle.id">
-                <h5 style="display: inline;">{{ popArticle.keyword }} |</h5>
-                <h5 @click="getDetail(popArticle.id)" class="clickable-title" style="font-weight: 400; display: inline;"> {{ popArticle.title }}</h5>
+                <h4 style="display: inline;">{{ popArticle.keyword }} |</h4>
+                <h4 @click="getDetail(popArticle.id)" class="clickable-title" style="font-weight: 400; display: inline;"> {{ popArticle.title }}</h4>
             </div>
         </v-card>
-        <v-card class="mt-4 mb-5" width="900" max-height="900px" elevation="2">
+        <v-card class="mt-4 mb-5" width="800" max-height="900px" elevation="2">
             <card-head>
                 <div class="mt-3 pr-2 keyword-div" style="display: flex;">
                     <v-btn style="font-size: 14px;" density="compact"
@@ -46,12 +46,15 @@
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <v-avatar v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)" class="clickable-item" size="small">
+                            <v-avatar v-if="storeAccount.userId !== article.user && article.profile_image && storeAccount.isLogin" @click="goProfile(article.user)" class="clickable-item" size="small">
                                 <v-img :src="`${baseUrl}${article.profile_image}`" alt="Article Profile"></v-img>
                             </v-avatar>  
+                            <v-avatar v-else-if="storeAccount.userId !== article.user" color="#658EA7" size="30" @click="goProfile(article.user)" class="clickable-item">
+                                <v-icon size="25" icon="mdi-account-circle"></v-icon>
+                            </v-avatar>
                             <h5 @click="goProfile(article.user)" style="color: #767676;" class="ml-3 clickable-item">{{ article.user_display_name }}님</h5> |
-                            <p>댓글 {{ article.comments.length }}개</p> |
-                            <p>{{ article.updated_at?.slice(0, 10) }}</p>
+                            <h5 style="color: #767676;" >댓글 {{ article.comments.length }}개 | </h5>
+                            <h5 style="color: #767676;" class="mr-3">{{ article.updated_at?.slice(0, 10) }}</h5>
                         </div>
                     </div>
                     <div>
@@ -73,12 +76,15 @@
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <v-avatar v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)" class="clickable-item" size="small">
+                            <v-avatar v-if="storeAccount.userId !== article.user && article.profile_image && storeAccount.isLogin" @click="goProfile(article.user)" class="clickable-item" size="small">
                                 <v-img :src="`${baseUrl}${article.profile_image}`" alt="Article Profile"></v-img>
-                            </v-avatar>                            
+                            </v-avatar>  
+                            <v-avatar v-else-if="storeAccount.userId !== article.user" color="#658EA7" size="30" @click="goProfile(article.user)" class="clickable-item">
+                                <v-icon size="25" icon="mdi-account-circle"></v-icon>
+                            </v-avatar>                          
                             <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님 | </h5>
-                            <p>댓글 {{ article.comments.length }}개 | </p>
-                            <p>{{ article.updated_at?.slice(0, 10) }}</p>
+                            <h5 style="color: #767676;" >댓글 {{ article.comments.length }}개 | </h5>
+                            <h5 style="color: #767676;" class="mr-3">{{ article.updated_at?.slice(0, 10) }}</h5>
                         </div>
                     </div>
                     <div>
@@ -237,7 +243,10 @@ const goProfile = (id) => {
 }
 
 .left-content {
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; flex-start에서 center로 변경 */
+
 }
 
 .right-content {
@@ -267,8 +276,8 @@ h1 {
 }
 
 .hashtag {
-    margin-top: 5px;
-    margin-left: 5px;
+    margin-top: 17px;
+    margin-left: 9px;
     margin-right: 10px;
     border: 2px solid #658EA7;
     background-color: #658EA7;

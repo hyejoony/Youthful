@@ -73,7 +73,7 @@ const getInterestRate = (options, term) => {
 
 <style scoped>
 .table-container {
-    max-width: 1000px;
+    width: 815px;
 }
 
 .option-card {
