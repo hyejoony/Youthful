@@ -6,8 +6,8 @@
 1️⃣ [기획 배경](#기획-배경)  
 2️⃣ [업무 분담 내역](#업무-분담-내역)  
 3️⃣ [설계 및 목업](#설계-및-목업)  
-4️⃣ [데이터베이스 모델링(ERD)](#데이터베이스-모델링erd)  
-5️⃣ [금융 상품 추천 알고리즘](#추천-알고리즘-기술적-설명)  
+4️⃣ [데이터베이스 모델링 및 명세서](#데이터베이스-모델링-및-명세서)  
+5️⃣ [금융 상품 추천 알고리즘](#금융-상품-추천-알고리즘)  
 6️⃣ [서비스 대표 기능](#서비스-대표-기능)  
 7️⃣ [후기](#후기)  
 
@@ -27,10 +27,11 @@
 ## 업무 분담 내역
 
 - 프로젝트 기간 : 2023/11/15 ~ 2023/11/26 (약 12일)
-> |팀원|역할|
-> |---|---|
-> |김경환|Back End - ERD, 아키텍처, 기능 명세서, 동작 시나리오, project의 settig, 모든 app의 model/serializer/view함수, 추천 알고리즘, 회원 커스터마이징, axios로 회원/커뮤니티/예적금/보조금 데이터 연결 및 비동기 처리 |
-> |전혜준| Front End - API 명세서, 디자인 구상 및 vuetify로 전체 페이지 구현, axios로 보조금 데이터 연결 및 비동기 처리, 웹페이지 페르소나 설정, PPT, 생성형 AI 챗봇 구현 |
+# //역할 수정하기//
+| 팀원   | 역할 |
+|--------|------|
+|김경환| Back End - ERD, 아키텍처, 기능 명세서, 동작 시나리오, project의 settig, 모든 app의 model/serializer/view함수, 추천 알고리즘, 회원 커스터마이징, axios로 회원/커뮤니티/예적금/보조금 데이터 연결 및 비동기 처리 |
+|전혜준| Front End - API 명세서, 디자인 구상 및 vuetify로 전체 페이지 구현, axios로 보조금 데이터 연결 및 비동기 처리, 웹페이지 페르소나 설정, PPT, 생성형 AI 챗봇 구현 |
 
 
 ## 설계 및 목업
@@ -98,16 +99,15 @@
 
 ### 1️⃣ 회원가입, 로그인 페이지
 https://github.com/user-attachments/assets/ede26178-f0b1-4cdf-9b9a-3731b608e008
-
-https://github.com/user-attachments/assets/3db7262b-9e00-4a01-ae85-155cfab871e5
-
 - 회원가입
     - 소득, 지역, 직업은 리스트 박스 형태로 처리
     - 이메일은 유니크 해야 하며, 형식을 맞춰야 함
     - 비밀번호는 8~16 자의 영어 대소문자, 숫자, 특수문자 2가지로 이루어져야 함
     - 별칭 제외 모두 필수 필드
+
+https://github.com/user-attachments/assets/3db7262b-9e00-4a01-ae85-155cfab871e5
 - 로그인
-    - 실패 시 에러메세지를 띄워 사용자로 하여금 아이디와 비밀번호를 다시 확익할 수 있도록 함
+    - 실패 시 에러메세지를 띄워 사용자로 하여금 아이디와 비밀번호를 다시 확인할 수 있도록 함
 
 ### 2️⃣ 메인 페이지
 https://github.com/user-attachments/assets/2bd9ef47-a28e-4677-ae58-a8b53645d1d7
@@ -149,15 +149,14 @@ https://github.com/user-attachments/assets/f2f1978d-e8e0-4fd5-92e4-8ba68b0f6337
 
 ### 5️⃣ 정부지원금 조회 페이지
 https://github.com/user-attachments/assets/0e5690f2-ee39-4056-be47-c77194c06991
-
-https://github.com/user-attachments/assets/bff2abf9-216d-4423-b69a-8b50339dc0f0
-
 - 전체 및 추천 페이지로 넘어갈 수 있는 버튼
 - 지원금명을 기준으로 카테고리 명 생성
 - 상품 리스트를 나타내는 테이블
     - 찜 개수 표시
     - 각 필드명 클릭 시 오름차순 정렬
     - 페이지네이션 기능 구현
+
+https://github.com/user-attachments/assets/bff2abf9-216d-4423-b69a-8b50339dc0f0
 - 상품 명 클릭 시 상세 페이지로 이동
     - 찜 기능 구현
     - 이용자 리뷰 생성 및 조회 기능
@@ -181,22 +180,20 @@ https://github.com/user-attachments/assets/b071da16-3272-4031-aa39-cc15f7b9bb5c
 
 ### 7️⃣ 커뮤니티 페이지
 https://github.com/user-attachments/assets/e7f18a34-2d62-430d-84f9-cbb6bf95cfd4
-
-https://github.com/user-attachments/assets/9c16db75-b84b-40c3-ac31-dc11f9bdc074
-
-https://github.com/user-attachments/assets/b4b1e74a-bca9-437b-9fcf-ab12bef75b9d
-
 - 로그인 여부
     - 비로그인 시 로그인 하러 가기 버튼
     - 로그인 시 글쓰기 버튼
-- 인기 게시글
-    - 댓글 개수가 많은 순으로 게시글 3개 표시
-    - 제목 선택 시 상세 페이지로 이동
 - 게시글 목록을 나타내는 테이블
     - 자신이 작성한 게시글만 보기
     - 해당 키워드에 해당하는 게시글만 보기
     - 프로필 사진 클릭 시 해당 유저의 프로필 페이지 이동
     - 댓글 개수 표시
+    - 제목 선택 시 상세 페이지로 이동
+
+https://github.com/user-attachments/assets/9c16db75-b84b-40c3-ac31-dc11f9bdc074
+https://github.com/user-attachments/assets/b4b1e74a-bca9-437b-9fcf-ab12bef75b9d
+- 인기 게시글
+    - 댓글 개수가 많은 순으로 게시글 3개 표시
     - 제목 선택 시 상세 페이지로 이동
 - 게시글 상세 페이지
     - 본인 게시글일 경우 수정 및 삭제 기능
