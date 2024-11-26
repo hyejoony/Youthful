@@ -1,7 +1,7 @@
 <template>
     <br>
     <div>
-        <h2 class="mt-6 mb-2">Youthful 서비스는,</h2>
+        <h2 class=" mb-2" style="margin-top: 8%;">Youthful 서비스는,</h2>
         <h2 class="txt-custom" style="display: inline;">나의</h2>
         <h2 style="display: inline;"> 나이, 직업, 사는 지역에 따라</h2>
         <h2 class="txt-custom" style="display: inline;"> 정부지원금 목록을 추천</h2>
@@ -28,13 +28,18 @@
 
         </v-card>
     </div>
-    <v-btn height="45" class="mt-8" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
+    <v-btn @click="gotoSub" height="45" class="mt-8" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
         <span class="font-weight-bold" style="font-size: medium;">추천 받아보기</span></v-btn>
 
 </template>
 
 <script setup>
 import Section2Table from './Section2Table.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const gotoSub = () => {
+  router.push({ name: 'subsidy' });
+};
 </script>
 
 <style scoped>
@@ -51,5 +56,10 @@ import Section2Table from './Section2Table.vue';
     border-radius: 5px;
     padding: 5px;
     color: white;
+}
+
+
+h5 {
+    font-weight: 500; /* Medium font weight */
 }
 </style>

@@ -3,7 +3,7 @@
                 <h1 class="title" style="color:#658EA7;">환율계산기</h1>
                 <h5 style="color: #767676;">출처 : 네이버 증권(수수료 제외)</h5>
 
-                <v-card class="v-card mx-auto" max-width="820" height="300" hover>
+                <v-card class="v-card mx-auto" width="800" height="300" hover>
                     <v-form @submit.prevent="calculateExchange" class="ml-10">
                         <v-select v-model="selectedCountry" width="200px" label="통화 선택" :items="SelectCurrency"
                             variant="solo"></v-select>
@@ -178,7 +178,7 @@ h1 {
 
     /* margin-left: 50px; */
     margin-bottom: 40px;
-    margin-top: 20px;
+    margin-top: 60px;
 
 }
 
@@ -186,8 +186,8 @@ h5 {
     font-weight: 400;
     display: flex;
     margin-bottom: 10px;
-    justify-content: end;
-    margin-right: 175px;
+    justify-content: center;
+    margin-left: 600px;
 }
 .amount-input-container {
     position: relative;
