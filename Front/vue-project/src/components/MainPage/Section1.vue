@@ -1,4 +1,6 @@
 <template>
+    <div style="width: 800px;" class=" carousel-container">
+
     <h2 class="mt-6 mb-2">‘우대 금리, 기준 중위소득..’ 금융용어가 어렵게 느껴졌다면?</h2>
     <div style="width: 800px;" class="elevation-3">
         <v-carousel height="400" progress="grey" hide-delimiters>
@@ -32,6 +34,7 @@
             </v-carousel-item>
         </v-carousel>
     </div>
+    </div>
 </template>
 
 <script setup>
@@ -40,7 +43,21 @@ const slides = ["First", "Second", 'Third'];
 </script>
 
 <style scoped>
+
+h2 {
+    display: flex;
+    justify-content: center;
+}
 .img1 {
     transform: scaleX(-1);
 }
+
+.carousel-container {
+  transition: all 0.7s ;
+}
+
+.carousel-container:hover {
+  transform: translateY(-15px);
+}
+
 </style>
