@@ -152,8 +152,8 @@ def deposit_recommend_list(request):
         cnt = 0
         if len(serializer['liked_users_info']) > 0:
             for like_user in serializer['liked_users_info']:
-                print('아아아', like_user['birthyear'])
-                print('아아아2', current_user_data['birthyear'])
+                # print('아아아', like_user['birthyear'])
+                # print('아아아2', current_user_data['birthyear'])
                 if current_user_data['birthyear']-5 <= like_user['birthyear'] <= current_user_data['birthyear']+5:
                     cnt += 2
                 if like_user['income'] == current_user_data['income']:
@@ -168,7 +168,7 @@ def deposit_recommend_list(request):
     # 정렬 시, 점수를 기준으로 정렬
     reco_deposits.sort(key=lambda x: x[0], reverse=True)
 
-    return Response([deposit for _, deposit in reco_deposits], status=status.HTTP_200_OK)
+    return Response([deposit for _, deposit in reco_deposits], status=status.HTTP_200_OK, )
 
 
 @api_view(['GET','PUT'])

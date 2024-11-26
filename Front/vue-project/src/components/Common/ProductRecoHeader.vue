@@ -1,22 +1,27 @@
 <template>
     <!-- 상품 개인 추천 페이지 컴포넌트 헤더 -->
-    <h3 v-if="route.path.includes('subsidy')" style="margin-left: 55px; margin-top: 10px;">님을 위해 추천드리는 정부지원금 목록이에요.</h3>
-
-    <h3 v-else style="margin-left: 55px; margin-top: 10px;">님을 위해 추천드리는 상품 목록이에요.</h3>
-    <div style="display: flex; margin-left: 55px; margin-top:10px;">
-        <h5 class="hashtag"> 20대 초반 </h5>
-        <h5 class="hashtag">대학생</h5>
-        <h5 class="hashtag">월 소득 50만원 이하</h5>
-        <h5 v-if="route.path.includes('subsidy')" class="hashtag">대전광역시</h5>
-
-
+    <div style="align-content: center;">
+        <h3 v-if="route.path.includes('subsidy')" style=" margin-top: 10px;">{{ store.user_display_name}} 님을 위해 추천드리는 정부지원금 목록이에요.
+        </h3>
+        <h3 v-else style=" margin-top: 50px;">??님을 위해 추천드리는 상품 목록이에요.</h3>
+        <div style="display: flex;  margin-top:10px;">
+            <h5 class="hashtag"> 20대 초반 </h5>
+            <h5 class="hashtag">대학생</h5>
+            <h5 class="hashtag">월 소득 50만원 이하</h5>
+            <h5 v-if="route.path.includes('subsidy')" class="hashtag"> 대전광역시</h5>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router'
-
+import { onMounted } from 'vue';
+import { useAccountStore } from '@/stores/account';
+const store = useAccountStore()
 const route = useRoute()
+
+
+
 </script>
 
 <style scoped>
@@ -30,5 +35,4 @@ const route = useRoute()
     padding: 5px;
     color: white;
 }
-
 </style>

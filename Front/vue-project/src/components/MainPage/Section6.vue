@@ -1,9 +1,6 @@
 <template>
-  <v-card class="mx-auto my-4" max-width="800">
+  <v-card class="mx-auto my-2" max-width="800">
     <v-card-title class="text-h5 bg-blue-grey-darken-3 text-white d-flex align-center">
-      <v-avatar color="#658EA7" size="30">
-        <v-img :src="chatbotImage" alt="User Avatar"></v-img>
-      </v-avatar>
       <h5 class="ml-2" style="font-size: 15px;">든든한 금융 전문가, 챗봇 '유스'와 함께 해보세요!</h5>
       <v-spacer></v-spacer>
     </v-card-title>
@@ -19,7 +16,7 @@
         <template v-for="(message, index) in messages" :key="index">
           <div v-if="message.role === 'user'" class="d-flex justify-end mb-4">
             <v-card-text class="text-right rounded-lg pa-2"
-              style="max-width: 70%; background-color: #658EA7; color: white;">
+              style="max-width: 40%; background-color: #658EA7; color: white;">
               {{ message.content }}
             </v-card-text>
           </div>

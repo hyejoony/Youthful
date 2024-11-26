@@ -1,5 +1,5 @@
 <template>
-
+    <div class="container">
         <!-- 상품 페이지 예금/적금 바로가기, 전체/추천 바로가기 컴포넌트 -->
         <v-btn-toggle v-model="toggle_exclusive" class="toggle-color" mandatory @update:modelValue="handleToggleChange">
             <v-btn v-if="isSubsidyRoute" :value="'전체'" :class="{ 'selected-btn': toggle_exclusive === '전체' }">
@@ -15,10 +15,10 @@
                 적금
             </v-btn>
         </v-btn-toggle>
+    </div>
 
-
-
-        <div v-if="!isSubsidyRoute" style="margin-left: 55px; margin-top: 20px;">
+    <div class="container">
+        <div v-if="!isSubsidyRoute" style="margin-right: 450px; margin-top: 20px;">
             <span @click="goback" class="clickable-title" :class="{ 'active-title': selectedTitle === '전체' }">전체 </span>
             <span> | </span>
             <span @click="gotoReco" class="clickable-title" :class="{ 'active-title': selectedTitle === '추천' }">
@@ -27,7 +27,7 @@
                 나에게 딱 맞는 상품을 추천해드려요
             </span>
         </div>
-
+    </div>
 </template>
 
 <script setup>
@@ -109,7 +109,8 @@ const handleToggleChange = (value) => {
     border: 0.5px solid #767676;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
-    margin-left: 50px;
+    /* margin-left: 100px; */
+    margin-right: 650px;
 }
 
 .speech-bubble {
@@ -147,15 +148,23 @@ const handleToggleChange = (value) => {
 
 
 .selected-btn {
-    background-color: #658EA7 !important;
+    background-color: #767676 !important;
     color: white !important;
 }
 
 /* 기존 스타일 유지 */
 .active-title {
     font-weight: bold;
-    color: #658EA7;
+    color:  #767676;
     /* 원하는 강조 색상으로 변경 가능 */
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+    
 
 </style>

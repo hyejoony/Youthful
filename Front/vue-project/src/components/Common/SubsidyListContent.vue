@@ -64,9 +64,8 @@ const headers = [
 
 <style scoped>
 .table-container {
-    max-width: 1000px;
+    width: 800px;
 }
-
 .option-card {
     padding: 20px;
 }
