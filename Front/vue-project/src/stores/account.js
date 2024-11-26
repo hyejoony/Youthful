@@ -103,6 +103,9 @@ export const useAccountStore = defineStore('account', () => {
   const userImage = ref(null)
   const userEmail = ref('')
   const userName = ref('')
+  const userCareer = ref('')
+  const userRegion = ref('')
+  const userIncome = ref('')
 
   const logIn = (payload) => {
     const formData = new FormData();
@@ -134,6 +137,10 @@ export const useAccountStore = defineStore('account', () => {
         userImage.value = userRes.data.profile_image
         userEmail.value = userRes.data.email
         userName.value = userRes.data.user_display_name
+        userCareer.value = userRes.data.career
+        userRegion.value = userRes.data.region
+        userIncome.value = userRes.data.income
+        
         console.log(userId.value)
         console.log(userImage.value)
         router.push({ name: 'home' });
@@ -209,6 +216,6 @@ export const useAccountStore = defineStore('account', () => {
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
     incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
     token, isLogin, userId, logout, saveUpdateChanges, userImage, userEmail, 
-    userName
+    userName, userCareer, userRegion, userIncome
    }
 }, { persist: true })
