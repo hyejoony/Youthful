@@ -8,7 +8,7 @@ export const UseSavingStore = defineStore('Saving', () => {
     const savings = ref([])
     const API_URL =  'http://127.0.0.1:8000'
     
-    const getSavings = function () {
+    const getSavings = async function () {
         const storeAccount = useAccountStore()
         axios({
             method: 'get',
