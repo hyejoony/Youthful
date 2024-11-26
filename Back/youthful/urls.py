@@ -27,6 +27,6 @@ urlpatterns = [
     path('api/v1/deposits/', include('deposits.urls')),
     path('api/v1/savings/', include('savings.urls')),
     path('api/v1/subsidies/', include('subsidies.urls')),
-    path('api/v1/maps/', include('maps.urls')),
+    # path('api/v1/maps/', include('maps.urls')),
     path('api/v1/exchanges/', include('exchanges.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
