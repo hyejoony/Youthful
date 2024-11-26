@@ -22,7 +22,7 @@
                 <h4 @click="getDetail(popArticle.id)" class="clickable-title" style="font-weight: 400; display: inline;"> {{ popArticle.title }}</h4>
             </div>
         </v-card>
-        <v-card class="mt-4 mb-5" width="800" max-height="900px" elevation="2">
+        <v-card class="mt-4 mb-5" width="800" elevation="2">
             <card-head>
                 <div class="mt-3 pr-2 keyword-div" style="display: flex;">
                     <v-btn style="font-size: 14px;" density="compact"

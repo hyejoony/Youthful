@@ -30,7 +30,6 @@ class SavingSubsidySerializers(serializers.ModelSerializer):
 class SubsidyListSerializers(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(source='like_users.count', read_only=True)
     liked_users_info = serializers.SerializerMethodField()
-    current_user_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Subsidy
