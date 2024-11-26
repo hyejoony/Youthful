@@ -2,7 +2,7 @@
     <RouterView />
     <ProductShortcut />
     <div v-if="storeSubsidy.recoSubsidies" class="container">
-        <ProductRecoHeader :reco-subsidies="storeSubsidy.recoSubsidies"/>
+        <ProductRecoHeader />
         <SubsidyRecommendContent :reco-subsidies="storeSubsidy.recoSubsidies"/>
     </div>
 </template>

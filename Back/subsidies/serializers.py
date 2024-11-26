@@ -34,7 +34,7 @@ class SubsidyListSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Subsidy
-        fields = ('id', 'name', 'name_category', 'target', 'contact', 'likes_count', 'liked_users_info', 'current_user_info')
+        fields = ('id', 'name', 'name_category', 'target', 'contact', 'likes_count', 'liked_users_info')
 
     def get_liked_users_info(self, obj):
         return [
@@ -46,24 +46,6 @@ class SubsidyListSerializers(serializers.ModelSerializer):
             }
             for user in obj.like_users.all()
         ]
-
-    def get_current_user_info(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            user = request.user
-            return {
-                'birthyear': user.birthyear,
-                'career': user.career,
-                'region': user.region,
-                'income': user.income,
-                'user_display_name': self.get_user_display_name(user)
-            }
-        return None
-
-    def get_user_display_name(self, user):
-        if user.nickname:
-            return user.nickname
-        return user.email.split('@')[0] if user.email else None
     
     
 

@@ -2,7 +2,7 @@
     <RouterView />
     <ProductShortcut />
     <div v-if="storeSaving.recoSavings" class="container">
-        <!-- <ProductRecoHeader /> -->
+        <ProductRecoHeader />
         <SavingRecommendContent :reco-savings="storeSaving.recoSavings"/>
     </div>
 </template>

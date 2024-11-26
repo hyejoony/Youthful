@@ -106,6 +106,7 @@ export const useAccountStore = defineStore('account', () => {
   const userCareer = ref('')
   const userRegion = ref('')
   const userIncome = ref('')
+  const userBirthyear = ref('')
 
   const logIn = (payload) => {
     const formData = new FormData();
@@ -140,6 +141,7 @@ export const useAccountStore = defineStore('account', () => {
         userCareer.value = userRes.data.career
         userRegion.value = userRes.data.region
         userIncome.value = userRes.data.income
+        userBirthyear.value = userRes.data.birthyear
         
         console.log(userId.value)
         console.log(userImage.value)
@@ -216,6 +218,6 @@ export const useAccountStore = defineStore('account', () => {
   return { signUp, API_URL, emailErr, password1Err, password2Err, birthyearErr,
     incomeErr, regionErr, careerErr, sameErr, clearErrors, logIn, loginErr,
     token, isLogin, userId, logout, saveUpdateChanges, userImage, userEmail, 
-    userName, userCareer, userRegion, userIncome
+    userName, userCareer, userRegion, userIncome, userBirthyear
    }
 }, { persist: true })

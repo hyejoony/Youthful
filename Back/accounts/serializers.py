@@ -346,7 +346,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'profile_image', 'user_display_name', 'email')# 필요한 필드 추가
+        fields = ('id', 'profile_image', 'user_display_name', 'email', 'birthyear', 'career', 'income', 'region')# 필요한 필드 추가
 
     def get_user_display_name(self, obj):
         """닉네임이 있으면 닉네임을 반환하고, 없으면 이메일의 '@' 전까지의 부분을 반환합니다."""
