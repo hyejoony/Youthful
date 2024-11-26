@@ -25,7 +25,7 @@ export const UseSubsidyStore = defineStore('Subsidy', () => {
     
     const recoSubsidies = ref([])
     
-    const getRecoSubsidies = function () {
+    const getRecoSubsidies = async function () {
         const storeAccount = useAccountStore()
         axios({
             method: 'get',
