@@ -210,8 +210,8 @@ const sendMessage = async () => {
 
 .chatbot-container {
     position: fixed;
-    bottom: 600px;
-    right: 20%;
+    bottom: 10%;
+    right: 5%;
     z-index: 1000;
 }
 
