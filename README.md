@@ -8,8 +8,7 @@ VII. 기타(느낀 점, 후기 등)
 
 
 ### 1인 청년 자산 관리 도움 서비스
-# //로고 넣기//
-# <img src='./README_IMG/favicon.png' alt='logo' width=30> Youthful
+# <img src='./README_IMG/logo.png' alt='logo' width=30> Youthful
 
 ### 목차
 
@@ -67,28 +66,23 @@ VII. 기타(느낀 점, 후기 등)
     - axios
 
 ### 👷🏻‍♂️ 아키텍처
-# //아케텍처 이미지 넣기//
-<img src="./README_IMG/Figma.png" alt='Figma'/>
+<img src="./README_IMG/architecture.png" alt='architecture'/>
 
 ### ✍🏻 목업
-[🔗 Figma Link](https://www.figma.com/design/xeOfzhOs75pUmivYMvly4k/Untitled?node-id=0-1&node-type=canvas&t=fJcVZqEBJp6Mwb3E-0)
-# //피그마 이미지 넣기//
-<img src="./README_IMG/Figma.png" alt='Figma'/>
+[🔗 Figma Link](https://www.figma.com/design/xeOfzhOs75pUmivYMvly4k/Untitled?node-id=0-1&node-type=canvas&t=3YP7YGG4k6fZLgH5-0)
+<img src="./README_IMG/figma.png" alt='Figma'/>
 
 
 ## 데이터베이스 모델링 및 명세서
 
 ### 🗂️ ERD
-# //ERD 이미지 넣기//
-<img src="./README_IMG/ERD.png" alt='Figma'/>
+<img src="./README_IMG/erd.png" alt='erd'/>
 
 ### 🎬 기능 명세서
-# //기능 명세서 이미지 넣기//
-<img src="./README_IMG/ERD.png" alt='Figma'/>
+<img src="./README_IMG/functional_specification.png" alt='functional_specification'/>
 
 ### 📬 API 명세서
-# //API 명세서 이미지 넣기//
-<img src='./README_IMG/API_명세서.png' alt='API 명세서' />
+<img src='./README_IMG/api_specification.png' alt='API 명세서' />
 
 
 ## 금융 상품 추천 알고리즘
@@ -109,12 +103,13 @@ VII. 기타(느낀 점, 후기 등)
     - 상품의 점수가 높은 순으로 내림차순 정렬
 
 
+
 ## 서비스 대표 기능
 
 ### 1️⃣ 회원가입, 로그인 페이지
-# //회원가입, 로그인 페이지 이미지 넣기//
-<img src='./README_IMG/로그인페이지.png' alt='로그인페이지'/>
-<img src='./README_IMG/회원가입페이지.png' alt='회원가입페이지'/>
+https://github.com/user-attachments/assets/ede26178-f0b1-4cdf-9b9a-3731b608e008
+
+https://github.com/user-attachments/assets/3db7262b-9e00-4a01-ae85-155cfab871e5
 
 - 회원가입
     - 소득, 지역, 직업은 리스트 박스 형태로 처리
@@ -125,23 +120,19 @@ VII. 기타(느낀 점, 후기 등)
     - 실패 시 에러메세지를 띄워 사용자로 하여금 아이디와 비밀번호를 다시 확익할 수 있도록 함
 
 ### 2️⃣ 메인 페이지
-# //메인 페이지 이미지 넣기//
-<img src='./README_IMG/메인페이지.png' alt='메인페이지'/>
+https://github.com/user-attachments/assets/2bd9ef47-a28e-4677-ae58-a8b53645d1d7
 
 - 금융 나침반을 나타내는 로고
 - 챗봇 `유스`에 대한 설명을 나타내는 carousel
 - 금융 상품 추천 대표 UI
 - 동적 지도 이미지
-- 챗봇 `유스`에게 질문할 수 있는 창
+- 챗봇 `유스` 아이콘
 - 왼쪽에 각 페이지로 넘어갈 수 있는 동적 Navbar
     - 본인 프로필 사진 및 nickname과 email
 
 ### 3️⃣ 프로필 페이지
-# //프로필 페이지 이미지 넣기//
-<img src='./README_IMG/마이페이지.png' alt='마이페이지'/>
-<img src='./README_IMG/가입상품관리페이지.png' alt='가입상품관리페이지'/>
-<img src='./README_IMG/상품추천페이지1.png' alt='상품추천페이지1'/>
-<img src='./README_IMG/상품추천페이지2.png' alt='상품추천페이지2'/>
+https://github.com/user-attachments/assets/424e2375-0482-4d1a-9254-aed09ce53ffa
+
 
 - 별칭이 있을 경우 별칭, 없을 경우 이메일의 @이전까지 표시
 - 해당 유저의 나이, 지역, 소득, 직업 정보
@@ -151,10 +142,10 @@ VII. 기타(느낀 점, 후기 등)
     - 프로필 이미지, 소득, 지역, 직업 수정 가능
 
 ### 4️⃣ 예적금 조회 페이지
-# //예적금 조회 페이지 이미지 넣기//
-<img src='./README_IMG/정기예금페이지.png' alt='정기예금페이지'/>
-<img src='./README_IMG/정기적금페이지.png' alt='정기적금페이지'/>
-<img src='./README_IMG/예,적금상세페이지.png' alt='예,적금상세페이지'/>
+https://github.com/user-attachments/assets/f44e53e7-d90c-4b54-823f-bdafe21074c9
+
+
+https://github.com/user-attachments/assets/f2f1978d-e8e0-4fd5-92e4-8ba68b0f6337
 
 - 예금 및 적금으로 넘어갈 수 있는 버튼
 - 전체 및 추천 페이지로 넘어갈 수 있는 버튼
@@ -167,8 +158,9 @@ VII. 기타(느낀 점, 후기 등)
     - 찜 기능 구현
 
 ### 5️⃣ 정부지원금 조회 페이지
-# //정부지원금 조회 페이지 이미지 넣기//
-<img src='./README_IMG/환율계산페이지.png' alt='환율계산페이지'/>
+https://github.com/user-attachments/assets/0e5690f2-ee39-4056-be47-c77194c06991
+
+https://github.com/user-attachments/assets/bff2abf9-216d-4423-b69a-8b50339dc0f0
 
 - 전체 및 추천 페이지로 넘어갈 수 있는 버튼
 - 지원금명을 기준으로 카테고리 명 생성
@@ -184,30 +176,25 @@ VII. 기타(느낀 점, 후기 등)
         - 본인 리뷰가 아닌 경우 프로필 사진 클릭 시 해당 유저의 프로필 페이지로 이동
 
 ### 6️⃣ 주변 은행 검색 페이지
-# //주변 은행 검색 페이지 이미지 넣기//
-<img src='./README_IMG/주변은행검색페이지.png' alt='주변은행검색페이지'/>
-<img src='./README_IMG/주변은행검색상세페이지.png' alt='주변은행검색상세페이지'/>
+https://github.com/user-attachments/assets/ad7bd276-f8de-4607-a227-28a5d4ae0606
 
 - 광역시/도, 시/군/구, 은행명 선택 후 찾기 클릭 시 주변에 있는 은행 위치 표시
 - 위치 아이콘 클릭 시 정확한 은행명 표시
 - 지도 확대 및 축소 기능
 
 ### 6️⃣ 환율 계산기 페이지
-# //환율 계산기 페이지 이미지 넣기//
-<img src='./README_IMG/게시판목록페이지.png' alt='게시판목록페이지'/>
-<img src='./README_IMG/게시판글쓰기페이지.png' alt='게시판글쓰기페이지'/>
-<img src='./README_IMG/게시판상세페이지.png' alt='게시판상세페이지'/>
-<img src='./README_IMG/게시판댓글수정페이지.png' alt='게시판댓글수정페이지'/>
-<img src='./README_IMG/게시판수정페이지.png' alt='게시판수정페이지'/>
-<img src='./README_IMG/게시판삭제페이지.png' alt='게시판삭제페이지'/>
+https://github.com/user-attachments/assets/b071da16-3272-4031-aa39-cc15f7b9bb5c
 
 - 통화, 기준, 한화 선택 후 계산하기 버튼 클릭 시 선택한 통화로 얼마인지 계산 후 반환
 - 가장 방문이 많은 6개국의 지난 3개월 환율 추이 그래프 표시
 - 매일 오후 11시 자동 크롤링 후 데이터 업데이트
 
 ### 7️⃣ 커뮤니티 페이지
-# //커뮤니티 페이지 이미지 넣기//
-<img src='./README_IMG/404페이지.png' alt='404페이지'/>
+https://github.com/user-attachments/assets/e7f18a34-2d62-430d-84f9-cbb6bf95cfd4
+
+https://github.com/user-attachments/assets/9c16db75-b84b-40c3-ac31-dc11f9bdc074
+
+https://github.com/user-attachments/assets/b4b1e74a-bca9-437b-9fcf-ab12bef75b9d
 
 - 로그인 여부
     - 비로그인 시 로그인 하러 가기 버튼
@@ -228,7 +215,11 @@ VII. 기타(느낀 점, 후기 등)
         - 본인 댓글일 경우 수정 및 삭제 기능
         - 아닐 경우 해당 유저의 프로필 페이지로 이동 가능한 프로필 사진 표시
 
+### 8️⃣ 챗봇 기능
+https://github.com/user-attachments/assets/5adb0320-3113-40d2-a518-317b395b77c6
 
+- 금융 용어 문의
+- 예적금 상품과 정부 지원금에 대한 자세한 설명
 
 
 ## 후기
