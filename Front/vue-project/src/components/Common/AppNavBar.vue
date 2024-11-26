@@ -5,10 +5,10 @@
         <v-list>
           <v-list-item v-if="storeAccount.isLogin" class="user-info">
             <template v-slot:prepend>
-              <v-avatar v-if="storeAccount.isLogin && storeAccount.user">
+              <v-avatar v-if="storeAccount.isLogin && storeAccount.userImage">
                 <v-img :src="`${baseUrl}${storeAccount.userImage}`" alt="User Profile"></v-img>
               </v-avatar>
-              <v-avatar v-elif="storeAccount.isLogin && storeAccount.userImage == null" color="#658EA7" size="30">
+              <v-avatar v-else color="#658EA7" size="30">
                 <v-icon size="25" icon="mdi-account-circle"></v-icon>
               </v-avatar>
             </template>
@@ -82,6 +82,7 @@ import axios from 'axios'
 const storeAccount = useAccountStore()
 const user = ref('')
 const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+console.log('dfdf', storeAccount.userImage)
 
 
 

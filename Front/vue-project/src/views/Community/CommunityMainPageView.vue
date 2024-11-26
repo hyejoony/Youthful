@@ -46,9 +46,12 @@
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <v-avatar v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)" class="clickable-item" size="small">
+                            <v-avatar v-if="storeAccount.userId !== article.user && article.profile_image && storeAccount.isLogin" @click="goProfile(article.user)" class="clickable-item" size="small">
                                 <v-img :src="`${baseUrl}${article.profile_image}`" alt="Article Profile"></v-img>
                             </v-avatar>  
+                            <v-avatar v-else-if="storeAccount.userId !== article.user" color="#658EA7" size="30" @click="goProfile(article.user)" class="clickable-item">
+                                <v-icon size="25" icon="mdi-account-circle"></v-icon>
+                            </v-avatar>
                             <h5 @click="goProfile(article.user)" style="color: #767676;" class="ml-3 clickable-item">{{ article.user_display_name }}님</h5> |
                             <h5 style="color: #767676;" >댓글 {{ article.comments.length }}개 | </h5>
                             <h5 style="color: #767676;" class="mr-3">{{ article.updated_at?.slice(0, 10) }}</h5>
@@ -73,9 +76,12 @@
                             <h4 @click="getDetail(article.id)" class="clickable-title ml-3">{{ article.title }}</h4>
                         </div>
                         <div class="right-content">
-                            <v-avatar v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)" class="clickable-item" size="small">
+                            <v-avatar v-if="storeAccount.userId !== article.user && article.profile_image && storeAccount.isLogin" @click="goProfile(article.user)" class="clickable-item" size="small">
                                 <v-img :src="`${baseUrl}${article.profile_image}`" alt="Article Profile"></v-img>
-                            </v-avatar>                            
+                            </v-avatar>  
+                            <v-avatar v-else-if="storeAccount.userId !== article.user" color="#658EA7" size="30" @click="goProfile(article.user)" class="clickable-item">
+                                <v-icon size="25" icon="mdi-account-circle"></v-icon>
+                            </v-avatar>                          
                             <h5 style="color: #767676;" class="ml-3">{{ article.user_display_name }}님 | </h5>
                             <h5 style="color: #767676;" >댓글 {{ article.comments.length }}개 | </h5>
                             <h5 style="color: #767676;" class="mr-3">{{ article.updated_at?.slice(0, 10) }}</h5>
