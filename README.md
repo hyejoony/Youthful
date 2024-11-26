@@ -191,6 +191,7 @@ https://github.com/user-attachments/assets/e7f18a34-2d62-430d-84f9-cbb6bf95cfd4
     - 제목 선택 시 상세 페이지로 이동
 
 https://github.com/user-attachments/assets/9c16db75-b84b-40c3-ac31-dc11f9bdc074
+
 https://github.com/user-attachments/assets/b4b1e74a-bca9-437b-9fcf-ab12bef75b9d
 - 인기 게시글
     - 댓글 개수가 많은 순으로 게시글 3개 표시
