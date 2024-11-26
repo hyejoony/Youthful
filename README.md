@@ -8,8 +8,7 @@ VII. 기타(느낀 점, 후기 등)
 
 
 ### 1인 청년 자산 관리 도움 서비스
-# //로고 넣기//
-# <img src='./README_IMG/favicon.png' alt='logo' width=30> Youthful
+# <img src='./README_IMG/logo.png' alt='logo' width=30> Youthful
 
 ### 목차
 
@@ -68,28 +67,23 @@ VII. 기타(느낀 점, 후기 등)
     - axios
 
 ### 👷🏻‍♂️ 아키텍처
-# //아케텍처 이미지 넣기//
-<img src="./README_IMG/Figma.png" alt='Figma'/>
+<img src="./README_IMG/architecture.png" alt='architecture'/>
 
 ### ✍🏻 목업
-[🔗 Figma Link](https://www.figma.com/design/xeOfzhOs75pUmivYMvly4k/Untitled?node-id=0-1&node-type=canvas&t=fJcVZqEBJp6Mwb3E-0)
-# //피그마 이미지 넣기//
-<img src="./README_IMG/Figma.png" alt='Figma'/>
+[🔗 Figma Link](https://www.figma.com/design/xeOfzhOs75pUmivYMvly4k/Untitled?node-id=0-1&node-type=canvas&t=3YP7YGG4k6fZLgH5-0)
+<img src="./README_IMG/figma.png" alt='Figma'/>
 
 
 ## 데이터베이스 모델링 및 명세서
 
 ### 🗂️ ERD
-# //ERD 이미지 넣기//
-<img src="./README_IMG/ERD.png" alt='Figma'/>
+<img src="./README_IMG/erd.png" alt='erd'/>
 
 ### 🎬 기능 명세서
-# //기능 명세서 이미지 넣기//
-<img src="./README_IMG/ERD.png" alt='Figma'/>
+<img src="./README_IMG/functional_specification.png" alt='functional_specification'/>
 
 ### 📬 API 명세서
-# //API 명세서 이미지 넣기//
-<img src='./README_IMG/API_명세서.png' alt='API 명세서' />
+<img src='./README_IMG/api_specification.png' alt='API 명세서' />
 
 
 ## 금융 상품 추천 알고리즘
@@ -110,12 +104,11 @@ VII. 기타(느낀 점, 후기 등)
     - 상품의 점수가 높은 순으로 내림차순 정렬
 
 
+
 ## 서비스 대표 기능
 
 ### 1️⃣ 회원가입, 로그인 페이지
-# //회원가입, 로그인 페이지 이미지 넣기//
-<img src='./README_IMG/로그인페이지.png' alt='로그인페이지'/>
-<img src='./README_IMG/회원가입페이지.png' alt='회원가입페이지'/>
+https://github.com/user-attachments/assets/ede26178-f0b1-4cdf-9b9a-3731b608e008
 
 - 회원가입
     - 소득, 지역, 직업은 리스트 박스 형태로 처리
