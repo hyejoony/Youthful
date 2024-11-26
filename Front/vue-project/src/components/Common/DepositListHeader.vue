@@ -1,14 +1,12 @@
 <template>
     <!-- 상품 전체 목록 페이지 헤더 -->
-    <v-card class="mt-6" width="815" height="150px">
+    <v-card class="mt-6" >
         <div class="card-border">
             <div class="bank-section">
                 <v-card 
                     v-for="bank in banks" 
                     :key="bank.name" 
                     class="card-border" 
-                    width="100" 
-                    height="80px"
                     @click="selectBank(bank.name)"
                 >
                     <img class="mt-3 ml-8" :src="bank.logo" width="30px" alt="bank_logo">
@@ -52,7 +50,7 @@ const selectBank = (bankName) => {
 .card-border {
     gap: 20px;
     margin: auto;
-    margin-top: 15px;
+    /* margin-top: 15px; */
 }
 
 .bank-section {

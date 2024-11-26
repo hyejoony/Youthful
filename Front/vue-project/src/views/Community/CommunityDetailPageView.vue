@@ -1,26 +1,29 @@
 <template>
     <Routerview />
     <br>
-    <v-card v-if="article" class="mt-4" width="900" max-height="800" elevation="2">
+    <v-card v-if="article" class="mt-4" width="800" max-height="800" elevation="2">
         <card-head>
             <p class="mt-2 pl-4"> {{ article.title }}</p>
         </card-head>
-        <hr  style="color: #767676;" class="mt-3">
+        <hr style="color: #767676;" class="mt-3">
         <div class="card-user-info mt-2 pl-4" style="color: #767676;">
-            <span>{{ article.user_display_name }}님 | 작성일 : {{ article.created_at.slice(0,10) }}</span>
-            <h5 class="hashtag">{{ article.keyword }}</h5>
+            <h4 class="hashtag mb-3">{{ article.keyword }}</h4>
+            <span style="font-size: 13px !important;">{{ article.user_display_name }}님 | 작성일 : {{
+                article.created_at.slice(0,10) }}</span>
+
             <card-content>
-                <p class="mt-4 pl-4">{{ article.content }}</p>
+                <h4 style="color: #658EA7;" class="mt-4 pl-1">{{ article.content }}</h4>
             </card-content>
             <div class="change">
-                <v-btn v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)" class="clickable-item">
+                <v-btn variant="text" v-if="storeAccount.userId !== article.user" @click="goProfile(article.user)"
+                    class="clickable-item">
                     프로필
                     <v-avatar size="24">
                         <v-img :src="`${baseUrl}${article.profile_image}`" alt="User Profile"></v-img>
                     </v-avatar>
                 </v-btn>
                 <div v-if="storeAccount.userId == article.user">
-                    <v-btn @click="openDialog">수정하기<v-icon>mdi-pencil</v-icon></v-btn>
+                    <v-btn variant="text" class="mt-3" @click="openDialog">수정<v-icon>mdi-pencil</v-icon></v-btn>
                     <!-- 모달창 -->
                     <v-dialog v-model="dialog" max-width="500">
                         <v-card>
@@ -41,12 +44,14 @@
                             <template v-slot:actions>
                                 <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
                                 <v-btn variant="text" class="ms-auto" text="취소" @click="dialog = false"></v-btn>
-                                <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesFunc()"></v-btn>
+                                <v-btn variant="text" style="color: #658EA7;" text='저장'
+                                    @click="saveChangesFunc()"></v-btn>
                             </template>
                         </v-card>
                     </v-dialog>
                 </div>
-                <v-btn v-if="storeAccount.userId == article.user" @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                <v-btn variant="text" class="mt-3" v-if="storeAccount.userId == article.user"
+                    @click="deleteArticleFunc">삭제하기<v-icon>mdi-trash-can-outline</v-icon></v-btn>
             </div>
         </div>
         <hr style="color: #767676;" class="mt-3">
@@ -63,14 +68,17 @@
         </v-form>
 
         <div v-if="commentList.length > 0" v-for="comment in commentList" :key="comment.createdAt">
-            <p style="margin-bottom: 3px;">{{ comment.content }}
+            <p style="margin-bottom: 3px; margin-left: 15px;">{{ comment.content }}
                 <span>
                     <span>
-                        <v-avatar v-if="storeAccount.userId !== comment.user" @click="goProfile(comment.user)" class="clickable-item" size="small">
+                        <v-avatar v-if="storeAccount.userId !== comment.user" @click="goProfile(comment.user)"
+                            class="clickable-item" size="small">
                             <v-img :src="`${baseUrl}${comment.profile_image}`" alt="Comment Profile"></v-img>
-                        </v-avatar>   
-                        <v-btn v-if="storeAccount.userId == comment.user" @click="openDialogComment(comment)" density="compact" icon="mdi-pencil"></v-btn>
-                        <!-- 모달창 -->
+                        </v-avatar>
+                        <v-btn v-if="storeAccount.userId == comment.user" @click="openDialogComment(comment)"
+                            density="compact" icon="mdi-pencil">
+                            <v-icon size="16px">mdi-pencil</v-icon>
+                        </v-btn>
                         <v-dialog v-model="dialogComment" max-width="500">
                             <v-card>
                                 <v-card-title class="ml-2" style="color: #658EA7;">댓글 수정</v-card-title>
@@ -79,21 +87,27 @@
                                 </v-card-text>
                                 <template v-slot:actions>
                                     <!-- 이 슬롯은 카드 하단에 버튼과 같은 액션 요소를 추가하는 데 사용 -->
-                                    <v-btn variant="text" class="ms-auto" text="취소" @click="dialogComment = false"></v-btn>
-                                    <v-btn variant="text" style="color: #658EA7;" text='저장' @click="saveChangesComment(comment.id)"></v-btn>
+                                    <v-btn variant="text" class="ms-auto" text="취소"
+                                        @click="dialogComment = false"></v-btn>
+                                    <v-btn variant="text" style="color: #658EA7;" text='저장'
+                                        @click="saveChangesComment(comment.id)"></v-btn>
                                 </template>
                             </v-card>
                         </v-dialog>
                     </span>
-                    <v-btn  v-if="storeAccount.userId == comment.user" @click="deleteComment(comment.id)" density="compact" icon="mdi-trash-can-outline"></v-btn>
+                    <v-btn v-if="storeAccount.userId == comment.user" @click="deleteComment(comment.id)"
+                        density="compact" icon="mdi-trash-can-outline"></v-btn>
                 </span>
             </p>
-            <span>작성자 : {{ comment.user_display_name }}님 | 작성일 : {{ comment?.updated_at.slice(0,10) }}</span>
+            <span class="ml-4" style="font-size: 13px !important; color: #767676;">작성자 : {{ comment.user_display_name
+                }}님 | 작성일
+                : {{ comment?.updated_at.slice(0, 10) }}</span>
             <hr class="mb-5">
         </div>
-        <div v-else  class="ml-4 mb-5" style="color: #767676;">아직 달린 댓글이 없어요.</div>
+        <div v-else class="ml-5 mb-5" style="color: #767676;">아직 달린 댓글이 없어요.</div>
     </v-card>
-    <a href="/community" style="color: #767676; font-size: 13px" class="mt-2 mb-2">이전 페이지로 돌아가기<v-icon>mdi-chevron-left</v-icon></a>
+    <a href="/community" style="color: #767676; font-size: 13px" class="mt-2 mb-2">이전 페이지로
+        돌아가기<v-icon>mdi-chevron-left</v-icon></a>
 </template>
 
 <script setup>
@@ -109,9 +123,9 @@ const storeAccount = useAccountStore()
 const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 onBeforeMount(() => {
-  if (!storeAccount.isLogin) {
-    router.push('/login');
-  }
+    if (!storeAccount.isLogin) {
+        router.push('/login');
+    }
 });
 
 const store = UseCommunityStore()
@@ -125,9 +139,9 @@ const id = route.params.id // 특정 id, route 파라미터 불러오기
 // 반응형으로 해야 안정적 (데이터 로드)
 const article = ref(null)
 onMounted(() => {
-    console.log('idDetail',id)
+    console.log('idDetail', id)
     article.value = store.getDetail(id); // onmount
-    console.log('articlevalue는',article.value)
+    console.log('articlevalue는', article.value)
     commentList.value = store.getComments(id) // 댓글
     console.log('comment는', commentList.value)
 })
@@ -223,7 +237,7 @@ const saveChangesComment = async () => {
 
 
 const goProfile = (id) => {
-    router.push({name: 'profile', params: { id: id }})
+    router.push({ name: 'profile', params: { id: id } })
 }
 
 
@@ -240,36 +254,36 @@ const goProfile = (id) => {
 }
 
 .change {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* 버튼 사이의 간격 */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* 버튼 사이의 간격 */
 }
 
-.change > * {
-  flex-shrink: 0; /* 자식 요소들이 줄어들지 않도록 설정 */
+.change>* {
+    flex-shrink: 0;
+    /* 자식 요소들이 줄어들지 않도록 설정 */
 }
 
 .clickable-item {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /* 버튼인데 underline 되길래 지워뒀어  */
 .clickable-item:hover {
-  /* text-decoration: underline; */
-  color: #658EA7;
+    /* text-decoration: underline; */
+    color: #658EA7;
 }
 
 .hashtag {
     margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 10px;
     border: 2px solid #658EA7;
     background-color: #658EA7;
     border-radius: 20px;
     padding: 5px;
     color: white;
-    width: 70px;
-    height: 32px;
+    width: 80px;
+    height: 35px;
     text-align: center;
 }
 </style>

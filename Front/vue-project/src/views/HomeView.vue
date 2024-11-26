@@ -1,6 +1,6 @@
 <template>
   <br>
-  <v-container>
+  <v-container >
     <v-row>
       <v-col  sm='12' lg="12">
         <div class='flex'>
@@ -21,7 +21,7 @@
           <Section3 />
           <Section4 />
           <Section5 />
-          <Section6 />
+          <!-- <Section6 /> -->
         </div>
       </v-col>
 
@@ -51,7 +51,7 @@ import Section6 from '@/components/MainPage/Section6.vue';
 .flex {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 30px;
 }
 
 .flex2 {

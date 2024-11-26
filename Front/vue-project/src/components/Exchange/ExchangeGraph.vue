@@ -2,7 +2,7 @@
     <h3 class="mt-3" style="color: #658EA7; text-align: center">가장 방문이 많은 6개국의 지난 3개월 추이</h3>
     <h5 style="color: #767676;">매일 오후 11시 업데이트</h5>
     <div class="card-container">
-        <v-card class="mt-0" width="820">
+        <v-card class="mt-0" width="800">
             <v-virtual-scroll :items="cards" height="600">
                 <div class="div-card mb-2" v-for="(row, rowIndex) in rows" :key="rowIndex">
                     <v-card v-for="(exchange, index) in row" :key="index" class="v-card" width="800" height="300" hover>
@@ -61,7 +61,7 @@ h5 {
     font-weight: 400;
     display: flex;
     margin-bottom: 10px;
-    justify-content: end;
-    margin-right: 175px;
+    justify-content: center;
+    margin-left: 600px;
 }
 </style>

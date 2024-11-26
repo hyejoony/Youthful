@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div >
     <AppNavBar />
   </div>
   <RouterView />
+  <Chatbot />
 </template>
 
 <script setup>
 import AppNavBar from './components/Common/AppNavBar.vue';
+import Chatbot from './components/Chatbot/Chatbot.vue';
 </script>
 <style>
 /* 브라우저에 폰트 로드, 정의한 거 알리기 */
