@@ -112,7 +112,7 @@ from django.forms.models import model_to_dict
 @permission_classes([IsAuthenticated])
 def subsidy_recommend_list(request):
     subsidies = get_list_or_404(Subsidy)
-    serializers = SubsidyListSerializers(subsidies, many=True, context={'request': request})
+    serializers = SubsidyListSerializers(subsidies, many=True)
     reco_subsidies = []
 
     current_user = request.user
