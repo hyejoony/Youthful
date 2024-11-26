@@ -1,11 +1,14 @@
 <template>
     <br>
     <br>
+    <div class="carousel-container ">
     <div class="mt-6">
+        <div class="text-center">
         <h2 style="display: inline;" class="mt-6 mb-2">5대 은행의 예적금 정보를 알 수 있어요.</h2>
         <h2 style="display: inline;"> 물론</h2>
         <h2 style="display: inline;" class="txt-custom"> 나에게 딱 맞는 추천</h2>
         <h2 style="display: inline;">까지도요.</h2>
+        </div>
     </div>
     <div class="bank-section">
         <div class="cards">
@@ -30,6 +33,7 @@
                 <p class="txt-custom px-5"><b>하나은행</b></p>
             </v-card>
         </div>
+    </div>
         <div class="button-container" >
             <v-btn height="45" style="color: white; background-color: #658EA7;" rounded="xl" elevation="0">
                 <span  @click="gotoDeposit" class="font-weight-bold" style="font-size: medium;">추천 받아보기</span>
@@ -72,5 +76,13 @@ const gotoDeposit = () => {
     justify-content: center;
     width: 100%;
     /* margin-top: 5px; */
+}
+
+.carousel-container {
+    transition: all 0.7s;
+}
+
+.carousel-container:hover {
+    transform: translateY(-15px);
 }
 </style>
