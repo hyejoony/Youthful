@@ -156,7 +156,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         passed_checks = sum(bool(re.search(pattern, password)) for pattern, _ in complexity_checks)
 
         if passed_checks < 2:
-            error_message = '비밀번호는 다음 중 최소 2가지를 포함해야 합니다: 영문 대문자, 영문 소문자, 숫자, 특수문자'
+            error_message = '비밀번호는 영문 대문자, 소문자, 숫자, 특수문자 중 최소 2가지를 포함해야 합니다'
             raise serializers.ValidationError({
                 'password1': error_message
             })
