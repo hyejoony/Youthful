@@ -76,7 +76,7 @@ const messages = ref([
 const userInput = ref('')
 const loading = ref(false)
 const chatContainer = ref(null)
-const apiKey = ref('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')
+const apiKey = ref('')
 const tempApiKey = ref('')
 const chatbotImage = ref('')
 
